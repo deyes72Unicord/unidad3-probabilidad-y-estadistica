@@ -1,0 +1,424 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA: Pruebas de hipótesis estadísticas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{--green-50:#f0fdf4;--green-100:#dcfce7;--green-200:#bbf7d0;--green-500:#22c55e;--green-600:#16a34a;--green-700:#15803d;--green-800:#166534;--slate-50:#f8fafc;--slate-100:#f1f5f9;--slate-200:#e2e8f0;--slate-500:#64748b;--slate-600:#475569;--slate-700:#334155;--slate-800:#1e293b;--yellow-100:#fef9c3;--yellow-500:#eab308;--yellow-700:#a16207;--red-100:#fee2e2;--red-500:#ef4444;--red-700:#b91c1c;--shadow-sm:0 1px 2px rgba(15,23,42,.06);--shadow-md:0 10px 25px rgba(15,23,42,.08);--shadow-lg:0 18px 40px rgba(15,23,42,.12);--radius-lg:18px;--radius-md:14px}
+        html,body{max-width:100%;overflow-x:auto;background:var(--slate-50)}
+        body{font-family:"Poppins","Segoe UI",Tahoma,sans-serif;color:var(--slate-700);line-height:1.6}
+        img{display:block;max-width:100%;height:auto} button,select,input{font:inherit} button{border:0;cursor:pointer} a{color:inherit;text-decoration:none}
+        .layout{display:flex;min-height:100vh}.sidebar{position:fixed;top:0;left:0;width:16rem;height:100vh;background:#fff;box-shadow:var(--shadow-md);display:flex;flex-direction:column;z-index:40}.sidebar-logo{padding:1.25rem 1rem .75rem;display:flex;justify-content:center}.sidebar-logo-frame{width:150px;height:150px;padding:.75rem;border-radius:999px;background:#fff;border:2px solid var(--green-500);box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;overflow:hidden}.sidebar-nav{margin-top:1.25rem;padding-bottom:1.5rem}.sidebar-link{width:100%;display:flex;align-items:center;gap:.75rem;padding:.9rem 1.5rem;color:var(--slate-700);font-weight:500;transition:.2s}.sidebar-link:hover,.sidebar-link.active{background:var(--green-50);color:var(--green-800)}.sidebar-icon{width:1.75rem;text-align:center;font-size:1.1rem}.main{flex:1;margin-left:16rem;padding:2.5rem}.mobile-header{display:none}.content-pane{display:none;max-width:72rem;margin:0 auto}.content-pane.active{display:block}.content-stack{display:grid;gap:1.15rem}
+        .hero-card{background:transparent;border:0;box-shadow:none;padding:0;margin-bottom:1.25rem}.eyebrow,.hero-meta,.hero-chip{display:none}.hero-card h1,.content-pane h2{color:var(--green-800)}.hero-card h1,.hero-card .section-heading{font-size:clamp(2.25rem,3.2vw,3.2rem);line-height:1.2;margin:0 0 .45rem;font-weight:700}.hero-card p{font-size:1.02rem}.section-heading{font-size:clamp(2.15rem,3vw,3rem);font-weight:700;margin-bottom:.75rem}
+        .text-block,.activity-card,.quiz-card,.resource-card,.figure-card,.bibliography-item,.objective-item,.example-card,.accordion{background:#fff;border-radius:22px;box-shadow:var(--shadow-sm);border:1px solid #d7f4e0}
+        .text-block{padding:1.6rem 1.8rem;margin-bottom:1.15rem}.text-block p+p,.mini-card p+p,.example-card p+p{margin-top:.95rem}
+        .video-card{margin:1.15rem 0;background:#fff;border-radius:.9rem;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+        .video-embed{position:relative;width:100%;padding-top:56.25%;border-radius:.8rem;overflow:hidden;background:#000}
+        .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+        .objective-item,.activity-card,.quiz-card,.resource-card,.bibliography-item{border-left:6px solid var(--green-500)}
+        .objective-list{list-style:none;display:grid;gap:1rem}.objective-item{display:flex;align-items:flex-start;gap:1rem;padding:1.35rem 1.45rem}.objective-check{width:2.2rem;flex-shrink:0;display:grid;place-items:center;color:var(--green-600);font-weight:700;font-size:2rem;line-height:1;background:none}
+        .speech-controls{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.2rem;background:linear-gradient(90deg,#dff8e6,#d5f7dc);border-radius:22px;margin-bottom:1.35rem;border:1px solid #b8efc9}.speech-main{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;min-width:0}.speech-btn{padding:.7rem 1.25rem;border-radius:999px;color:#fff;font-weight:700;min-width:88px}.speech-btn:disabled{opacity:.55;cursor:not-allowed}.speech-btn.play{background:#17a94d}.speech-btn.pause{background:#f2c95d}.speech-btn.stop{background:#ea9489}.speech-speed{display:flex;align-items:center;gap:.65rem;color:var(--green-800);font-size:.95rem;font-weight:600;min-width:0}.speech-speed input{accent-color:#ef4444}.speech-voice{color:var(--green-800);font-size:.95rem;text-align:right;min-width:0;overflow-wrap:anywhere}
+        .accordion-list{display:grid;gap:1rem}.accordion{overflow:hidden}.accordion-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.3rem 1.45rem .35rem;background:#fff;color:var(--green-800);text-align:left;font-weight:700;font-size:1.2rem}.accordion-toggle span:first-child{flex:1}.accordion-toggle span:last-child{display:block;color:#17a94d;font-size:2rem;font-weight:700;line-height:1;flex-shrink:0}.accordion-panel{display:none;padding:0 1.45rem 1.4rem}.accordion.open .accordion-panel{display:block}
+        .two-col,.flip-grid,.figure-grid{display:grid;gap:1rem}.two-col,.figure-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.figure-grid > :only-child{grid-column:1/-1}.flip-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));align-items:stretch}.mini-card{padding:1.15rem;border-radius:var(--radius-md);background:#fff;border:1px solid #dfe8ee}.mini-card h3,.mini-card h4,.example-card h4,.module-title,.figure-card h4{color:var(--green-800)}.formula-card{padding:1rem 1.15rem;border-radius:var(--radius-md);background:#f8fbfd;border:1px solid #dfe8ee;color:var(--green-800);font-weight:600;margin:1rem 0;overflow-x:auto}.formula-inline{font-family:"Courier New",Courier,monospace;white-space:nowrap;font-size:1rem}.flip-card{perspective:1000px;min-height:225px;max-width:100%}.flip-card button{width:100%;height:100%;background:transparent}.flip-inner{position:relative;width:100%;min-height:225px;transition:transform .55s ease;transform-style:preserve-3d}.flip-card.flipped .flip-inner{transform:rotateY(180deg)}.flip-face{position:absolute;inset:0;padding:1.35rem 1.45rem;border-radius:24px;backface-visibility:hidden;box-shadow:none;border:0;display:flex;flex-direction:column;justify-content:space-between}.flip-front{background:#1d9442;color:#fff}.flip-back{background:#fff;color:var(--slate-700);border:1px solid #b9efc4;transform:rotateY(180deg)}.flip-label{color:rgba(255,255,255,.72);font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.45rem}.flip-back .flip-label{color:#9ca3af}.flip-front h3{color:#fff;font-size:1.05rem;line-height:1.25}.flip-back h3{color:var(--green-800);font-size:1.05rem;line-height:1.25}.flip-front p{color:rgba(255,255,255,.92)}.flip-back p{color:var(--slate-700)}.flip-back strong,.flip-back .formula-inline{color:var(--green-800)}.example-card{margin-top:1rem;padding:1.2rem;border-radius:var(--radius-lg);background:#fff;box-shadow:none;border:1px solid #dfe8ee}
+        .figure-card{padding:1.2rem 1.3rem}.figure-image{width:100%;border-radius:var(--radius-md);overflow:hidden;border:1px dashed #b9d8c2;background:#f8fbfd;min-height:220px;display:flex;align-items:center;justify-content:center;padding:1rem;text-align:center;color:var(--slate-600)}.figure-card h4{margin:.9rem 0 .35rem}
+        .table-shell{margin-top:1rem;background:#fff;border-radius:.75rem;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow-x:auto;-webkit-overflow-scrolling:touch}
+        .ova-table{width:100%;border-collapse:collapse;background:#fff;border-radius:.5rem;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.1);min-width:560px}
+        .ova-table th{background-color:#166534;color:#fff;font-weight:600;padding:.75rem 1rem;text-align:left;font-size:.875rem}
+        .ova-table td{padding:.75rem 1rem;border-bottom:1px solid #e5e7eb;font-size:.875rem;color:#374151}
+        .ova-table tbody tr:nth-child(even){background-color:#f9fafb}
+        .ova-table tbody tr:hover{background-color:#f0fdf4}
+        .ova-table tbody tr:last-child td{border-bottom:none}
+        .decision-pills{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:.9rem}.decision-pill{padding:.45rem .75rem;border-radius:999px;background:#fff;color:var(--slate-700);font-size:.9rem;border:1px solid #dfe8ee}.table-note{margin-top:.55rem;color:var(--slate-500);font-size:.86rem}
+        #contenido .accordion{border:1px solid #b9efc4;border-left:1px solid #b9efc4;background:#fcfffd}
+        #contenido .accordion .mini-card,#contenido .example-card,#contenido .figure-card,#contenido .formula-card{border-left:0}
+        #contenido .accordion .mini-card{background:#fff}
+        .image-placeholder-label{font-weight:600;color:var(--green-800);margin-bottom:.35rem}
+        .activity-card,.quiz-card,.resource-card{padding:1.45rem 1.65rem;margin-bottom:1.1rem}.module-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1rem}.module-title{font-size:1.2rem;font-weight:700}.score-chip{padding:.32rem .7rem;border-radius:999px;background:var(--green-50);color:var(--green-700);font-size:.84rem;font-weight:600;white-space:nowrap;border:1px solid var(--green-200)}.activity-question,.quiz-question{padding:1rem 1.15rem;background:var(--slate-50);border-radius:18px;border:1px solid var(--slate-200);overflow-wrap:anywhere}.activity-question+.activity-question,.quiz-question+.quiz-question{margin-top:.9rem}.activity-options{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:.85rem}.activity-option{padding:.65rem .9rem;border-radius:999px;background:#fff;border:1px solid var(--green-200);color:var(--green-800);font-weight:500;transition:.2s;text-align:left;white-space:normal;line-height:1.45;justify-content:flex-start}.activity-option:hover,.resource-link:hover,.reset-btn:hover,.quiz-btn:hover{transform:translateY(-1px)}.activity-option:hover{background:var(--green-50)}.activity-option.correct{background:var(--green-100);border-color:var(--green-500)}.activity-option.incorrect{background:var(--red-100);border-color:var(--red-500);color:var(--red-700)}.feedback{margin-top:.8rem;padding:.8rem .95rem;border-radius:var(--radius-md);font-size:.95rem;display:none}.feedback.show{display:block}.feedback.correct{background:var(--green-100);color:var(--green-800)}.feedback.incorrect{background:var(--red-100);color:var(--red-700)}
+        .reset-btn,.quiz-btn,.resource-link{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.7rem 1rem;border-radius:999px;font-weight:600}.reset-btn,.quiz-btn{background:var(--green-600);color:#fff}.reset-btn.secondary{background:var(--slate-500)}.resource-link{background:none;color:#1e3a8a;width:fit-content;text-decoration:underline;padding:0}.quiz-options{display:grid;gap:.8rem;margin-top:.8rem}.quiz-option{display:flex;align-items:flex-start;gap:.75rem;padding:.95rem 1rem;border-radius:18px;background:#f8fafc;border:1px solid #dbe7ee}.quiz-option input{margin-top:.25rem}.quiz-summary{padding:1rem 1.15rem;border-radius:var(--radius-md);border-left:4px solid var(--green-500)}.quiz-summary.success{background:var(--green-100);color:var(--green-800)}.quiz-summary.warning{background:var(--yellow-100);color:var(--yellow-700);border-left-color:var(--yellow-500)}.quiz-summary.error{background:var(--red-100);color:var(--red-700);border-left-color:var(--red-500)}
+        .bibliography-list{list-style:none;display:grid;gap:1rem}.bibliography-item{padding:1.35rem 1.5rem}.placeholder-card{padding:1rem 1.1rem;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--slate-50),#fff);border:1px dashed var(--slate-200);color:var(--slate-600)}.actions-row{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1rem}.resource-split{display:flex;align-items:center;justify-content:space-between;gap:1.25rem}.resource-qr{width:120px;height:120px;border:1px dashed var(--green-500);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--green-700);font-size:.9rem;text-align:center;background:var(--green-50);flex-shrink:0;overflow:hidden}.resource-qr img{width:100%;height:100%;object-fit:contain;display:block}
+        .simulator-card{margin-top:1rem;padding:1.2rem;border-radius:var(--radius-lg);background:#fff;border:1px solid #dfe8ee}
+        .simulator-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:1rem;margin-top:1rem}
+        .simulator-panel{padding:1rem 1.1rem;border-radius:18px;background:#f8fafc;border:1px solid #dbe7ee}
+        .simulator-panel h4{color:var(--green-800);margin-bottom:.65rem}
+        .simulator-panel p+p{margin-top:.6rem}
+        .simulator-controls{display:grid;gap:.85rem}
+        .simulator-controls label{display:grid;gap:.35rem;font-weight:600;color:var(--green-800)}
+        .simulator-controls select,.simulator-controls input{padding:.8rem .9rem;border-radius:14px;border:1px solid var(--slate-200);background:#fff;color:var(--slate-700)}
+        .simulator-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.2rem}
+        .simulator-output{margin-top:.9rem;padding:1rem 1.05rem;border-radius:16px;border-left:4px solid var(--slate-500);background:#fff}
+        .simulator-output.success{border-left-color:var(--green-500);background:var(--green-100);color:var(--green-800)}
+        .simulator-output.warning{border-left-color:var(--yellow-500);background:var(--yellow-100);color:var(--yellow-700)}
+        .simulator-output.error{border-left-color:var(--red-500);background:var(--red-100);color:var(--red-700)}
+        .simulator-output code{font-family:"Courier New",Courier,monospace}
+        .chart-card{padding:1.1rem;border-radius:18px;background:#fff;border:1px solid #dfe8ee}
+        .chart-visual{display:grid;gap:.85rem}
+        .chart-row{display:grid;grid-template-columns:120px 1fr;gap:.8rem;align-items:center}
+        .chart-label{font-weight:600;color:var(--green-800)}
+        .chart-track{position:relative;height:28px;border-radius:999px;background:linear-gradient(90deg,#e8f7ed,#f8fbfd);border:1px solid #d8ebe0}
+        .chart-point{position:absolute;top:5px;height:16px;border-radius:999px;background:#1d9442}
+        .chart-point::before,.chart-point::after{content:"";position:absolute;top:-4px;width:2px;height:24px;background:#166534}
+        .chart-point::before{left:0}
+        .chart-point::after{right:0}
+        .chart-caption{margin-top:.75rem;font-size:.9rem;color:var(--slate-600)}
+        .image-modal{position:fixed;inset:0;background:rgba(15,23,42,.85);display:none;align-items:center;justify-content:center;padding:1.25rem;z-index:1000}.image-modal.active{display:flex}.image-modal-inner{position:relative;max-width:min(1100px,94vw);max-height:90vh}.image-modal img{max-width:100%;max-height:90vh;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);background:#fff}.image-modal button{position:absolute;top:-.85rem;right:-.85rem;width:2.7rem;height:2.7rem;border-radius:999px;background:#fff;color:var(--slate-800);box-shadow:var(--shadow-md);font-size:1.15rem}
+        @media (max-width:1200px){.flip-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
+        @media (max-width:1024px){.two-col,.figure-grid,.simulator-grid{grid-template-columns:1fr}.main{padding:2rem 1.5rem 2.5rem}}
+        @media (max-width:900px){.speech-controls{align-items:stretch;padding:.95rem 1rem}.speech-main{flex-direction:column;align-items:flex-start;width:100%}.speech-btn{width:100%}.speech-speed{width:100%;justify-content:space-between}.speech-speed input{flex:1;margin-left:.5rem;min-width:0}.speech-voice{text-align:left;width:100%}}
+        @media (max-width:767px){.sidebar{display:none}.main{margin-left:0;padding:12rem .9rem 1.3rem}.mobile-header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;flex-direction:column;align-items:center;gap:.7rem;padding:1rem .9rem;background:var(--slate-50);box-shadow:0 3px 10px rgba(15,23,42,.08)}.mobile-logo{width:92px;height:92px;padding:.65rem;border-radius:999px;background:#fff;border:2px solid var(--green-500);box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center}.mobile-nav{width:100%;padding:.78rem .85rem;border-radius:var(--radius-md);border:1px solid var(--slate-200);background:#fff;box-shadow:var(--shadow-sm)}.text-block,.activity-card,.quiz-card,.resource-card,.bibliography-item,.objective-item{padding:1.1rem}.speech-controls{align-items:stretch;padding:.95rem 1rem}.speech-main{flex-direction:column;align-items:flex-start;width:100%}.speech-btn{width:100%}.speech-speed{width:100%;justify-content:space-between}.speech-speed input{flex:1;margin-left:.5rem;min-width:0}.speech-voice{text-align:left}.hero-meta,.activity-options,.actions-row,.resource-split,.module-header{flex-direction:column;align-items:stretch}.activity-option,.reset-btn,.quiz-btn{width:100%}.score-chip{width:fit-content;max-width:100%;white-space:normal}.resource-link{width:auto}.accordion-toggle{padding:1rem 1rem .25rem;font-size:1.05rem}.accordion-panel{padding:0 1rem 1rem}.flip-grid,.two-col,.figure-grid{grid-template-columns:1fr}.flip-card,.flip-inner{min-height:190px}.table-shell{margin-top:.8rem;border-radius:16px;padding:.85rem}.ova-table{min-width:480px}.table-note{font-size:.8rem}.quiz-option{padding:.85rem}.resource-qr{width:100%;height:90px}}
+        @media (max-width:480px){.main{padding:11.5rem .7rem 1rem}.hero-card h1,.hero-card .section-heading{font-size:2rem}.text-block,.activity-card,.quiz-card,.resource-card,.bibliography-item,.objective-item{padding:1rem}table{min-width:420px}th,td{padding:.75rem .8rem}}
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar" aria-label="Navegación principal">
+            <div class="sidebar-logo"><div class="sidebar-logo-frame"><img src="cintia-logo.webp" alt="Logo institucional"></div></div>
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-target="introduccion"><span class="sidebar-icon">&#128640;</span><span>Introducción</span></a>
+                <a href="#" class="sidebar-link" data-target="objetivos"><span class="sidebar-icon">&#127919;</span><span>Objetivos</span></a>
+                <a href="#" class="sidebar-link" data-target="contenido"><span class="sidebar-icon">&#128218;</span><span>Contenido</span></a>
+                <a href="#" class="sidebar-link" data-target="actividades"><span class="sidebar-icon">&#9997;&#65039;</span><span>Actividades</span></a>
+                <a href="#" class="sidebar-link" data-target="evaluacion"><span class="sidebar-icon">&#10004;&#65039;</span><span>Evaluación</span></a>
+                <a href="#" class="sidebar-link" data-target="recursos"><span class="sidebar-icon">&#128214;</span><span>Recursos</span></a>
+                <a href="#" class="sidebar-link" data-target="bibliografia"><span class="sidebar-icon">&#128240;</span><span>Bibliografía</span></a>
+            </nav>
+        </aside>
+        <main class="main">
+            <div class="mobile-header">
+                <div class="mobile-logo"><img src="cintia-logo.webp" alt="Logo institucional"></div>
+                <select id="mobile-nav" class="mobile-nav" aria-label="Cambiar sección">
+                    <option value="introduccion">&#128640; Introducción</option>
+                    <option value="objetivos">&#127919; Objetivos</option>
+                    <option value="contenido">&#128218; Contenido</option>
+                    <option value="actividades">&#9997;&#65039; Actividades</option>
+                    <option value="evaluacion">&#10004;&#65039; Evaluación</option>
+                    <option value="recursos">&#128214; Recursos</option>
+                    <option value="bibliografia">&#128240; Bibliografía</option>
+                </select>
+            </div>
+            <section id="introduccion" class="content-pane active">
+                <div class="hero-card" data-speech-content>
+                    <h1>Pruebas de hipótesis estadísticas: formulación, planteamiento y toma de decisiones</h1>
+                    <p>En el análisis de datos no basta con observar que un promedio o un porcentaje cambió. También es necesario preguntarse si ese cambio es suficientemente fuerte como para pensar que no ocurrió solo por azar. Esto es especialmente importante en programación web, donde se comparan tiempos de carga, tasas de conversión, clics o resultados de distintas versiones de una página.</p>
+                </div>
+                <div class="speech-controls" data-section-id="introduccion">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-introduccion">Velocidad:</label><input id="speed-introduccion" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="video-card" data-speech-content>
+                    <div class="video-embed">
+                        <iframe src="https://www.youtube.com/embed/4jloXllLZBI" title="Video introductorio sobre pruebas de hipótesis" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="text-block" data-speech-content>
+                    <p>Las pruebas de hipótesis permiten evaluar una afirmación usando información de una muestra. Con ellas se plantea una idea inicial, se analiza la evidencia recogida y luego se toma una decisión razonada. Por eso son una herramienta muy útil para respaldar decisiones en contextos digitales y en procesos de mejora.</p>
+                    <p>En esta guía se estudiarán los conceptos básicos de las pruebas de hipótesis de forma clara y aplicada. Se trabajará con la formulación de hipótesis, el nivel de significancia, el p-valor y la toma de decisiones, apoyándose en ejemplos, gráficos y actividades sencillas.</p>
+                </div>
+            </section>
+            <section id="objetivos" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Objetivos</h2></div>
+                <div class="speech-controls" data-section-id="objetivos">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-objetivos">Velocidad:</label><input id="speed-objetivos" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <ul class="objective-list" data-speech-content>
+                    <li class="objective-item"><div class="objective-check">&#10003;</div><p>Comprender qué es una prueba de hipótesis y diferenciar la hipótesis nula de la hipótesis alternativa en situaciones sencillas del contexto académico y tecnológico.</p></li>
+                    <li class="objective-item"><div class="objective-check">&#10003;</div><p>Formular pruebas de hipótesis básicas para medias o proporciones, identificando elementos como el nivel de significancia, la evidencia muestral y la regla de decisión.</p></li>
+                    <li class="objective-item"><div class="objective-check">&#10003;</div><p>Tomar decisiones estadísticas iniciales a partir de p-valores o regiones críticas, interpretando los resultados en ejemplos relacionados con analítica web y pruebas A/B.</p></li>
+                </ul>
+            </section>
+            <section id="contenido" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Desarrollo del contenido</h2></div>
+                <div class="speech-controls" data-section-id="contenido">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-contenido">Velocidad:</label><input id="speed-contenido" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="accordion-list" data-speech-content>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>1. ¿Qué es una prueba de hipótesis?</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>Una prueba de hipótesis es un procedimiento de la inferencia estadística que permite evaluar una afirmación sobre una población a partir de una muestra. En otras palabras, ayuda a decidir si los datos observados apoyan o no una idea inicial.</p><p>En un contexto web, por ejemplo, se puede querer comprobar si el tiempo promedio de carga de una página supera 3 segundos, si una campaña logra al menos 60 % de registros completados o si una versión nueva convierte mejor que una versión anterior. La prueba de hipótesis organiza ese proceso de decisión.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="hipotesis_media/flujo_prueba_hipotesis.png" alt="Flujo de una prueba de hipótesis" class="zoomable-image"></div><h4>Flujo de una prueba de hipótesis</h4></article></div>
+                            <div class="flip-grid">
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Elemento</div><h3>H0</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Elemento</div><h3>Hipótesis nula</h3></div><p>H0: no hay cambio, diferencia o efecto.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Elemento</div><h3>H1</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Elemento</div><h3>Hipótesis alternativa</h3></div><p>H1: sí hay cambio, diferencia o efecto.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Elemento</div><h3>α</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Elemento</div><h3>Nivel de significancia</h3></div><p>α: nivel de significancia o riesgo aceptado de equivocarse.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Elemento</div><h3>p-valor</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Elemento</div><h3>p-valor</h3></div><p>p-valor: medida de evidencia contra H0.</p></div></div></button></article>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>2. Hipótesis nula e hipótesis alternativa</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>La hipótesis nula, representada por H0, es la afirmación que se pone a prueba. Generalmente expresa estabilidad, igualdad o ausencia de diferencia. La hipótesis alternativa, representada por H1, plantea lo contrario: que sí existe un cambio, una diferencia o un efecto que vale la pena considerar.</p><p>Por ejemplo, si una empresa afirma que el tiempo promedio de respuesta de su servidor es de 3 segundos, esa afirmación puede escribirse como H0: μ = 3. Si se sospecha que el tiempo real es mayor, la hipótesis alternativa sería H1: μ &gt; 3. Si se quisiera comprobar simplemente que es distinto, se usaría H1: μ ≠ 3.</p><p>La forma de H1 es importante porque determina si la prueba es de una cola o de dos colas. Cuando se busca “mayor que” o “menor que”, la atención se concentra en un solo extremo; cuando se busca “diferente de”, se revisan ambos extremos.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="hipotesis_media/h0_h1_tarjetas.png" alt="Hipótesis nula e hipótesis alternativa" class="zoomable-image"></div><h4>Hipótesis nula e hipótesis alternativa</h4></article></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="hipotesis_media/curva_una_cola.png" alt="Prueba de una cola" class="zoomable-image"></div><h4>Prueba de una cola</h4></article></div>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>3. Nivel de significancia</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>El nivel de significancia, simbolizado con α, es el riesgo máximo que se acepta al rechazar la hipótesis nula cuando en realidad era verdadera. Un valor muy usado es α = 0,05, lo que equivale a aceptar un 5 % de posibilidad de cometer ese error.</p><p>Este valor no elimina la incertidumbre, pero sí establece una regla clara para decidir. Mientras más pequeño sea α, más exigente será la evidencia necesaria para rechazar H0.</p><p>En un análisis sencillo puede decirse que α funciona como una línea de corte: si la evidencia observada supera ese umbral, se concluye que los datos no son compatibles con la hipótesis nula.</p></div>
+                            <div class="example-card"><h4>Ejemplo 1. Formulación de hipótesis en un contexto web</h4><p>Una tienda virtual afirma que el tiempo promedio de carga de su página principal es de 3 segundos. Un analista toma una muestra de tiempos y quiere verificar si el promedio real es mayor. En este caso, la formulación adecuada sería: H0: μ = 3 segundos y H1: μ &gt; 3 segundos. Aquí la hipótesis alternativa muestra que se trata de una prueba de una cola a la derecha.</p></div>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>4. ¿Qué es el p-valor?</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>El p-valor es una medida que resume qué tan compatible es la muestra con la hipótesis nula. Un p-valor pequeño indica que los datos observados serían poco probables si H0 fuera cierta; por eso se interpreta como evidencia en contra de la hipótesis nula.</p><p>Aunque su cálculo exacto suele hacerse con software o tablas, la idea central es sencilla: se compara el p-valor con α. Si p es menor o igual que α, se rechaza H0. Si p es mayor que α, no se rechaza H0.</p></div>
+                            <div class="table-shell"><table class="ova-table"><thead><tr><th>Elemento</th><th>Valor observado</th><th>Interpretación</th></tr></thead><tbody><tr><td>Nivel de significancia</td><td>0,05</td><td>Riesgo máximo aceptado para rechazar H0</td></tr><tr><td>p-valor</td><td>0,02</td><td>La evidencia contra H0 es fuerte</td></tr><tr><td>Decisión</td><td>0,02 ≤ 0,05</td><td>Se rechaza H0</td></tr></tbody></table></div>
+                            <div class="formula-card"><span class="formula-inline">Si p ≤ α, se rechaza H0. Si p &gt; α, no se rechaza H0.</span></div>
+                            <div class="example-card"><h4>Ejemplo 2. Toma de decisiones con un p-valor</h4><p>Una aplicación educativa espera que al menos el 60 % de los usuarios complete el registro. Se toma una muestra de 100 usuarios y solo 52 finalizan el proceso. Al realizar la prueba correspondiente, el software reporta un p-valor de 0,03 con α = 0,05.</p><p>Como 0,03 es menor que 0,05, se rechaza la hipótesis nula. La evidencia sugiere que la tasa real de finalización no alcanza la meta esperada del 60 %.</p><p>La fuerza de esta conclusión no depende solo de mirar que 52 % es menor que 60 %, sino de evaluar si la diferencia observada es suficientemente grande a la luz de la variabilidad muestral.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="hipotesis_media/meta_vs_muestra.png" alt="Meta frente a muestra observada" class="zoomable-image"></div><h4>Meta frente a muestra observada</h4></article></div>
+                            <article class="simulator-card"><h4>Simulador de decisión con p-valor</h4><p>Explora la regla de decisión básica comparando p con α.</p><div class="simulator-grid"><div class="simulator-panel"><h4>Simulador</h4><div class="simulator-controls" data-hypothesis-simulator><label>Nivel de significancia α<input type="number" step="0.01" value="0.05" data-alpha></label><label>p-valor<input type="number" step="0.01" value="0.03" data-pvalue></label><div class="simulator-actions"><button type="button" class="quiz-btn" data-hypothesis-run>Tomar decisión</button><button type="button" class="reset-btn secondary" data-hypothesis-reset>Reiniciar</button></div><div class="simulator-output" data-hypothesis-output>Ingresa α y el p-valor para interpretar la decisión estadística.</div></div></div><div class="simulator-panel"><h4>Guía rápida</h4><p><strong>Si p ≤ α:</strong> se rechaza H0.</p><p><strong>Si p &gt; α:</strong> no se rechaza H0.</p><p>“No se rechaza” no significa que H0 sea verdadera, sino que no hubo evidencia suficiente para descartarla.</p></div></div></article>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>5. Pruebas para una o dos muestras</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>Las pruebas de hipótesis pueden aplicarse a una sola muestra o a dos muestras, dependiendo de la pregunta que se desea responder. En una muestra se compara un promedio o una proporción observada contra un valor de referencia; en dos muestras se comparan dos grupos entre sí.</p><p>En dos muestras, el propósito es contrastar si las diferencias observadas entre grupos pueden explicarse por el azar o si son suficientemente grandes como para considerarlas estadísticamente significativas.</p><p>Aunque los procedimientos formales pueden cambiar según el tipo de variable, la lógica siempre conserva los mismos elementos: hipótesis, nivel de significancia, evidencia muestral y regla de decisión.</p></div>
+                            <div class="example-card"><h4>Ejemplo 3. Comparación de dos versiones</h4><p>Una empresa realiza una prueba A/B con dos versiones de su página principal. En la versión A, el 48 % de los usuarios hace clic en un botón de registro, mientras que en la versión B lo hace el 56 %.</p><p>Al aplicar la prueba estadística correspondiente se obtiene un p-valor de 0,04 con α = 0,05. Como 0,04 es menor que 0,05, se rechaza H0 y se concluye que existe evidencia de diferencia entre las versiones.</p><p>Este tipo de análisis es muy útil en analítica web, experiencia de usuario y toma de decisiones basadas en datos.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="hipotesis_media/comparacion_ab.png" alt="Comparación de dos versiones en una prueba A/B" class="zoomable-image"></div><h4>Comparación de dos muestras</h4></article></div>
+                            <div class="table-shell"><table class="ova-table"><thead><tr><th>Caso</th><th>Relación entre p y α</th><th>Decisión</th></tr></thead><tbody><tr><td>Caso A</td><td>p = 0,01 y α = 0,05</td><td>Se rechaza H0</td></tr><tr><td>Caso B</td><td>p = 0,08 y α = 0,05</td><td>No se rechaza H0</td></tr><tr><td>Caso C</td><td>p = 0,05 y α = 0,05</td><td>Se rechaza H0 o se considera en el límite, según la regla establecida</td></tr></tbody></table></div>
+                            <div class="flip-grid">
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Una muestra</div><h3>Comparación con un valor</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Una muestra</div><h3>Comparación con un valor</h3></div><p>Se usa cuando se quiere contrastar una media o proporción observada frente a una meta, estándar o afirmación previa.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Dos muestras</div><h3>Comparación entre grupos</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Dos muestras</div><h3>Comparación entre grupos</h3></div><p>Se usa para contrastar si dos grupos presentan diferencias significativas, como en pruebas A/B o comparaciones entre versiones.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Decisión</div><h3>Lectura del p-valor</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Decisión</div><h3>Lectura del p-valor</h3></div><p>En ambos casos, la decisión se apoya en comparar el p-valor con α para decidir si se rechaza o no la hipótesis nula.</p></div></div></button></article>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>6. Representación gráfica e importancia del tema</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>Las representaciones gráficas ayudan a comprender mejor el proceso de una prueba de hipótesis, especialmente cuando se quiere visualizar la región crítica y la ubicación del estadístico de prueba.</p><p>En una prueba de dos colas, las regiones críticas se ubican en ambos extremos de la distribución. Si el resultado cae en una de esas zonas, se considera que la evidencia es suficiente para rechazar H0.</p><p>Comprender este tema es importante porque permite analizar datos con criterios formales y no solo con intuición. En programación web, pruebas A/B, métricas de conversión y rendimiento de aplicaciones, las pruebas de hipótesis ayudan a tomar decisiones respaldadas por evidencia.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="hipotesis_media/curva_dos_colas.png" alt="Regiones críticas en una prueba de hipótesis de dos colas" class="zoomable-image"></div><h4>Gráfico 3. Regiones críticas en una prueba de hipótesis de dos colas.</h4><p>Representación gráfica de una decisión estadística cuando la evidencia se evalúa en ambos extremos de la distribución.</p></article></div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+            <section id="actividades" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Cuestionarios o actividades complementarias</h2></div>
+                <div class="speech-controls" data-section-id="actividades">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-actividades">Velocidad:</label><input id="speed-actividades" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="activity-card activity-module" data-module>
+                    <div class="module-header"><div><div class="module-title">Actividad 1. Formulación de hipótesis</div><p>Analiza cada situación y selecciona la formulación o interpretación correcta.</p><p>a) Un sitio web afirma que su tiempo promedio de carga es de 2,5 segundos.</p><p>b) Una plataforma espera que al menos el 70 % de los usuarios complete el registro.</p><p>c) Una empresa quiere comparar si la versión B de una página convierte mejor que la versión A.</p></div><div class="score-chip">Aciertos: <span data-score>0</span>/3</div></div>
+                    <div class="activity-question" data-question><p>Si se desea comprobar si el tiempo promedio real es mayor a 2,5 segundos, ¿cuál sería una H0 adecuada?</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: la hipótesis nula mantiene la afirmación de referencia, μ = 2,5 segundos.">H0: μ = 2,5 segundos</button><button class="activity-option" type="button" data-feedback="Esa sería la hipótesis alternativa del contraste.">H0: μ &gt; 2,5 segundos</button><button class="activity-option" type="button" data-feedback="La hipótesis nula no se formula como cualquier valor.">H0: μ ≠ 2,5 segundos</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>Si se quiere verificar si la tasa de finalización es menor al 70 %, ¿qué tipo de prueba es más adecuada?</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: si interesa detectar una disminución, se trata de una prueba de una cola.">Prueba de una cola</button><button class="activity-option" type="button" data-feedback="Dos colas se usa cuando interesa cualquier diferencia, no solo si es menor.">Prueba de dos colas</button><button class="activity-option" type="button" data-feedback="Siempre debe existir una hipótesis alternativa y una regla de decisión.">No se necesita prueba</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>Si se sospecha que la versión B convierte mejor que la versión A, ¿cuál expresa mejor la hipótesis alternativa?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="Esa hipótesis habla de igualdad, no de mejora.">H1: pA = pB</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: la alternativa expresa que la proporción de conversión de B es mayor que la de A.">H1: pB &gt; pA</button><button class="activity-option" type="button" data-feedback="Esa alternativa plantea que B es peor, no mejor.">H1: pB &lt; pA</button></div><div class="feedback"></div></div>
+                    <div class="actions-row"><button type="button" class="reset-btn secondary" data-reset-module>Reiniciar actividad</button></div>
+                </div>
+                <div class="activity-card activity-module" data-module>
+                    <div class="module-header"><div><div class="module-title">Actividad 2. Decisión usando p-valor</div><p>Usa la regla de decisión para interpretar cada caso.</p><p>a) α = 0,05 y p = 0,02.</p><p>b) α = 0,01 y p = 0,04.</p><p>c) Reflexiona sobre lo que realmente significa no se rechaza H0.</p></div><div class="score-chip">Aciertos: <span data-score>0</span>/3</div></div>
+                    <div class="activity-question" data-question><p>Si α = 0,05 y p = 0,02, ¿qué decisión corresponde?</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: como p es menor que α, se rechaza H0.">Se rechaza H0</button><button class="activity-option" type="button" data-feedback="No corresponde, porque p es menor que α.">No se rechaza H0</button><button class="activity-option" type="button" data-feedback="La regla de decisión sí permite tomar una conclusión.">No se puede decidir</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>Si α = 0,01 y p = 0,04, ¿qué decisión corresponde?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="No corresponde, porque p es mayor que α.">Se rechaza H0</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: como p es mayor que α, no se rechaza H0.">No se rechaza H0</button><button class="activity-option" type="button" data-feedback="No es una situación de igualdad exacta entre p y α.">Se rechaza solo si p = α</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>Cuando una prueba concluye no se rechaza H0, esto significa que:</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="No necesariamente; solo indica falta de evidencia suficiente contra H0.">H0 quedó demostrada como verdadera</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: no se encontró evidencia suficiente para rechazar H0 con el nivel de significancia elegido.">No hay evidencia suficiente para rechazar H0</button><button class="activity-option" type="button" data-feedback="La conclusión sí tiene un significado estadístico.">La prueba no sirve para nada</button></div><div class="feedback"></div></div>
+                    <div class="actions-row"><button type="button" class="reset-btn secondary" data-reset-module>Reiniciar actividad</button></div>
+                </div>
+                <div class="activity-card activity-module" data-module>
+                    <div class="module-header"><div><div class="module-title">Actividad 3. Comparación de dos versiones</div><p>En una prueba A/B, la versión A logra 48 % de conversión y la versión B 56 %. La prueba arroja p = 0,04 con α = 0,05.</p><p>Selecciona las respuestas que mejor interpretan este resultado.</p></div><div class="score-chip">Aciertos: <span data-score>0</span>/3</div></div>
+                    <div class="activity-question" data-question><p>¿Cuál hipótesis nula es coherente con este análisis?</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: la hipótesis nula plantea que no existe diferencia significativa entre las versiones.">H0: no hay diferencia entre A y B</button><button class="activity-option" type="button" data-feedback="Esa sería una hipótesis alternativa direccional.">H0: la versión B convierte más</button><button class="activity-option" type="button" data-feedback="La hipótesis nula no afirma automáticamente que A sea mejor.">H0: la versión A convierte mejor</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>Con α = 0,05 y p = 0,04, la conclusión estadística es:</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: como p es menor que α, se rechaza H0.">Se rechaza H0</button><button class="activity-option" type="button" data-feedback="No corresponde, porque p no supera α.">No se rechaza H0</button><button class="activity-option" type="button" data-feedback="Sí es posible tomar una decisión con esos datos.">No hay forma de decidir</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>Desde el punto de vista práctico, el resultado sugiere que:</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="La evidencia observada sí apunta a una diferencia relevante.">Debe mantenerse A porque no hay diferencia</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: los datos sugieren que B tiene mejor desempeño y puede considerarse su implementación.">Puede considerarse implementar B por su mejor conversión</button><button class="activity-option" type="button" data-feedback="La prueba sí aporta evidencia útil para apoyar decisiones.">No se puede usar este análisis en una decisión real</button></div><div class="feedback"></div></div>
+                    <div class="actions-row"><button type="button" class="reset-btn secondary" data-reset-module>Reiniciar actividad</button></div>
+                </div>
+            </section>
+            <section id="evaluacion" class="content-pane">
+                <div class="quiz-card" id="quiz-evaluacion" data-correct='[1,0,1,0,0]' data-feedback-correct='["Correcto: H0 suele representar que no hay cambio o diferencia significativa.","Correcto: si p-valor es menor o igual que α, se rechaza H0.","Correcto: α = 0,05 indica un 5 % de riesgo de rechazar H0 siendo verdadera.","Correcto: el p-valor mide la evidencia contra H0.","Correcto: una prueba de dos muestras puede usarse para comparar dos versiones de una página web."]' data-feedback-incorrect='["Revisa cuál opción representa la ausencia de cambio o efecto.","Compara directamente p-valor con α para decidir.","Piensa en el significado probabilístico del nivel de significancia.","El p-valor no reemplaza la hipótesis; ayuda a evaluar la evidencia en su contra.","Este tipo de prueba es muy común en comparaciones A/B y grupos distintos."]'>
+                    <div class="module-header"><div><h2 class="section-heading" style="font-size:2rem;margin-bottom:.55rem">Evaluación</h2><p>Quiz tema 2. Pruebas de hipótesis estadísticas: formulación, planteamiento y toma de decisiones.</p></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>1.</strong> La hipótesis nula H0 suele representar:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q1" value="0"> Que siempre existe una mejora</label><label class="quiz-option"><input type="radio" name="q1" value="1"> Que no hay cambio o diferencia significativa</label><label class="quiz-option"><input type="radio" name="q1" value="2"> Que la muestra es perfecta</label><label class="quiz-option"><input type="radio" name="q1" value="3"> Que el p-valor ya fue calculado</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>2.</strong> Si p-valor ≤ α, entonces:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q2" value="0"> Se rechaza H0</label><label class="quiz-option"><input type="radio" name="q2" value="1"> No se rechaza H0</label><label class="quiz-option"><input type="radio" name="q2" value="2"> La prueba no sirve</label><label class="quiz-option"><input type="radio" name="q2" value="3"> Se repite la muestra automáticamente</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>3.</strong> α = 0,05 indica que:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q3" value="0"> El 5 % de la muestra está mal</label><label class="quiz-option"><input type="radio" name="q3" value="1"> Se acepta un riesgo del 5 % de rechazar H0 siendo verdadera</label><label class="quiz-option"><input type="radio" name="q3" value="2"> H1 tiene 5 % de probabilidad de ser falsa</label><label class="quiz-option"><input type="radio" name="q3" value="3"> Siempre se debe rechazar H0</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>4.</strong> El p-valor sirve para:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q4" value="0"> Medir la evidencia contra H0</label><label class="quiz-option"><input type="radio" name="q4" value="1"> Calcular el tamaño de toda la población</label><label class="quiz-option"><input type="radio" name="q4" value="2"> Sustituir α</label><label class="quiz-option"><input type="radio" name="q4" value="3"> Confirmar que H0 es verdadera</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>5.</strong> Una prueba de dos muestras puede usarse para:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q5" value="0"> Comparar dos versiones de una página web</label><label class="quiz-option"><input type="radio" name="q5" value="1"> Ordenar datos alfabéticamente</label><label class="quiz-option"><input type="radio" name="q5" value="2"> Eliminar la variabilidad de los datos</label><label class="quiz-option"><input type="radio" name="q5" value="3"> Reemplazar una muestra por una opinión</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="actions-row"><button type="button" class="quiz-btn" id="check-quiz">Comprobar evaluación</button><button type="button" class="reset-btn secondary" id="reset-quiz">Reiniciar quiz</button></div>
+                    <div class="quiz-result" id="quiz-result"></div>
+                </div>
+            </section>
+            <section id="recursos" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Recursos</h2></div>
+                <div class="speech-controls" data-section-id="recursos">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-recursos">Velocidad:</label><input id="speed-recursos" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="resource-card" data-speech-content><div class="resource-split"><div><div class="module-title">Video explicativo</div><p>Recurso audiovisual de apoyo para el tema 2. Puedes acceder escaneando el código QR incluido en la guía.</p><div class="actions-row"><a class="resource-link" href="https://www.youtube.com/watch?v=4jloXllLZBI" target="_blank" rel="noopener">Ir al recurso</a></div></div><div class="resource-qr"><img src="Videos tema 2.png" alt="QR del video del tema 2"></div></div></div>
+                <div class="resource-card" data-speech-content><div class="resource-split"><div><div class="module-title">Infografía del tema 2</div><p>Material gráfico de apoyo para repasar los conceptos centrales de pruebas de hipótesis, p-valor y toma de decisiones.</p><div class="actions-row"><a class="resource-link" href="https://drive.google.com/file/d/1Pmesq2q6u6A77eWk5O9aHXGGK7QRJxf5/view?usp=sharing" target="_blank" rel="noopener">Ir al recurso</a></div></div><div class="resource-qr"><img src="Infografía tema 2.png" alt="QR de la infografía del tema 2"></div></div></div>
+            </section>
+            <section id="bibliografia" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Bibliografía</h2></div>
+                <div class="speech-controls" data-section-id="bibliografia">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-bibliografia">Velocidad:</label><input id="speed-bibliografia" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="bibliography-list" data-speech-content>
+                    <article class="bibliography-item">Anderson, D. R., Sweeney, D. J., Williams, T. A., Camm, J. D., y Cochran, J. J. (2019). <em>Estadística para negocios y economía</em> (13.ª ed.). Cengage Learning. https://books.google.com/books/about/Estad%C3%ADstica_Para_Negocios_Y_Econom%C3%ADa_1.html?id=N_o2zAEACAAJ</article>
+                    <article class="bibliography-item">Cadena Lozano, J. B. (2024). <em>Estadística descriptiva y probabilidad para los negocios con aplicaciones en Excel y Jamovi</em> (1.ª ed.). Editorial CESA. https://ideasforlife.cesa.edu.co/gpd-estadistica-descriptiva-y-probabilidad-para-los-negocios-con-aplicaciones-en-excel-y-jamovi-9789588988856-65e77aeeb0a1a.html</article>
+                    <article class="bibliography-item">Lind, D. A., Marchal, W. G., y Wathen, S. A. (2018). <em>Estadística aplicada a los negocios y la economía</em> (17.ª ed.). McGraw-Hill Interamericana. https://books.google.com/books/about/Estad%C3%ADstica_aplicada_a_los_negocios_y_l.html?id=hGwqyQEACAAJ</article>
+                    <article class="bibliography-item">Triola, M. F. (2018). <em>Estadística</em> (12.ª ed.). Pearson. https://www.pearsoneducacion.net/Colombia/Inicio/estadistica12ed-pearson-ed-ebook</article>
+                    <article class="bibliography-item">Walpole, R. E., Myers, R. H., Myers, S. L., y Ye, K. (2012). <em>Probabilidad y estadística para ingeniería y ciencias</em> (9.ª ed.). Pearson. https://www.pearsonenespanol.com/mexico/educacion-superior/walpole_index/probabilidad-y-estadistica-para-ingenieria-y-ciencias-9e-contenido</article>
+                    <article class="bibliography-item">Ministerio de Educación Nacional de Colombia. (2016). <em>Derechos básicos de aprendizaje DBA V.2: Matemáticas</em>. MEN. https://www.colombiaaprende.edu.co/sites/default/files/files_public/2022-06/DBA_Matematicas-min.pdf</article>
+                </div>
+            </section>
+        </main>
+    </div>
+    <div class="image-modal" id="image-modal" aria-hidden="true"><div class="image-modal-inner"><button type="button" id="close-image-modal" aria-label="Cerrar imagen ampliada">&#10005;</button><img src="" alt="" id="image-modal-target"></div></div>
+    <script>
+        (function(){
+            const sidebarLinks=document.querySelectorAll('.sidebar-link');
+            const panes=document.querySelectorAll('.content-pane');
+            const mobileNav=document.getElementById('mobile-nav');
+            const quickLinks=document.querySelectorAll('[data-target-link]');
+            const accordions=document.querySelectorAll('.accordion');
+            const flipCards=document.querySelectorAll('.flip-card');
+            const moduleResetButtons=document.querySelectorAll('[data-reset-module]');
+            const imageModal=document.getElementById('image-modal');
+            const imageModalTarget=document.getElementById('image-modal-target');
+            const closeImageModalBtn=document.getElementById('close-image-modal');
+            const zoomableImages=document.querySelectorAll('.zoomable-image');
+            const hypothesisSimulator=document.querySelector('[data-hypothesis-simulator]');
+            const synth=window.speechSynthesis;
+            let currentUtterance=null,currentSpeechSection=null,selectedVoice=null;
+            function setActivePane(targetId){stopSpeech();panes.forEach((pane)=>pane.classList.toggle('active',pane.id===targetId));sidebarLinks.forEach((link)=>link.classList.toggle('active',link.dataset.target===targetId));if(mobileNav){mobileNav.value=targetId}window.scrollTo({top:0,behavior:'smooth'})}
+            sidebarLinks.forEach((link)=>link.addEventListener('click',(event)=>{event.preventDefault();setActivePane(link.dataset.target)}));
+            if(mobileNav){mobileNav.addEventListener('change',(event)=>setActivePane(event.target.value))}
+            quickLinks.forEach((link)=>link.addEventListener('click',()=>setActivePane(link.dataset.targetLink)));
+            function syncAccordionIcon(accordion){const icon=accordion.querySelector('.accordion-toggle span:last-child');if(icon){icon.textContent=accordion.classList.contains('open')?'−':'+'}}
+            accordions.forEach((accordion)=>{syncAccordionIcon(accordion);const toggle=accordion.querySelector('.accordion-toggle');toggle.addEventListener('click',()=>{accordion.classList.toggle('open');syncAccordionIcon(accordion)})});
+            flipCards.forEach((card)=>{const trigger=card.querySelector('.flip-trigger');trigger.addEventListener('click',()=>card.classList.toggle('flipped'))});
+            function updateModuleScore(module){const questions=module.querySelectorAll('[data-question]');let correct=0;questions.forEach((question)=>{if(question.dataset.answered==='true'&&question.dataset.correct==='true'){correct+=1}});const slot=module.querySelector('[data-score]');if(slot){slot.textContent=String(correct)}}
+            document.querySelectorAll('.activity-option').forEach((button)=>{
+                button.addEventListener('click',()=>{
+                    const question=button.closest('[data-question]');
+                    const module=button.closest('[data-module]');
+                    const feedback=question.querySelector('.feedback');
+                    if(question.dataset.answered==='true'){return}
+                    const isCorrect=button.dataset.correct==='true';
+                    question.dataset.answered='true';
+                    question.dataset.correct=String(isCorrect);
+                    question.querySelectorAll('.activity-option').forEach((option)=>{option.disabled=true;if(option===button){option.classList.add(isCorrect?'correct':'incorrect')}else if(option.dataset.correct==='true'){option.classList.add('correct')}});
+                    feedback.textContent=button.dataset.feedback||'';
+                    feedback.className='feedback show '+(isCorrect?'correct':'incorrect');
+                    updateModuleScore(module);
+                });
+            });
+            moduleResetButtons.forEach((button)=>button.addEventListener('click',()=>{const module=button.closest('[data-module]');module.querySelectorAll('[data-question]').forEach((question)=>{delete question.dataset.answered;delete question.dataset.correct;const feedback=question.querySelector('.feedback');feedback.className='feedback';feedback.textContent='';question.querySelectorAll('.activity-option').forEach((option)=>{option.disabled=false;option.classList.remove('correct','incorrect')})});updateModuleScore(module)}));
+            if(hypothesisSimulator){
+                const alphaInput=hypothesisSimulator.querySelector('[data-alpha]');
+                const pvalueInput=hypothesisSimulator.querySelector('[data-pvalue]');
+                const output=hypothesisSimulator.querySelector('[data-hypothesis-output]');
+                const runButton=hypothesisSimulator.querySelector('[data-hypothesis-run]');
+                const resetButton=hypothesisSimulator.querySelector('[data-hypothesis-reset]');
+                function renderHypothesisResult(){
+                    const alpha=Number(alphaInput.value);
+                    const pvalue=Number(pvalueInput.value);
+                    if(Number.isNaN(alpha)||Number.isNaN(pvalue)||alpha<=0||alpha>=1||pvalue<0||pvalue>1){
+                        output.className='simulator-output warning';
+                        output.textContent='Ingresa valores válidos entre 0 y 1 para α y el p-valor.';
+                        return;
+                    }
+                    if(pvalue<=alpha){
+                        output.className='simulator-output success';
+                        output.innerHTML=`<strong>Decisión</strong><p>Como <code>p = ${pvalue.toFixed(2)}</code> es menor o igual que <code>α = ${alpha.toFixed(2)}</code>, se rechaza H0.</p><p>La evidencia observada es suficiente para apoyar la hipótesis alternativa.</p>`;
+                        return;
+                    }
+                    output.className='simulator-output warning';
+                    output.innerHTML=`<strong>Decisión</strong><p>Como <code>p = ${pvalue.toFixed(2)}</code> es mayor que <code>α = ${alpha.toFixed(2)}</code>, no se rechaza H0.</p><p>No hay evidencia suficiente para descartar la hipótesis nula con este nivel de significancia.</p>`;
+                }
+                runButton.addEventListener('click',renderHypothesisResult);
+                resetButton.addEventListener('click',()=>{
+                    alphaInput.value='0.05';
+                    pvalueInput.value='0.03';
+                    output.className='simulator-output';
+                    output.textContent='Ingresa α y el p-valor para interpretar la decisión estadística.';
+                });
+            }
+            const quiz=document.getElementById('quiz-evaluacion');
+            const quizResult=document.getElementById('quiz-result');
+            const checkQuizButton=document.getElementById('check-quiz');
+            const resetQuizButton=document.getElementById('reset-quiz');
+            function renderQuizResult(correctCount,total){const percentage=Math.round(correctCount/total*100);let cssClass='success',title='¡Excelente!';if(percentage<80&&percentage>=60){cssClass='warning';title='Buen trabajo'}else if(percentage<60){cssClass='error';title='Sigue practicando'}quizResult.innerHTML=`<div class="quiz-summary ${cssClass}"><strong>${title}</strong><p>Respuestas correctas: ${correctCount} de ${total} (${percentage} %).</p></div>`}
+            if(checkQuizButton){checkQuizButton.addEventListener('click',()=>{const correctAnswers=JSON.parse(quiz.dataset.correct);const feedbackCorrect=JSON.parse(quiz.dataset.feedbackCorrect);const feedbackIncorrect=JSON.parse(quiz.dataset.feedbackIncorrect);const questions=quiz.querySelectorAll('[data-quiz-question]');let correctCount=0;questions.forEach((question,index)=>{const selected=question.querySelector("input[type='radio']:checked");const feedback=question.querySelector('[data-feedback-slot]');if(!selected){feedback.textContent='Selecciona una respuesta antes de comprobar.';feedback.className='feedback show incorrect';return}const isCorrect=Number(selected.value)===correctAnswers[index];if(isCorrect){correctCount+=1}feedback.textContent=isCorrect?feedbackCorrect[index]:feedbackIncorrect[index];feedback.className='feedback show '+(isCorrect?'correct':'incorrect')});renderQuizResult(correctCount,questions.length)})}
+            if(resetQuizButton){resetQuizButton.addEventListener('click',()=>{quiz.querySelectorAll("input[type='radio']").forEach((input)=>input.checked=false);quiz.querySelectorAll('[data-feedback-slot]').forEach((feedback)=>{feedback.textContent='';feedback.className='feedback'});quizResult.innerHTML=''})}
+            function openImageModal(src,alt){imageModalTarget.src=src;imageModalTarget.alt=alt||'Imagen ampliada';imageModal.classList.add('active');imageModal.setAttribute('aria-hidden','false')}
+            function closeImageModal(){imageModal.classList.remove('active');imageModal.setAttribute('aria-hidden','true');imageModalTarget.src='';imageModalTarget.alt=''}
+            zoomableImages.forEach((image)=>image.addEventListener('click',()=>openImageModal(image.getAttribute('src'),image.getAttribute('alt'))));
+            closeImageModalBtn.addEventListener('click',closeImageModal);
+            imageModal.addEventListener('click',(event)=>{if(event.target===imageModal){closeImageModal()}});
+            document.addEventListener('keydown',(event)=>{if(event.key==='Escape'){closeImageModal()}});
+            function updateVoiceLabels(){document.querySelectorAll('[data-voice-label]').forEach((label)=>{label.textContent='Voz: '+(selectedVoice?`${selectedVoice.name} (${selectedVoice.lang})`:'Español del navegador')})}
+            function loadVoices(){const voices=synth?synth.getVoices():[];if(!voices.length){updateVoiceLabels();return}const latinMatch=voices.find((voice)=>/es-(CO|MX|US|419)/i.test(voice.lang)||/paulina|helena|sabin|sofia|maria/i.test(voice.name));const spanishFallback=voices.find((voice)=>voice.lang.toLowerCase().startsWith('es'));selectedVoice=latinMatch||spanishFallback||null;updateVoiceLabels()}
+            function getSectionText(sectionId){const section=document.getElementById(sectionId);if(!section){return ''}const blocks=section.querySelectorAll('[data-speech-content]');const parts=[];blocks.forEach((block)=>{const clone=block.cloneNode(true);clone.querySelectorAll('button').forEach((element)=>element.remove());const text=clone.innerText.replace(/\s+/g,' ').trim();if(text){parts.push(text)}});return parts.join('. ')}
+            function resetSpeechButtons(){document.querySelectorAll('.speech-controls').forEach((controls)=>{const play=controls.querySelector("[data-action='play']");const pause=controls.querySelector("[data-action='pause']");const stop=controls.querySelector("[data-action='stop']");play.disabled=false;play.textContent='Leer';pause.disabled=true;stop.disabled=true})}
+            function stopSpeech(){if(synth&&synth.speaking){synth.cancel()}currentUtterance=null;currentSpeechSection=null;resetSpeechButtons()}
+            if(synth){loadVoices();if(typeof synth.onvoiceschanged!=='undefined'){synth.onvoiceschanged=loadVoices}}
+            document.querySelectorAll('.speech-controls').forEach((controls)=>{
+                const sectionId=controls.dataset.sectionId;
+                const play=controls.querySelector("[data-action='play']");
+                const pause=controls.querySelector("[data-action='pause']");
+                const stop=controls.querySelector("[data-action='stop']");
+                const speed=controls.querySelector("input[type='range']");
+                play.addEventListener('click',()=>{
+                    if(!synth){return}
+                    if(currentSpeechSection===sectionId&&synth.paused){synth.resume();play.textContent='Leer';play.disabled=true;pause.disabled=false;stop.disabled=false;return}
+                    stopSpeech();
+                    const text=getSectionText(sectionId);
+                    if(!text){return}
+                    const utterance=new SpeechSynthesisUtterance(text);
+                    utterance.lang=selectedVoice?selectedVoice.lang:'es-ES';
+                    utterance.rate=Number(speed.value);
+                    if(selectedVoice){utterance.voice=selectedVoice}
+                    utterance.onend=()=>stopSpeech();
+                    utterance.onerror=()=>stopSpeech();
+                    currentUtterance=utterance;
+                    currentSpeechSection=sectionId;
+                    synth.speak(utterance);
+                    play.disabled=true;pause.disabled=false;stop.disabled=false;
+                });
+                pause.addEventListener('click',()=>{if(!synth||!synth.speaking){return}synth.pause();play.disabled=false;play.textContent='Continuar';pause.disabled=true});
+                stop.addEventListener('click',()=>stopSpeech());
+                speed.addEventListener('change',()=>{if(currentSpeechSection===sectionId&&currentUtterance){stopSpeech()}});
+            });
+        })();
+    </script>
+</body>
+</html>
+
+
+
+
+

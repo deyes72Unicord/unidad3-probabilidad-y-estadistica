@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA: Estimación puntual e intervalos de confianza</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{--green-50:#f0fdf4;--green-100:#dcfce7;--green-200:#bbf7d0;--green-500:#22c55e;--green-600:#16a34a;--green-700:#15803d;--green-800:#166534;--slate-50:#f8fafc;--slate-100:#f1f5f9;--slate-200:#e2e8f0;--slate-500:#64748b;--slate-600:#475569;--slate-700:#334155;--slate-800:#1e293b;--yellow-100:#fef9c3;--yellow-500:#eab308;--yellow-700:#a16207;--red-100:#fee2e2;--red-500:#ef4444;--red-700:#b91c1c;--shadow-sm:0 1px 2px rgba(15,23,42,.06);--shadow-md:0 10px 25px rgba(15,23,42,.08);--shadow-lg:0 18px 40px rgba(15,23,42,.12);--radius-lg:18px;--radius-md:14px}
+        html,body{max-width:100%;overflow-x:auto;background:var(--slate-50)}
+        body{font-family:"Poppins","Segoe UI",Tahoma,sans-serif;color:var(--slate-700);line-height:1.6}
+        img{display:block;max-width:100%;height:auto} button,select,input{font:inherit} button{border:0;cursor:pointer} a{color:inherit;text-decoration:none}
+        .layout{display:flex;min-height:100vh}.sidebar{position:fixed;top:0;left:0;width:16rem;height:100vh;background:#fff;box-shadow:var(--shadow-md);display:flex;flex-direction:column;z-index:40}.sidebar-logo{padding:1.25rem 1rem .75rem;display:flex;justify-content:center}.sidebar-logo-frame{width:150px;height:150px;padding:.75rem;border-radius:999px;background:#fff;border:2px solid var(--green-500);box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;overflow:hidden}.sidebar-nav{margin-top:1.25rem;padding-bottom:1.5rem}.sidebar-link{width:100%;display:flex;align-items:center;gap:.75rem;padding:.9rem 1.5rem;color:var(--slate-700);font-weight:500;transition:.2s}.sidebar-link:hover,.sidebar-link.active{background:var(--green-50);color:var(--green-800)}.sidebar-icon{width:1.75rem;text-align:center;font-size:1.1rem}.main{flex:1;margin-left:16rem;padding:2.5rem}.mobile-header{display:none}.content-pane{display:none;max-width:72rem;margin:0 auto}.content-pane.active{display:block}.content-stack{display:grid;gap:1.15rem}
+        .hero-card{background:transparent;border:0;box-shadow:none;padding:0;margin-bottom:1.25rem}.eyebrow,.hero-meta,.hero-chip{display:none}.hero-card h1,.content-pane h2{color:var(--green-800)}.hero-card h1,.hero-card .section-heading{font-size:clamp(2.25rem,3.2vw,3.2rem);line-height:1.2;margin:0 0 .45rem;font-weight:700}.hero-card p{font-size:1.02rem}.section-heading{font-size:clamp(2.15rem,3vw,3rem);font-weight:700;margin-bottom:.75rem}
+        .text-block,.activity-card,.quiz-card,.resource-card,.figure-card,.bibliography-item,.objective-item,.example-card,.accordion{background:#fff;border-radius:22px;box-shadow:var(--shadow-sm);border:1px solid #d7f4e0}
+        .text-block{padding:1.6rem 1.8rem;margin-bottom:1.15rem}.text-block p+p,.mini-card p+p,.example-card p+p{margin-top:.95rem}
+        .video-card{margin:1.15rem 0;background:#fff;border-radius:.9rem;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+        .video-embed{position:relative;width:100%;padding-top:56.25%;border-radius:.8rem;overflow:hidden;background:#000}
+        .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+        .objective-item,.activity-card,.quiz-card,.resource-card,.bibliography-item{border-left:6px solid var(--green-500)}
+        .objective-list{list-style:none;display:grid;gap:1rem}.objective-item{display:flex;align-items:flex-start;gap:1rem;padding:1.35rem 1.45rem}.objective-check{width:2.2rem;flex-shrink:0;display:grid;place-items:center;color:var(--green-600);font-weight:700;font-size:2rem;line-height:1;background:none}
+        .speech-controls{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.2rem;background:linear-gradient(90deg,#dff8e6,#d5f7dc);border-radius:22px;margin-bottom:1.35rem;border:1px solid #b8efc9}.speech-main{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;min-width:0}.speech-btn{padding:.7rem 1.25rem;border-radius:999px;color:#fff;font-weight:700;min-width:88px}.speech-btn:disabled{opacity:.55;cursor:not-allowed}.speech-btn.play{background:#17a94d}.speech-btn.pause{background:#f2c95d}.speech-btn.stop{background:#ea9489}.speech-speed{display:flex;align-items:center;gap:.65rem;color:var(--green-800);font-size:.95rem;font-weight:600;min-width:0}.speech-speed input{accent-color:#ef4444}.speech-voice{color:var(--green-800);font-size:.95rem;text-align:right;min-width:0;overflow-wrap:anywhere}
+        .accordion-list{display:grid;gap:1rem}.accordion{overflow:hidden}.accordion-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.3rem 1.45rem .35rem;background:#fff;color:var(--green-800);text-align:left;font-weight:700;font-size:1.2rem}.accordion-toggle span:first-child{flex:1}.accordion-toggle span:last-child{display:block;color:#17a94d;font-size:2rem;font-weight:700;line-height:1;flex-shrink:0}.accordion-panel{display:none;padding:0 1.45rem 1.4rem}.accordion.open .accordion-panel{display:block}
+        .two-col,.flip-grid,.figure-grid{display:grid;gap:1rem}.two-col,.figure-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.figure-grid > :only-child{grid-column:1/-1}.flip-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));align-items:stretch}.mini-card{padding:1.15rem;border-radius:var(--radius-md);background:#fff;border:1px solid #dfe8ee}.mini-card h3,.mini-card h4,.example-card h4,.module-title,.figure-card h4{color:var(--green-800)}.formula-card{padding:1rem 1.15rem;border-radius:var(--radius-md);background:#f8fbfd;border:1px solid #dfe8ee;color:var(--green-800);font-weight:600;margin:1rem 0;overflow-x:auto}.formula-inline{font-family:"Courier New",Courier,monospace;white-space:nowrap;font-size:1rem}.flip-card{perspective:1000px;min-height:225px;max-width:100%}.flip-card button{width:100%;height:100%;background:transparent}.flip-inner{position:relative;width:100%;min-height:225px;transition:transform .55s ease;transform-style:preserve-3d}.flip-card.flipped .flip-inner{transform:rotateY(180deg)}.flip-face{position:absolute;inset:0;padding:1.35rem 1.45rem;border-radius:24px;backface-visibility:hidden;box-shadow:none;border:0;display:flex;flex-direction:column;justify-content:space-between}.flip-front{background:#1d9442;color:#fff}.flip-back{background:#fff;color:var(--slate-700);border:1px solid #b9efc4;transform:rotateY(180deg)}.flip-label{color:rgba(255,255,255,.72);font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.45rem}.flip-back .flip-label{color:#9ca3af}.flip-front h3{color:#fff;font-size:1.05rem;line-height:1.25}.flip-back h3{color:var(--green-800);font-size:1.05rem;line-height:1.25}.flip-front p{color:rgba(255,255,255,.92)}.flip-back p{color:var(--slate-700)}.flip-back strong,.flip-back .formula-inline{color:var(--green-800)}.example-card{margin-top:1rem;padding:1.2rem;border-radius:var(--radius-lg);background:#fff;box-shadow:none;border:1px solid #dfe8ee}
+        .figure-card{padding:1.2rem 1.3rem}.figure-image{width:100%;border-radius:var(--radius-md);overflow:hidden;border:1px dashed #b9d8c2;background:#f8fbfd;min-height:220px;display:flex;align-items:center;justify-content:center;padding:1rem;text-align:center;color:var(--slate-600)}.figure-card h4{margin:.9rem 0 .35rem}
+        .table-shell{margin-top:1rem;background:#fff;border-radius:.75rem;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow-x:auto;-webkit-overflow-scrolling:touch}
+        .ova-table{width:100%;border-collapse:collapse;background:#fff;border-radius:.5rem;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.1);min-width:560px}
+        .ova-table th{background-color:#166534;color:#fff;font-weight:600;padding:.75rem 1rem;text-align:left;font-size:.875rem}
+        .ova-table td{padding:.75rem 1rem;border-bottom:1px solid #e5e7eb;font-size:.875rem;color:#374151}
+        .ova-table tbody tr:nth-child(even){background-color:#f9fafb}
+        .ova-table tbody tr:hover{background-color:#f0fdf4}
+        .ova-table tbody tr:last-child td{border-bottom:none}
+        .decision-pills{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:.9rem}.decision-pill{padding:.45rem .75rem;border-radius:999px;background:#fff;color:var(--slate-700);font-size:.9rem;border:1px solid #dfe8ee}.table-note{margin-top:.55rem;color:var(--slate-500);font-size:.86rem}
+        #contenido .accordion{border:1px solid #b9efc4;border-left:1px solid #b9efc4;background:#fcfffd}
+        #contenido .accordion .mini-card,#contenido .example-card,#contenido .figure-card,#contenido .formula-card{border-left:0}
+        #contenido .accordion .mini-card{background:#fff}
+        .image-placeholder-label{font-weight:600;color:var(--green-800);margin-bottom:.35rem}
+        .activity-card,.quiz-card,.resource-card{padding:1.45rem 1.65rem;margin-bottom:1.1rem}.module-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1rem}.module-title{font-size:1.2rem;font-weight:700}.score-chip{padding:.32rem .7rem;border-radius:999px;background:var(--green-50);color:var(--green-700);font-size:.84rem;font-weight:600;white-space:nowrap;border:1px solid var(--green-200)}.activity-question,.quiz-question{padding:1rem 1.15rem;background:var(--slate-50);border-radius:18px;border:1px solid var(--slate-200);overflow-wrap:anywhere}.activity-question+.activity-question,.quiz-question+.quiz-question{margin-top:.9rem}.activity-options{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:.85rem}.activity-option{padding:.65rem .9rem;border-radius:999px;background:#fff;border:1px solid var(--green-200);color:var(--green-800);font-weight:500;transition:.2s;text-align:left;white-space:normal;line-height:1.45;justify-content:flex-start}.activity-option:hover,.resource-link:hover,.reset-btn:hover,.quiz-btn:hover{transform:translateY(-1px)}.activity-option:hover{background:var(--green-50)}.activity-option.correct{background:var(--green-100);border-color:var(--green-500)}.activity-option.incorrect{background:var(--red-100);border-color:var(--red-500);color:var(--red-700)}.feedback{margin-top:.8rem;padding:.8rem .95rem;border-radius:var(--radius-md);font-size:.95rem;display:none}.feedback.show{display:block}.feedback.correct{background:var(--green-100);color:var(--green-800)}.feedback.incorrect{background:var(--red-100);color:var(--red-700)}
+        .reset-btn,.quiz-btn,.resource-link{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.7rem 1rem;border-radius:999px;font-weight:600}.reset-btn,.quiz-btn{background:var(--green-600);color:#fff}.reset-btn.secondary{background:var(--slate-500)}.resource-link{background:none;color:#1e3a8a;width:fit-content;text-decoration:underline;padding:0}.quiz-options{display:grid;gap:.8rem;margin-top:.8rem}.quiz-option{display:flex;align-items:flex-start;gap:.75rem;padding:.95rem 1rem;border-radius:18px;background:#f8fafc;border:1px solid #dbe7ee}.quiz-option input{margin-top:.25rem}.quiz-summary{padding:1rem 1.15rem;border-radius:var(--radius-md);border-left:4px solid var(--green-500)}.quiz-summary.success{background:var(--green-100);color:var(--green-800)}.quiz-summary.warning{background:var(--yellow-100);color:var(--yellow-700);border-left-color:var(--yellow-500)}.quiz-summary.error{background:var(--red-100);color:var(--red-700);border-left-color:var(--red-500)}
+        .bibliography-list{list-style:none;display:grid;gap:1rem}.bibliography-item{padding:1.35rem 1.5rem}.placeholder-card{padding:1rem 1.1rem;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--slate-50),#fff);border:1px dashed var(--slate-200);color:var(--slate-600)}.actions-row{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1rem}.resource-split{display:flex;align-items:center;justify-content:space-between;gap:1.25rem}.resource-qr{width:120px;height:120px;border:1px dashed var(--green-500);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--green-700);font-size:.9rem;text-align:center;background:var(--green-50);flex-shrink:0;overflow:hidden}.resource-qr img{width:100%;height:100%;object-fit:contain;display:block}
+        .simulator-card{margin-top:1rem;padding:1.2rem;border-radius:var(--radius-lg);background:#fff;border:1px solid #dfe8ee}
+        .simulator-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:1rem;margin-top:1rem}
+        .simulator-panel{padding:1rem 1.1rem;border-radius:18px;background:#f8fafc;border:1px solid #dbe7ee}
+        .simulator-panel h4{color:var(--green-800);margin-bottom:.65rem}
+        .simulator-panel p+p{margin-top:.6rem}
+        .simulator-controls{display:grid;gap:.85rem}
+        .simulator-controls label{display:grid;gap:.35rem;font-weight:600;color:var(--green-800)}
+        .simulator-controls select,.simulator-controls input{padding:.8rem .9rem;border-radius:14px;border:1px solid var(--slate-200);background:#fff;color:var(--slate-700)}
+        .simulator-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.2rem}
+        .simulator-output{margin-top:.9rem;padding:1rem 1.05rem;border-radius:16px;border-left:4px solid var(--slate-500);background:#fff}
+        .simulator-output.success{border-left-color:var(--green-500);background:var(--green-100);color:var(--green-800)}
+        .simulator-output.warning{border-left-color:var(--yellow-500);background:var(--yellow-100);color:var(--yellow-700)}
+        .simulator-output.error{border-left-color:var(--red-500);background:var(--red-100);color:var(--red-700)}
+        .simulator-output code{font-family:"Courier New",Courier,monospace}
+        .chart-card{padding:1.1rem;border-radius:18px;background:#fff;border:1px solid #dfe8ee}
+        .chart-visual{display:grid;gap:.85rem}
+        .chart-row{display:grid;grid-template-columns:120px 1fr;gap:.8rem;align-items:center}
+        .chart-label{font-weight:600;color:var(--green-800)}
+        .chart-track{position:relative;height:28px;border-radius:999px;background:linear-gradient(90deg,#e8f7ed,#f8fbfd);border:1px solid #d8ebe0}
+        .chart-point{position:absolute;top:5px;height:16px;border-radius:999px;background:#1d9442}
+        .chart-point::before,.chart-point::after{content:"";position:absolute;top:-4px;width:2px;height:24px;background:#166534}
+        .chart-point::before{left:0}
+        .chart-point::after{right:0}
+        .chart-caption{margin-top:.75rem;font-size:.9rem;color:var(--slate-600)}
+        .image-modal{position:fixed;inset:0;background:rgba(15,23,42,.85);display:none;align-items:center;justify-content:center;padding:1.25rem;z-index:1000}.image-modal.active{display:flex}.image-modal-inner{position:relative;max-width:min(1100px,94vw);max-height:90vh}.image-modal img{max-width:100%;max-height:90vh;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);background:#fff}.image-modal button{position:absolute;top:-.85rem;right:-.85rem;width:2.7rem;height:2.7rem;border-radius:999px;background:#fff;color:var(--slate-800);box-shadow:var(--shadow-md);font-size:1.15rem}
+        @media (max-width:1200px){.flip-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
+        @media (max-width:1024px){.two-col,.figure-grid,.simulator-grid{grid-template-columns:1fr}.main{padding:2rem 1.5rem 2.5rem}}
+        @media (max-width:900px){.speech-controls{align-items:stretch;padding:.95rem 1rem}.speech-main{flex-direction:column;align-items:flex-start;width:100%}.speech-btn{width:100%}.speech-speed{width:100%;justify-content:space-between}.speech-speed input{flex:1;margin-left:.5rem;min-width:0}.speech-voice{text-align:left;width:100%}}
+        @media (max-width:767px){.sidebar{display:none}.main{margin-left:0;padding:12rem .9rem 1.3rem}.mobile-header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;flex-direction:column;align-items:center;gap:.7rem;padding:1rem .9rem;background:var(--slate-50);box-shadow:0 3px 10px rgba(15,23,42,.08)}.mobile-logo{width:92px;height:92px;padding:.65rem;border-radius:999px;background:#fff;border:2px solid var(--green-500);box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center}.mobile-nav{width:100%;padding:.78rem .85rem;border-radius:var(--radius-md);border:1px solid var(--slate-200);background:#fff;box-shadow:var(--shadow-sm)}.text-block,.activity-card,.quiz-card,.resource-card,.bibliography-item,.objective-item{padding:1.1rem}.speech-controls{align-items:stretch;padding:.95rem 1rem}.speech-main{flex-direction:column;align-items:flex-start;width:100%}.speech-btn{width:100%}.speech-speed{width:100%;justify-content:space-between}.speech-speed input{flex:1;margin-left:.5rem;min-width:0}.speech-voice{text-align:left}.hero-meta,.activity-options,.actions-row,.resource-split,.module-header{flex-direction:column;align-items:stretch}.activity-option,.reset-btn,.quiz-btn{width:100%}.score-chip{width:fit-content;max-width:100%;white-space:normal}.resource-link{width:auto}.accordion-toggle{padding:1rem 1rem .25rem;font-size:1.05rem}.accordion-panel{padding:0 1rem 1rem}.flip-grid,.two-col,.figure-grid{grid-template-columns:1fr}.flip-card,.flip-inner{min-height:190px}.table-shell{margin-top:.8rem;border-radius:16px;padding:.85rem}.ova-table{min-width:480px}.table-note{font-size:.8rem}.quiz-option{padding:.85rem}.resource-qr{width:100%;height:90px}}
+        @media (max-width:480px){.main{padding:11.5rem .7rem 1rem}.hero-card h1,.hero-card .section-heading{font-size:2rem}.text-block,.activity-card,.quiz-card,.resource-card,.bibliography-item,.objective-item{padding:1rem}table{min-width:420px}th,td{padding:.75rem .8rem}}
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar" aria-label="Navegación principal">
+            <div class="sidebar-logo"><div class="sidebar-logo-frame"><img src="cintia-logo.webp" alt="Logo institucional"></div></div>
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-target="introduccion"><span class="sidebar-icon">&#128640;</span><span>Introducción</span></a>
+                <a href="#" class="sidebar-link" data-target="objetivos"><span class="sidebar-icon">&#127919;</span><span>Objetivos</span></a>
+                <a href="#" class="sidebar-link" data-target="contenido"><span class="sidebar-icon">&#128218;</span><span>Contenido</span></a>
+                <a href="#" class="sidebar-link" data-target="actividades"><span class="sidebar-icon">&#9997;&#65039;</span><span>Actividades</span></a>
+                <a href="#" class="sidebar-link" data-target="evaluacion"><span class="sidebar-icon">&#10004;&#65039;</span><span>Evaluación</span></a>
+                <a href="#" class="sidebar-link" data-target="recursos"><span class="sidebar-icon">&#128214;</span><span>Recursos</span></a>
+                <a href="#" class="sidebar-link" data-target="bibliografia"><span class="sidebar-icon">&#128240;</span><span>Bibliografía</span></a>
+            </nav>
+        </aside>
+        <main class="main">
+            <div class="mobile-header">
+                <div class="mobile-logo"><img src="cintia-logo.webp" alt="Logo institucional"></div>
+                <select id="mobile-nav" class="mobile-nav" aria-label="Cambiar sección">
+                    <option value="introduccion">&#128640; Introducción</option>
+                    <option value="objetivos">&#127919; Objetivos</option>
+                    <option value="contenido">&#128218; Contenido</option>
+                    <option value="actividades">&#9997;&#65039; Actividades</option>
+                    <option value="evaluacion">&#10004;&#65039; Evaluación</option>
+                    <option value="recursos">&#128214; Recursos</option>
+                    <option value="bibliografia">&#128240; Bibliografía</option>
+                </select>
+            </div>
+            <section id="introduccion" class="content-pane active">
+                <div class="hero-card" data-speech-content>
+                    <h1>Estimación puntual e intervalos de confianza para una o dos muestras</h1>
+                    <p>En programación web y en el análisis de datos suele ser imposible revisar a todos los usuarios, todas las visitas o todos los registros de un sistema. Por eso, muchas veces se trabaja con una muestra: un grupo más pequeño de datos que permite aproximarse al comportamiento general.</p>
+                </div>
+                <div class="speech-controls" data-section-id="introduccion">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-introduccion">Velocidad:</label><input id="speed-introduccion" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="text-block" data-speech-content>
+                    <p>La inferencia estadística ayuda justamente a pasar de la muestra a la población. Con ella se construyen estimaciones puntuales, que son valores únicos de referencia, y también intervalos de confianza, que expresan un rango razonable donde podría encontrarse el valor real.</p>
+                    <div class="video-card"><div class="video-embed"><iframe width="560" height="315" src="https://www.youtube.com/embed/5GqzKXhVjX4?si=UvaosaPZqx7TCcIp" title="Video de introducción sobre estimación puntual e intervalos de confianza" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>
+                    <p>En esta guía se estudiarán estos conceptos de manera clara y aplicada. Se trabajará con ejemplos relacionados con tiempos de carga, visitas y comportamiento de usuarios, para comprender cómo una o dos muestras pueden apoyar la toma de decisiones en contextos tecnológicos.</p>
+                </div>
+            </section>
+            <section id="objetivos" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Objetivos</h2></div>
+                <div class="speech-controls" data-section-id="objetivos">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-objetivos">Velocidad:</label><input id="speed-objetivos" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <ul class="objective-list" data-speech-content>
+                    <li class="objective-item"><div class="objective-check">&#10003;</div><p>Identificar qué es una estimación puntual y reconocer estimadores comunes, como la media muestral y la proporción muestral.</p></li>
+                    <li class="objective-item"><div class="objective-check">&#10003;</div><p>Interpretar el significado de un intervalo de confianza, relacionando nivel de confianza, margen de error y precisión de la estimación.</p></li>
+                    <li class="objective-item"><div class="objective-check">&#10003;</div><p>Aplicar estimaciones puntuales e intervalos de confianza en ejemplos sencillos de una o dos muestras vinculados con datos del contexto tecnológico.</p></li>
+                </ul>
+            </section>
+            <section id="contenido" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Desarrollo del contenido</h2></div>
+                <div class="speech-controls" data-section-id="contenido">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-contenido">Velocidad:</label><input id="speed-contenido" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="accordion-list" data-speech-content>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>1. ¿Qué es la inferencia estadística?</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>La inferencia estadística es la parte de la estadística que permite sacar conclusiones sobre una población a partir de una muestra. En lugar de medir a todos los elementos, se estudia una parte y, con base en ella, se estima cómo podría comportarse el total.</p><p>En el entorno digital esto es muy útil. Por ejemplo, una empresa puede analizar una muestra de sesiones de usuarios para estimar el tiempo promedio de carga de una página, la proporción de visitantes que compran o la tasa de clics de un botón.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="estimacion_media/img1_inferencia.png" alt="Gráfica de inferencia estadística" class="zoomable-image"></div><h4>Gráfica de inferencia estadística</h4></article></div>
+                            <div class="formula-card"><span class="formula-inline">Media muestral: x&#772; = &Sigma;x / n</span></div>
+                            <div class="formula-card"><span class="formula-inline">Proporción muestral: p&#770; = x / n</span></div>
+                            <div class="flip-grid">
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Concepto</div><h3>Inferencia estadística</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Concepto</div><h3>Inferencia estadística</h3></div><p>La inferencia estadística es la parte de la estadística que permite sacar conclusiones sobre una población a partir de una muestra.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Proceso</div><h3>Muestra a población</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Proceso</div><h3>Muestra a población</h3></div><p>En lugar de medir a todos los elementos, se estudia una parte y, con base en ella, se estima cómo podría comportarse el total.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Contexto</div><h3>Entorno digital</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Contexto</div><h3>Entorno digital</h3></div><p>Una empresa puede analizar una muestra de sesiones de usuarios para estimar el tiempo promedio de carga de una página, la proporción de visitantes que compran o la tasa de clics de un botón.</p></div></div></button></article>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>2. Estimación puntual</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>Una estimación puntual es un único valor obtenido de la muestra y usado como aproximación de un parámetro poblacional. Se llama “puntual” porque entrega una sola cifra de referencia.</p><p>Los estimadores puntuales más comunes son la media muestral, que aproxima el promedio de la población, y la proporción muestral, que aproxima la fracción de elementos que cumplen una característica.</p><p>Una estimación puntual es útil porque resume la información en un solo valor; sin embargo, no asegura exactitud total. Como proviene de una muestra, siempre existe cierto grado de variación o error muestral.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="estimacion_media/img2_puntual.png" alt="Gráfica de estimación puntual" class="zoomable-image"></div><h4>Gráfica de estimación puntual</h4></article></div>
+                            <div class="flip-grid">
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Estimador</div><h3>Media muestral</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Estimador</div><h3>Media muestral</h3></div><p>La media muestral aproxima el promedio de la población.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Estimador</div><h3>Proporción muestral</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Estimador</div><h3>Proporción muestral</h3></div><p>La proporción muestral aproxima la fracción de elementos que cumplen una característica.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Precisión</div><h3>Error muestral</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Precisión</div><h3>Error muestral</h3></div><p>Como proviene de una muestra, siempre existe cierto grado de variación o error muestral.</p></div></div></button></article>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>3. Parámetro y estadístico</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="two-col">
+                                <div class="mini-card"><h4>Parámetro</h4><p>El parámetro es el valor verdadero de la población, pero normalmente no se conoce de manera directa. Por ejemplo, podría ser el tiempo promedio real de carga de un sitio para todos sus usuarios.</p></div>
+                                <div class="mini-card"><h4>Estadístico</h4><p>El estadístico es el valor calculado con la muestra. Si se toma una muestra de 40 sesiones y el promedio de carga es 2,8 segundos, ese 2,8 es un estadístico que sirve como estimación puntual del parámetro.</p></div>
+                            </div>
+                            <div class="example-card"><h4>Ejemplo 1. Estimación puntual en un contexto web</h4><p>Supóngase que se revisan 40 registros de un sitio web. En esa muestra, el tiempo promedio de carga es 2,8 segundos y el 62 % de las visitas proviene de dispositivos móviles. Estos dos valores se usan como estimaciones puntuales del comportamiento general del sitio.</p><p>Distinguir entre parámetro y estadístico es importante porque permite entender que la inferencia trabaja con aproximaciones basadas en datos observados.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="estimacion_media/img3_hist_muestra.png" alt="Histograma o gráfica de muestra" class="zoomable-image"></div><h4>Representación gráfica de la muestra</h4></article></div>
+                            <div class="table-shell"><table class="ova-table"><thead><tr><th>Indicador</th><th>Valor de la muestra</th><th>Interpretación</th></tr></thead><tbody><tr><td>Media de tiempo de carga</td><td>2,8 s</td><td>Estimación puntual de la media poblacional</td></tr><tr><td>Proporción de acceso móvil</td><td>0,62</td><td>Estimación puntual de la proporción poblacional</td></tr><tr><td>Tamaño muestral</td><td>40</td><td>Cantidad de observaciones analizadas</td></tr></tbody></table></div>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>4. ¿Qué es un intervalo de confianza?</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>Un intervalo de confianza es un rango de valores que se construye a partir de la muestra para estimar un parámetro poblacional con un nivel de confianza determinado, como 90 %, 95 % o 99 %.</p><p>A diferencia de la estimación puntual, el intervalo reconoce que existe incertidumbre. Por eso no entrega solo una cifra, sino un límite inferior y un límite superior alrededor de la estimación.</p><p>De manera sencilla, un intervalo de confianza puede entenderse como: estimación puntual ± margen de error. El margen de error muestra cuánto puede variar la estimación debido al muestreo.</p><p>Si se trabaja con un 95 % de confianza, se interpreta que el procedimiento usado es confiable para producir intervalos que, al repetirse muchas veces, capturen el valor real de la población en una gran proporción de los casos.</p></div>
+                            <div class="formula-card"><span class="formula-inline">Intervalo de confianza = estimación puntual ± margen de error</span></div>
+                            <div class="formula-card"><span class="formula-inline">Ejemplo: 2,8 ± 0,3 = [2,5 ; 3,1]</span></div>
+                            <div class="flip-grid">
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Elemento</div><h3>Nivel de confianza</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Elemento</div><h3>Nivel de confianza</h3></div><p>Un intervalo de confianza es un rango de valores que se construye a partir de la muestra para estimar un parámetro poblacional con un nivel de confianza determinado, como 90 %, 95 % o 99 %.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Elemento</div><h3>Margen de error</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Elemento</div><h3>Margen de error</h3></div><p>El margen de error muestra cuánto puede variar la estimación debido al muestreo.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Elemento</div><h3>Precisión</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Elemento</div><h3>Precisión</h3></div><p>En general, un intervalo más estrecho indica una estimación más precisa, mientras que un intervalo más amplio refleja mayor incertidumbre.</p></div></div></button></article>
+                            </div>
+                            <div class="example-card"><h4>Ejemplo 2. Intervalo de confianza para una muestra</h4><p>En una muestra de 50 tiempos de respuesta se obtiene una media de 2,8 segundos y un margen de error de 0,3 segundos. El intervalo de confianza del 95 % se construye sumando y restando ese margen a la estimación puntual.</p><p>IC 95 % = 2,8 ± 0,3 = [2,5 ; 3,1]</p><p>Esto indica que el tiempo promedio poblacional se estima entre 2,5 y 3,1 segundos según la muestra observada y el nivel de confianza elegido.</p><p>En general, un intervalo más estrecho indica una estimación más precisa, mientras que un intervalo más amplio refleja mayor incertidumbre.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="estimacion_media/img4_ic_una_muestra.png" alt="Gráfica de intervalo de confianza para una muestra" class="zoomable-image"></div><h4>Intervalo de confianza para una muestra</h4></article></div>
+                            <article class="simulator-card"><h4>Explorador interactivo del intervalo</h4><p>Usa la relación “estimación puntual ± margen de error” para visualizar el intervalo.</p><div class="simulator-grid"><div class="simulator-panel"><h4>Simulador</h4><div class="simulator-controls" data-interval-simulator><label>Estimación puntual<input type="number" step="0.1" value="2.8" data-estimate></label><label>Margen de error<input type="number" step="0.1" value="0.3" data-margin></label><div class="simulator-actions"><button type="button" class="quiz-btn" data-interval-run>Calcular intervalo</button><button type="button" class="reset-btn secondary" data-interval-reset>Reiniciar</button></div><div class="simulator-output" data-interval-output>Introduce una estimación puntual y un margen de error para construir el intervalo.</div></div></div><div class="simulator-panel"><h4>Lectura rápida</h4><p><strong>Estimación puntual:</strong> entrega una sola cifra de referencia.</p><p><strong>Margen de error:</strong> muestra cuánto puede variar la estimación debido al muestreo.</p><p><strong>Intervalo:</strong> entrega un límite inferior y un límite superior alrededor de la estimación.</p></div></div></article>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>5. Intervalos de confianza para dos muestras</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>Cuando se comparan dos grupos, también es posible construir intervalos de confianza. Esto ayuda a analizar, por ejemplo, dos versiones de una página, dos campañas o dos tipos de dispositivos.</p><p>Si una muestra corresponde a la Página A y otra a la Página B, cada una tendrá su propia estimación y su propio intervalo. La comparación permite evaluar si una parece responder más rápido o tener mejor desempeño.</p><p>Aunque la interpretación detallada depende del caso, observar los intervalos facilita una lectura visual inicial sobre similitudes o diferencias entre los grupos.</p></div>
+                            <div class="example-card"><h4>Ejemplo 3. Comparación de dos muestras</h4><p>Supóngase que la Página A tiene un promedio de carga de 3,2 segundos con un margen de error de 0,2, mientras que la Página B tiene un promedio de 2,8 segundos con el mismo margen de error.</p><p>Los intervalos serían: Página A [3,0 ; 3,4] y Página B [2,6 ; 3,0]. A partir de estos resultados, la Página B parece más rápida en promedio.</p><p>Este tipo de comparación es útil en pruebas A/B y en análisis de rendimiento, porque permite apoyar decisiones con evidencia cuantitativa.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="estimacion_media/img5_dos_muestras.png" alt="Gráfica de comparación de dos muestras" class="zoomable-image"></div><h4>Comparación de dos muestras</h4></article></div>
+                            <div class="table-shell"><table class="ova-table"><thead><tr><th>Grupo</th><th>Intervalo estimado</th><th>Interpretación</th></tr></thead><tbody><tr><td>Página A</td><td>[3,0 ; 3,4] s</td><td>Presenta un tiempo promedio mayor</td></tr><tr><td>Página B</td><td>[2,6 ; 3,0] s</td><td>Presenta un tiempo promedio menor</td></tr><tr><td>Comparación</td><td>Diferencia cercana a 0,4 s</td><td>La página B parece más rápida</td></tr></tbody></table></div>
+                            <div class="flip-grid">
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Comparación</div><h3>Página A</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Comparación</div><h3>Página A</h3></div><p>Página A [3,0 ; 3,4]</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Comparación</div><h3>Página B</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Comparación</div><h3>Página B</h3></div><p>Página B [2,6 ; 3,0]</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Conclusión</div><h3>Lectura inicial</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Conclusión</div><h3>Lectura inicial</h3></div><p>La comparación permite evaluar si una parece responder más rápido o tener mejor desempeño.</p></div></div></button></article>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>6. Representación gráfica e importancia del tema</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>En los reportes tecnológicos es común representar estimaciones e intervalos mediante barras, líneas o puntos con márgenes de error. Así se facilita la comparación visual entre categorías.</p><p>El siguiente gráfico muestra un ejemplo de promedios estimados e intervalos de confianza según el tipo de dispositivo desde el cual acceden los usuarios.</p><p>La estimación puntual y los intervalos de confianza ayudan a interpretar resultados sin caer en conclusiones apresuradas. Sirven para analizar tiempos de carga, tasas de conversión, errores del sistema y diferencias entre versiones de una aplicación o sitio web.</p><p>Comprender estos conceptos fortalece la lectura crítica de reportes, la toma de decisiones basada en datos y el uso responsable de herramientas digitales para analizar información.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="estimacion_media/img6_contexto_web.png" alt="Gráfico 3. Promedio estimado y margen de error por tipo de dispositivo" class="zoomable-image"></div><h4>Gráfico 3. Promedio estimado y margen de error por tipo de dispositivo.</h4><p>Representación gráfica en analítica web para facilitar la comparación visual entre categorías.</p></article></div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+            <section id="actividades" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Cuestionarios o actividades complementarias</h2></div>
+                <div class="speech-controls" data-section-id="actividades">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-actividades">Velocidad:</label><input id="speed-actividades" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="activity-card activity-module" data-module>
+                    <div class="module-header"><div><div class="module-title">Actividad 1. Identificando parámetro y estimador</div><p>Lee las siguientes situaciones y responde.</p><p>a) De 40 visitas analizadas, el tiempo promedio de carga de una página es 2,8 segundos.</p><p>b) En una muestra de 100 usuarios, 64 usan celular para ingresar a un sitio web.</p><p>c) Dos grupos de prueba muestran promedios distintos de tiempo de respuesta para las versiones A y B de una aplicación.</p><p>En cada caso identifica: la muestra, el parámetro de interés y la estimación puntual.</p></div><div class="score-chip">Aciertos: <span data-score>0</span>/3</div></div>
+                    <div class="activity-question" data-question><p>En la situación a), ¿cuál es la estimación puntual?</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: 2,8 segundos es el valor calculado con la muestra.">2,8 segundos</button><button class="activity-option" type="button" data-feedback="40 es el tamaño muestral, no la estimación puntual.">40 visitas</button><button class="activity-option" type="button" data-feedback="Ese sería el parámetro, no el estadístico observado.">El tiempo promedio real de todos los usuarios</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>En la situación b), ¿qué estimador aparece?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="Eso corresponde al tamaño de la muestra.">100 usuarios</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: 64 de 100 usuarios da una proporción muestral.">La proporción muestral</button><button class="activity-option" type="button" data-feedback="Aquí no se trabaja con una media sino con una fracción de usuarios.">La media muestral</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>En la situación c), ¿qué se busca comparar?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="La actividad trata sobre tiempos de respuesta, no sobre nombres.">Nombres de las versiones</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: se comparan promedios de tiempo de respuesta entre dos muestras.">Los promedios de tiempo de respuesta</button><button class="activity-option" type="button" data-feedback="La población completa no se observa directamente en la situación.">Toda la población exacta</button></div><div class="feedback"></div></div>
+                    <div class="actions-row"><button type="button" class="reset-btn secondary" data-reset-module>Reiniciar actividad</button></div>
+                </div>
+                <div class="activity-card activity-module" data-module>
+                    <div class="module-header"><div><div class="module-title">Actividad 2. Intervalo de confianza para una muestra</div><p>En una muestra de 50 usuarios se obtiene un tiempo promedio de respuesta de 2,8 segundos con un margen de error de 0,3 segundos.</p><p>Resuelve:</p><p>a) ¿Cuál es la estimación puntual?</p><p>b) ¿Cuál es el intervalo de confianza usando esos datos?</p><p>c) ¿Qué significa ese intervalo en el contexto del problema?</p><p>d) ¿Qué ocurriría con la precisión de la estimación si el margen de error bajara a 0,1 segundos?</p></div><div class="score-chip">Aciertos: <span data-score>0</span>/3</div></div>
+                    <div class="activity-question" data-question><p>¿Cuál es la estimación puntual?</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: la estimación puntual es 2,8 segundos.">2,8 segundos</button><button class="activity-option" type="button" data-feedback="0,3 corresponde al margen de error.">0,3 segundos</button><button class="activity-option" type="button" data-feedback="50 es el tamaño de la muestra.">50 usuarios</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>¿Cuál es el intervalo de confianza usando esos datos?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="Ese rango no corresponde a 2,8 ± 0,3.">[2,8 ; 3,4]</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: 2,8 ± 0,3 = [2,5 ; 3,1].">[2,5 ; 3,1]</button><button class="activity-option" type="button" data-feedback="Ese intervalo no usa el margen de error dado.">[2,7 ; 2,9]</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>Si el margen de error bajara a 0,1 segundos, ¿qué ocurriría con la precisión?</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: un intervalo más estrecho indica una estimación más precisa.">La estimación sería más precisa</button><button class="activity-option" type="button" data-feedback="Con menor margen de error el intervalo no se hace más amplio.">La estimación sería menos precisa</button><button class="activity-option" type="button" data-feedback="La precisión sí cambia cuando cambia el margen de error.">La precisión no cambiaría</button></div><div class="feedback"></div></div>
+                    <div class="actions-row"><button type="button" class="reset-btn secondary" data-reset-module>Reiniciar actividad</button></div>
+                </div>
+                <div class="activity-card activity-module" data-module>
+                    <div class="module-header"><div><div class="module-title">Actividad 3. Comparación de dos muestras</div><p>Una empresa compara dos versiones de su página principal. La versión A tiene media 3,2 segundos y margen de error 0,2. La versión B tiene media 2,8 segundos y margen de error 0,2.</p><p>Responde:</p><p>a) Calcula el intervalo de confianza de la versión A.</p><p>b) Calcula el intervalo de confianza de la versión B.</p><p>c) ¿Cuál versión parece más rápida en promedio?</p><p>d) Explica tu respuesta usando los intervalos obtenidos.</p></div><div class="score-chip">Aciertos: <span data-score>0</span>/3</div></div>
+                    <div class="activity-question" data-question><p>¿Cuál es el intervalo de confianza de la versión A?</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: 3,2 ± 0,2 = [3,0 ; 3,4].">[3,0 ; 3,4]</button><button class="activity-option" type="button" data-feedback="Ese intervalo corresponde a la versión B.">[2,6 ; 3,0]</button><button class="activity-option" type="button" data-feedback="Ese intervalo no coincide con la media 3,2 y el margen 0,2.">[3,1 ; 3,3]</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>¿Cuál es el intervalo de confianza de la versión B?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="Ese intervalo corresponde a la versión A.">[3,0 ; 3,4]</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: 2,8 ± 0,2 = [2,6 ; 3,0].">[2,6 ; 3,0]</button><button class="activity-option" type="button" data-feedback="Ese intervalo no conserva el margen de error dado.">[2,8 ; 3,2]</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>¿Cuál versión parece más rápida en promedio?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="La versión A presenta un tiempo promedio mayor.">Versión A</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: la versión B parece más rápida en promedio.">Versión B</button><button class="activity-option" type="button" data-feedback="Sí se puede hacer una lectura inicial comparando los intervalos.">No se puede comparar</button></div><div class="feedback"></div></div>
+                    <div class="actions-row"><button type="button" class="reset-btn secondary" data-reset-module>Reiniciar actividad</button></div>
+                </div>
+            </section>
+            <section id="evaluacion" class="content-pane">
+                <div class="quiz-card" id="quiz-evaluacion" data-correct='[1,2,1,1,1]' data-feedback-correct='["Correcto: una estimación puntual es un único valor de la muestra usado para aproximar un parámetro.","Correcto: el intervalo representa un rango plausible para el parámetro según la muestra y el nivel de confianza.","Correcto: si el margen de error disminuye, el intervalo se hace más estrecho.","Correcto: los intervalos ayudan a estimar y comparar rangos probables de sus medias o proporciones.","Correcto: en analítica web puede usarse para estimar el tiempo promedio de carga o la tasa de clics."]' data-feedback-incorrect='["Revisa qué opción habla de un único valor calculado con la muestra.","El intervalo ofrece un rango plausible según el procedimiento.","Piensa en la relación entre margen de error y amplitud del intervalo.","La comparación de intervalos sirve para evaluar rangos probables.","En el contexto tecnológico, se usa para estimar indicadores como tiempos de carga o tasas de clics."]'>
+                    <div class="module-header"><div><h2 class="section-heading" style="font-size:2rem;margin-bottom:.55rem">Evaluación</h2><p>Quiz tema 1. Estimación puntual e intervalos de confianza para una o dos muestras.</p></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>1.</strong> Una estimación puntual es:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q1" value="0"> Un rango de valores posibles</label><label class="quiz-option"><input type="radio" name="q1" value="1"> Un único valor de la muestra usado para aproximar un parámetro</label><label class="quiz-option"><input type="radio" name="q1" value="2"> El valor verdadero y exacto de toda la población</label><label class="quiz-option"><input type="radio" name="q1" value="3"> Un gráfico estadístico</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>2.</strong> Un intervalo de confianza del 95 % se interpreta como:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q2" value="0"> El 95 % de los datos siempre queda dentro del intervalo</label><label class="quiz-option"><input type="radio" name="q2" value="1"> El parámetro real siempre está dentro del intervalo</label><label class="quiz-option"><input type="radio" name="q2" value="2"> Un rango plausible para el parámetro según la muestra y el nivel de confianza</label><label class="quiz-option"><input type="radio" name="q2" value="3"> Un error en el cálculo</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>3.</strong> Si el margen de error disminuye, el intervalo de confianza:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q3" value="0"> Se hace más ancho</label><label class="quiz-option"><input type="radio" name="q3" value="1"> Se hace más estrecho</label><label class="quiz-option"><input type="radio" name="q3" value="2"> Desaparece</label><label class="quiz-option"><input type="radio" name="q3" value="3"> No cambia</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>4.</strong> Para comparar dos muestras, los intervalos de confianza ayudan a:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q4" value="0"> Ordenar los datos alfabéticamente</label><label class="quiz-option"><input type="radio" name="q4" value="1"> Estimar y comparar rangos probables de sus medias o proporciones</label><label class="quiz-option"><input type="radio" name="q4" value="2"> Reemplazar completamente la muestra</label><label class="quiz-option"><input type="radio" name="q4" value="3"> Eliminar toda la variabilidad de los datos</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>5.</strong> En analítica web, un intervalo de confianza puede usarse para:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q5" value="0"> Decorar un informe</label><label class="quiz-option"><input type="radio" name="q5" value="1"> Estimar el tiempo promedio de carga o la tasa de clics</label><label class="quiz-option"><input type="radio" name="q5" value="2"> Conocer con exactitud el futuro comportamiento del sitio</label><label class="quiz-option"><input type="radio" name="q5" value="3"> Sustituir todas las pruebas de rendimiento</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="actions-row"><button type="button" class="quiz-btn" id="check-quiz">Comprobar evaluación</button><button type="button" class="reset-btn secondary" id="reset-quiz">Reiniciar quiz</button></div>
+                    <div class="quiz-result" id="quiz-result"></div>
+                </div>
+            </section>
+            <section id="recursos" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Recursos</h2></div>
+                <div class="speech-controls" data-section-id="recursos">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-recursos">Velocidad:</label><input id="speed-recursos" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="resource-card" data-speech-content><div class="resource-split"><div><div class="module-title">Video explicativo</div><p>Recurso audiovisual de apoyo para el tema 1. Puedes acceder escaneando el código QR o desde el video de introducción del OVA.</p><div class="actions-row"><a class="resource-link" href="https://www.youtube.com/watch?v=5GqzKXhVjX4" target="_blank" rel="noopener">Ir al recurso</a></div></div><div class="resource-qr"><img src="Videos tema 1.png" alt="QR del video del tema 1"></div></div></div>
+                <div class="resource-card" data-speech-content><div class="resource-split"><div><div class="module-title">Infografía del tema 1</div><p>Material gráfico de apoyo para repasar los conceptos centrales de estimación puntual e intervalos de confianza.</p><div class="actions-row"><a class="resource-link" href="https://drive.google.com/file/d/1XARBcTE3dAA3IM_KgY_YNXKyXL0fXeme/view?usp=sharing" target="_blank" rel="noopener">Ir al recurso</a></div></div><div class="resource-qr"><img src="Infografia Tema 1.png" alt="QR de la infografía del tema 1"></div></div></div>
+            </section>
+            <section id="bibliografia" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Bibliografía</h2></div>
+                <div class="speech-controls" data-section-id="bibliografia">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-bibliografia">Velocidad:</label><input id="speed-bibliografia" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="bibliography-list" data-speech-content>
+                    <article class="bibliography-item">Anderson, D. R., Sweeney, D. J., Williams, T. A., Camm, J. D., y Cochran, J. J. (2019). <em>Estadística para negocios y economía</em> (13.ª ed.). Cengage Learning. https://books.google.com/books/about/Estad%C3%ADstica_Para_Negocios_Y_Econom%C3%ADa_1.html?id=N_o2zAEACAAJ</article>
+                    <article class="bibliography-item">Cadena Lozano, J. B. (2024). <em>Estadística descriptiva y probabilidad para los negocios con aplicaciones en Excel y Jamovi</em> (1.ª ed.). Editorial CESA. https://ideasforlife.cesa.edu.co/gpd-estadistica-descriptiva-y-probabilidad-para-los-negocios-con-aplicaciones-en-excel-y-jamovi-9789588988856-65e77aeeb0a1a.html</article>
+                    <article class="bibliography-item">Lind, D. A., Marchal, W. G., y Wathen, S. A. (2018). <em>Estadística aplicada a los negocios y la economía</em> (17.ª ed.). McGraw-Hill Interamericana. https://books.google.com/books/about/Estad%C3%ADstica_aplicada_a_los_negocios_y_l.html?id=hGwqyQEACAAJ</article>
+                    <article class="bibliography-item">Triola, M. F. (2018). <em>Estadística</em> (12.ª ed.). Pearson. https://www.pearsoneducacion.net/Colombia/Inicio/estadistica12ed-pearson-ed-ebook</article>
+                    <article class="bibliography-item">Walpole, R. E., Myers, R. H., Myers, S. L., y Ye, K. (2012). <em>Probabilidad y estadística para ingeniería y ciencias</em> (9.ª ed.). Pearson. https://www.pearsonenespanol.com/mexico/educacion-superior/walpole_index/probabilidad-y-estadistica-para-ingenieria-y-ciencias-9e-contenido</article>
+                    <article class="bibliography-item">Ministerio de Educación Nacional de Colombia. (2016). <em>Derechos básicos de aprendizaje DBA V.2: Matemáticas</em>. MEN. https://www.colombiaaprende.edu.co/sites/default/files/files_public/2022-06/DBA_Matematicas-min.pdf</article>
+                </div>
+            </section>
+        </main>
+    </div>
+    <div class="image-modal" id="image-modal" aria-hidden="true"><div class="image-modal-inner"><button type="button" id="close-image-modal" aria-label="Cerrar imagen ampliada">&#10005;</button><img src="" alt="" id="image-modal-target"></div></div>
+    <script>
+        (function(){
+            const sidebarLinks=document.querySelectorAll('.sidebar-link');
+            const panes=document.querySelectorAll('.content-pane');
+            const mobileNav=document.getElementById('mobile-nav');
+            const quickLinks=document.querySelectorAll('[data-target-link]');
+            const accordions=document.querySelectorAll('.accordion');
+            const flipCards=document.querySelectorAll('.flip-card');
+            const moduleResetButtons=document.querySelectorAll('[data-reset-module]');
+            const imageModal=document.getElementById('image-modal');
+            const imageModalTarget=document.getElementById('image-modal-target');
+            const closeImageModalBtn=document.getElementById('close-image-modal');
+            const zoomableImages=document.querySelectorAll('.zoomable-image');
+            const intervalSimulator=document.querySelector('[data-interval-simulator]');
+            const synth=window.speechSynthesis;
+            let currentUtterance=null,currentSpeechSection=null,selectedVoice=null;
+            function setActivePane(targetId){stopSpeech();panes.forEach((pane)=>pane.classList.toggle('active',pane.id===targetId));sidebarLinks.forEach((link)=>link.classList.toggle('active',link.dataset.target===targetId));if(mobileNav){mobileNav.value=targetId}window.scrollTo({top:0,behavior:'smooth'})}
+            sidebarLinks.forEach((link)=>link.addEventListener('click',(event)=>{event.preventDefault();setActivePane(link.dataset.target)}));
+            if(mobileNav){mobileNav.addEventListener('change',(event)=>setActivePane(event.target.value))}
+            quickLinks.forEach((link)=>link.addEventListener('click',()=>setActivePane(link.dataset.targetLink)));
+            function syncAccordionIcon(accordion){const icon=accordion.querySelector('.accordion-toggle span:last-child');if(icon){icon.textContent=accordion.classList.contains('open')?'−':'+'}}
+            accordions.forEach((accordion)=>{syncAccordionIcon(accordion);const toggle=accordion.querySelector('.accordion-toggle');toggle.addEventListener('click',()=>{accordion.classList.toggle('open');syncAccordionIcon(accordion)})});
+            flipCards.forEach((card)=>{const trigger=card.querySelector('.flip-trigger');trigger.addEventListener('click',()=>card.classList.toggle('flipped'))});
+            function updateModuleScore(module){const questions=module.querySelectorAll('[data-question]');let correct=0;questions.forEach((question)=>{if(question.dataset.answered==='true'&&question.dataset.correct==='true'){correct+=1}});const slot=module.querySelector('[data-score]');if(slot){slot.textContent=String(correct)}}
+            document.querySelectorAll('.activity-option').forEach((button)=>{
+                button.addEventListener('click',()=>{
+                    const question=button.closest('[data-question]');
+                    const module=button.closest('[data-module]');
+                    const feedback=question.querySelector('.feedback');
+                    if(question.dataset.answered==='true'){return}
+                    const isCorrect=button.dataset.correct==='true';
+                    question.dataset.answered='true';
+                    question.dataset.correct=String(isCorrect);
+                    question.querySelectorAll('.activity-option').forEach((option)=>{option.disabled=true;if(option===button){option.classList.add(isCorrect?'correct':'incorrect')}else if(option.dataset.correct==='true'){option.classList.add('correct')}});
+                    feedback.textContent=button.dataset.feedback||'';
+                    feedback.className='feedback show '+(isCorrect?'correct':'incorrect');
+                    updateModuleScore(module);
+                });
+            });
+            moduleResetButtons.forEach((button)=>button.addEventListener('click',()=>{const module=button.closest('[data-module]');module.querySelectorAll('[data-question]').forEach((question)=>{delete question.dataset.answered;delete question.dataset.correct;const feedback=question.querySelector('.feedback');feedback.className='feedback';feedback.textContent='';question.querySelectorAll('.activity-option').forEach((option)=>{option.disabled=false;option.classList.remove('correct','incorrect')})});updateModuleScore(module)}));
+            if(simulator){
+                const endpointSelect=simulator.querySelector('[data-sim-endpoint]');
+                const tokenSelect=simulator.querySelector('[data-sim-token]');
+                const output=simulator.querySelector('[data-sim-output]');
+                const runButton=simulator.querySelector('[data-sim-run]');
+                const resetButton=simulator.querySelector('[data-sim-reset]');
+                function renderSimulationResult(){
+                    const endpoint=endpointSelect.value;
+                    const token=tokenSelect.value;
+                    let cssClass='success';
+                    let message='';
+                    const scenarios={
+                        salud:{
+                            baja:{time:'85 ms',error:'0 %',resource:'CPU estable',suggestion:'No requiere cambios inmediatos.'},
+                            media:{time:'130 ms',error:'0 %',resource:'CPU moderada',suggestion:'Seguir monitoreando en horas de uso normal.'},
+                            alta:{time:'240 ms',error:'1 %',resource:'CPU en aumento',suggestion:'Revisar si conviene cachear respuestas simples o preparar escalado.'}
+                        },
+                        productos:{
+                            baja:{time:'140 ms',error:'0 %',resource:'CPU/RAM estables',suggestion:'Comportamiento normal.'},
+                            media:{time:'260 ms',error:'1 %',resource:'CPU media',suggestion:'Observar consultas frecuentes y considerar cache.'},
+                            alta:{time:'620 ms',error:'4 %',resource:'CPU alta y conexiones en aumento',suggestion:'Sospecha de cuello de botella en API o base de datos; optimizar y luego escalar.'}
+                        },
+                        inscripciones:{
+                            baja:{time:'210 ms',error:'1 %',resource:'CPU media',suggestion:'Revisar el endpoint antes de la hora pico.'},
+                            media:{time:'540 ms',error:'5 %',resource:'CPU/RAM elevadas',suggestion:'Puede haber saturación del servicio; revisar métricas en API y BD.'},
+                            alta:{time:'1200 ms',error:'12 %',resource:'Servidor al límite',suggestion:'Hora pico con saturación: priorizar optimización de consultas y evaluar escalado horizontal.'}
+                        }
+                    };
+                    const endpointLabels={salud:'GET /salud',productos:'GET /productos',inscripciones:'GET /inscripciones'};
+                    const loadLabels={baja:'carga baja',media:'carga media',alta:'hora pico'};
+                    const result=scenarios[endpoint][token];
+                    if(token==='alta' || result.error!=='0 %'){
+                        cssClass=result.error==='12 %'?'error':'warning';
+                    }
+                    message=`<strong>Observación simulada</strong><p>Endpoint: <code>${endpointLabels[endpoint]}</code> en <code>${loadLabels[token]}</code>.</p><p>Tiempo de respuesta estimado: <code>${result.time}</code>. Tasa de error: <code>${result.error}</code>. Uso de recursos: <code>${result.resource}</code>.</p><p>Posible decisión: ${result.suggestion}</p>`;
+                    output.className='simulator-output '+cssClass;
+                    output.innerHTML=message;
+                }
+                runButton.addEventListener('click',renderSimulationResult);
+                resetButton.addEventListener('click',()=>{
+                    endpointSelect.value='salud';
+                    tokenSelect.value='baja';
+                    output.className='simulator-output';
+                    output.textContent='Selecciona un endpoint y un escenario de carga para estimar tiempo de respuesta, tasa de error y posible mejora.';
+                });
+            }
+            if(intervalSimulator){
+                const estimateInput=intervalSimulator.querySelector('[data-estimate]');
+                const marginInput=intervalSimulator.querySelector('[data-margin]');
+                const output=intervalSimulator.querySelector('[data-interval-output]');
+                const runButton=intervalSimulator.querySelector('[data-interval-run]');
+                const resetButton=intervalSimulator.querySelector('[data-interval-reset]');
+                function renderIntervalResult(){
+                    const estimate=Number(estimateInput.value);
+                    const margin=Number(marginInput.value);
+                    if(Number.isNaN(estimate)||Number.isNaN(margin)||margin<0){
+                        output.className='simulator-output warning';
+                        output.textContent='Ingresa valores numéricos válidos para construir el intervalo.';
+                        return;
+                    }
+                    const lower=(estimate-margin).toFixed(1);
+                    const upper=(estimate+margin).toFixed(1);
+                    const precisionMessage=margin<=0.2?'El intervalo es más estrecho y la estimación luce más precisa.':'El intervalo es más amplio y refleja mayor incertidumbre.';
+                    output.className='simulator-output success';
+                    output.innerHTML=`<strong>Resultado</strong><p>Intervalo de confianza = estimación puntual ± margen de error</p><p>${estimate.toFixed(1)} ± ${margin.toFixed(1)} = [${lower} ; ${upper}]</p><p>${precisionMessage}</p>`;
+                }
+                runButton.addEventListener('click',renderIntervalResult);
+                resetButton.addEventListener('click',()=>{
+                    estimateInput.value='2.8';
+                    marginInput.value='0.3';
+                    output.className='simulator-output';
+                    output.textContent='Introduce una estimación puntual y un margen de error para construir el intervalo.';
+                });
+            }
+            const quiz=document.getElementById('quiz-evaluacion');
+            const quizResult=document.getElementById('quiz-result');
+            const checkQuizButton=document.getElementById('check-quiz');
+            const resetQuizButton=document.getElementById('reset-quiz');
+            function renderQuizResult(correctCount,total){const percentage=Math.round(correctCount/total*100);let cssClass='success',title='¡Excelente!';if(percentage<80&&percentage>=60){cssClass='warning';title='Buen trabajo'}else if(percentage<60){cssClass='error';title='Sigue practicando'}quizResult.innerHTML=`<div class="quiz-summary ${cssClass}"><strong>${title}</strong><p>Respuestas correctas: ${correctCount} de ${total} (${percentage} %).</p></div>`}
+            if(checkQuizButton){checkQuizButton.addEventListener('click',()=>{const correctAnswers=JSON.parse(quiz.dataset.correct);const feedbackCorrect=JSON.parse(quiz.dataset.feedbackCorrect);const feedbackIncorrect=JSON.parse(quiz.dataset.feedbackIncorrect);const questions=quiz.querySelectorAll('[data-quiz-question]');let correctCount=0;questions.forEach((question,index)=>{const selected=question.querySelector("input[type='radio']:checked");const feedback=question.querySelector('[data-feedback-slot]');if(!selected){feedback.textContent='Selecciona una respuesta antes de comprobar.';feedback.className='feedback show incorrect';return}const isCorrect=Number(selected.value)===correctAnswers[index];if(isCorrect){correctCount+=1}feedback.textContent=isCorrect?feedbackCorrect[index]:feedbackIncorrect[index];feedback.className='feedback show '+(isCorrect?'correct':'incorrect')});renderQuizResult(correctCount,questions.length)})}
+            if(resetQuizButton){resetQuizButton.addEventListener('click',()=>{quiz.querySelectorAll("input[type='radio']").forEach((input)=>input.checked=false);quiz.querySelectorAll('[data-feedback-slot]').forEach((feedback)=>{feedback.textContent='';feedback.className='feedback'});quizResult.innerHTML=''})}
+            function openImageModal(src,alt){imageModalTarget.src=src;imageModalTarget.alt=alt||'Imagen ampliada';imageModal.classList.add('active');imageModal.setAttribute('aria-hidden','false')}
+            function closeImageModal(){imageModal.classList.remove('active');imageModal.setAttribute('aria-hidden','true');imageModalTarget.src='';imageModalTarget.alt=''}
+            zoomableImages.forEach((image)=>image.addEventListener('click',()=>openImageModal(image.getAttribute('src'),image.getAttribute('alt'))));
+            closeImageModalBtn.addEventListener('click',closeImageModal);
+            imageModal.addEventListener('click',(event)=>{if(event.target===imageModal){closeImageModal()}});
+            document.addEventListener('keydown',(event)=>{if(event.key==='Escape'){closeImageModal()}});
+            function updateVoiceLabels(){document.querySelectorAll('[data-voice-label]').forEach((label)=>{label.textContent='Voz: '+(selectedVoice?`${selectedVoice.name} (${selectedVoice.lang})`:'Español del navegador')})}
+            function loadVoices(){const voices=synth?synth.getVoices():[];if(!voices.length){updateVoiceLabels();return}const latinMatch=voices.find((voice)=>/es-(CO|MX|US|419)/i.test(voice.lang)||/paulina|helena|sabin|sofia|maria/i.test(voice.name));const spanishFallback=voices.find((voice)=>voice.lang.toLowerCase().startsWith('es'));selectedVoice=latinMatch||spanishFallback||null;updateVoiceLabels()}
+            function getSectionText(sectionId){const section=document.getElementById(sectionId);if(!section){return ''}const blocks=section.querySelectorAll('[data-speech-content]');const parts=[];blocks.forEach((block)=>{const clone=block.cloneNode(true);clone.querySelectorAll('button').forEach((element)=>element.remove());const text=clone.innerText.replace(/\s+/g,' ').trim();if(text){parts.push(text)}});return parts.join('. ')}
+            function resetSpeechButtons(){document.querySelectorAll('.speech-controls').forEach((controls)=>{const play=controls.querySelector("[data-action='play']");const pause=controls.querySelector("[data-action='pause']");const stop=controls.querySelector("[data-action='stop']");play.disabled=false;play.textContent='Leer';pause.disabled=true;stop.disabled=true})}
+            function stopSpeech(){if(synth&&synth.speaking){synth.cancel()}currentUtterance=null;currentSpeechSection=null;resetSpeechButtons()}
+            if(synth){loadVoices();if(typeof synth.onvoiceschanged!=='undefined'){synth.onvoiceschanged=loadVoices}}
+            document.querySelectorAll('.speech-controls').forEach((controls)=>{
+                const sectionId=controls.dataset.sectionId;
+                const play=controls.querySelector("[data-action='play']");
+                const pause=controls.querySelector("[data-action='pause']");
+                const stop=controls.querySelector("[data-action='stop']");
+                const speed=controls.querySelector("input[type='range']");
+                play.addEventListener('click',()=>{
+                    if(!synth){return}
+                    if(currentSpeechSection===sectionId&&synth.paused){synth.resume();play.textContent='Leer';play.disabled=true;pause.disabled=false;stop.disabled=false;return}
+                    stopSpeech();
+                    const text=getSectionText(sectionId);
+                    if(!text){return}
+                    const utterance=new SpeechSynthesisUtterance(text);
+                    utterance.lang=selectedVoice?selectedVoice.lang:'es-ES';
+                    utterance.rate=Number(speed.value);
+                    if(selectedVoice){utterance.voice=selectedVoice}
+                    utterance.onend=()=>stopSpeech();
+                    utterance.onerror=()=>stopSpeech();
+                    currentUtterance=utterance;
+                    currentSpeechSection=sectionId;
+                    synth.speak(utterance);
+                    play.disabled=true;pause.disabled=false;stop.disabled=false;
+                });
+                pause.addEventListener('click',()=>{if(!synth||!synth.speaking){return}synth.pause();play.disabled=false;play.textContent='Continuar';pause.disabled=true});
+                stop.addEventListener('click',()=>stopSpeech());
+                speed.addEventListener('change',()=>{if(currentSpeechSection===sectionId&&currentUtterance){stopSpeech()}});
+            });
+        })();
+    </script>
+</body>
+</html>

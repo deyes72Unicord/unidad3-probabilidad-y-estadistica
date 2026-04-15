@@ -1,0 +1,426 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA: Correlación y regresión lineal simple</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{--green-50:#f0fdf4;--green-100:#dcfce7;--green-200:#bbf7d0;--green-500:#22c55e;--green-600:#16a34a;--green-700:#15803d;--green-800:#166534;--slate-50:#f8fafc;--slate-100:#f1f5f9;--slate-200:#e2e8f0;--slate-500:#64748b;--slate-600:#475569;--slate-700:#334155;--slate-800:#1e293b;--yellow-100:#fef9c3;--yellow-500:#eab308;--yellow-700:#a16207;--red-100:#fee2e2;--red-500:#ef4444;--red-700:#b91c1c;--shadow-sm:0 1px 2px rgba(15,23,42,.06);--shadow-md:0 10px 25px rgba(15,23,42,.08);--shadow-lg:0 18px 40px rgba(15,23,42,.12);--radius-lg:18px;--radius-md:14px}
+        html,body{max-width:100%;overflow-x:auto;background:var(--slate-50)}
+        body{font-family:"Poppins","Segoe UI",Tahoma,sans-serif;color:var(--slate-700);line-height:1.6}
+        img{display:block;max-width:100%;height:auto} button,select,input{font:inherit} button{border:0;cursor:pointer} a{color:inherit;text-decoration:none}
+        .layout{display:flex;min-height:100vh}.sidebar{position:fixed;top:0;left:0;width:16rem;height:100vh;background:#fff;box-shadow:var(--shadow-md);display:flex;flex-direction:column;z-index:40}.sidebar-logo{padding:1.25rem 1rem .75rem;display:flex;justify-content:center}.sidebar-logo-frame{width:150px;height:150px;padding:.75rem;border-radius:999px;background:#fff;border:2px solid var(--green-500);box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;overflow:hidden}.sidebar-nav{margin-top:1.25rem;padding-bottom:1.5rem}.sidebar-link{width:100%;display:flex;align-items:center;gap:.75rem;padding:.9rem 1.5rem;color:var(--slate-700);font-weight:500;transition:.2s}.sidebar-link:hover,.sidebar-link.active{background:var(--green-50);color:var(--green-800)}.sidebar-icon{width:1.75rem;text-align:center;font-size:1.1rem}.main{flex:1;margin-left:16rem;padding:2.5rem}.mobile-header{display:none}.content-pane{display:none;max-width:72rem;margin:0 auto}.content-pane.active{display:block}.content-stack{display:grid;gap:1.15rem}
+        .hero-card{background:transparent;border:0;box-shadow:none;padding:0;margin-bottom:1.25rem}.eyebrow,.hero-meta,.hero-chip{display:none}.hero-card h1,.content-pane h2{color:var(--green-800)}.hero-card h1,.hero-card .section-heading{font-size:clamp(2.25rem,3.2vw,3.2rem);line-height:1.2;margin:0 0 .45rem;font-weight:700}.hero-card p{font-size:1.02rem}.section-heading{font-size:clamp(2.15rem,3vw,3rem);font-weight:700;margin-bottom:.75rem}
+        .text-block,.activity-card,.quiz-card,.resource-card,.figure-card,.bibliography-item,.objective-item,.example-card,.accordion{background:#fff;border-radius:22px;box-shadow:var(--shadow-sm);border:1px solid #d7f4e0}
+        .text-block{padding:1.6rem 1.8rem;margin-bottom:1.15rem}.text-block p+p,.mini-card p+p,.example-card p+p{margin-top:.95rem}
+        .video-card{margin:1.15rem 0;background:#fff;border-radius:.9rem;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+        .video-embed{position:relative;width:100%;padding-top:56.25%;border-radius:.8rem;overflow:hidden;background:#000}
+        .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+        .objective-item,.activity-card,.quiz-card,.resource-card,.bibliography-item{border-left:6px solid var(--green-500)}
+        .objective-list{list-style:none;display:grid;gap:1rem}.objective-item{display:flex;align-items:flex-start;gap:1rem;padding:1.35rem 1.45rem}.objective-check{width:2.2rem;flex-shrink:0;display:grid;place-items:center;color:var(--green-600);font-weight:700;font-size:2rem;line-height:1;background:none}
+        .speech-controls{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.2rem;background:linear-gradient(90deg,#dff8e6,#d5f7dc);border-radius:22px;margin-bottom:1.35rem;border:1px solid #b8efc9}.speech-main{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;min-width:0}.speech-btn{padding:.7rem 1.25rem;border-radius:999px;color:#fff;font-weight:700;min-width:88px}.speech-btn:disabled{opacity:.55;cursor:not-allowed}.speech-btn.play{background:#17a94d}.speech-btn.pause{background:#f2c95d}.speech-btn.stop{background:#ea9489}.speech-speed{display:flex;align-items:center;gap:.65rem;color:var(--green-800);font-size:.95rem;font-weight:600;min-width:0}.speech-speed input{accent-color:#ef4444}.speech-voice{color:var(--green-800);font-size:.95rem;text-align:right;min-width:0;overflow-wrap:anywhere}
+        .accordion-list{display:grid;gap:1rem}.accordion{overflow:hidden}.accordion-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.3rem 1.45rem .35rem;background:#fff;color:var(--green-800);text-align:left;font-weight:700;font-size:1.2rem}.accordion-toggle span:first-child{flex:1}.accordion-toggle span:last-child{display:block;color:#17a94d;font-size:2rem;font-weight:700;line-height:1;flex-shrink:0}.accordion-panel{display:none;padding:0 1.45rem 1.4rem}.accordion.open .accordion-panel{display:block}
+        .two-col,.flip-grid,.figure-grid{display:grid;gap:1rem}.two-col,.figure-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.figure-grid > :only-child{grid-column:1/-1}.flip-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));align-items:stretch}.mini-card{padding:1.15rem;border-radius:var(--radius-md);background:#fff;border:1px solid #dfe8ee}.mini-card h3,.mini-card h4,.example-card h4,.module-title,.figure-card h4{color:var(--green-800)}.formula-card{padding:1rem 1.15rem;border-radius:var(--radius-md);background:#f8fbfd;border:1px solid #dfe8ee;color:var(--green-800);font-weight:600;margin:1rem 0;overflow-x:auto}.formula-inline{font-family:"Courier New",Courier,monospace;white-space:nowrap;font-size:1rem}.flip-card{perspective:1000px;min-height:225px;max-width:100%}.flip-card button{width:100%;height:100%;background:transparent}.flip-inner{position:relative;width:100%;min-height:225px;transition:transform .55s ease;transform-style:preserve-3d}.flip-card.flipped .flip-inner{transform:rotateY(180deg)}.flip-face{position:absolute;inset:0;padding:1.35rem 1.45rem;border-radius:24px;backface-visibility:hidden;box-shadow:none;border:0;display:flex;flex-direction:column;justify-content:space-between}.flip-front{background:#1d9442;color:#fff}.flip-back{background:#fff;color:var(--slate-700);border:1px solid #b9efc4;transform:rotateY(180deg)}.flip-label{color:rgba(255,255,255,.72);font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.45rem}.flip-back .flip-label{color:#9ca3af}.flip-front h3{color:#fff;font-size:1.05rem;line-height:1.25}.flip-back h3{color:var(--green-800);font-size:1.05rem;line-height:1.25}.flip-front p{color:rgba(255,255,255,.92)}.flip-back p{color:var(--slate-700)}.flip-back strong,.flip-back .formula-inline{color:var(--green-800)}.example-card{margin-top:1rem;padding:1.2rem;border-radius:var(--radius-lg);background:#fff;box-shadow:none;border:1px solid #dfe8ee}
+        .figure-card{padding:1.2rem 1.3rem}.figure-image{width:100%;border-radius:var(--radius-md);overflow:hidden;border:1px dashed #b9d8c2;background:#f8fbfd;min-height:220px;display:flex;align-items:center;justify-content:center;padding:1rem;text-align:center;color:var(--slate-600)}.figure-card h4{margin:.9rem 0 .35rem}
+        .table-shell{margin-top:1rem;background:#fff;border-radius:.75rem;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow-x:auto;-webkit-overflow-scrolling:touch}
+        .ova-table{width:100%;border-collapse:collapse;background:#fff;border-radius:.5rem;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.1);min-width:560px}
+        .ova-table th{background-color:#166534;color:#fff;font-weight:600;padding:.75rem 1rem;text-align:left;font-size:.875rem}
+        .ova-table td{padding:.75rem 1rem;border-bottom:1px solid #e5e7eb;font-size:.875rem;color:#374151}
+        .ova-table tbody tr:nth-child(even){background-color:#f9fafb}
+        .ova-table tbody tr:hover{background-color:#f0fdf4}
+        .ova-table tbody tr:last-child td{border-bottom:none}
+        .decision-pills{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:.9rem}.decision-pill{padding:.45rem .75rem;border-radius:999px;background:#fff;color:var(--slate-700);font-size:.9rem;border:1px solid #dfe8ee}.table-note{margin-top:.55rem;color:var(--slate-500);font-size:.86rem}
+        #contenido .accordion{border:1px solid #b9efc4;border-left:1px solid #b9efc4;background:#fcfffd}
+        #contenido .accordion .mini-card,#contenido .example-card,#contenido .figure-card,#contenido .formula-card{border-left:0}
+        #contenido .accordion .mini-card{background:#fff}
+        .image-placeholder-label{font-weight:600;color:var(--green-800);margin-bottom:.35rem}
+        .activity-card,.quiz-card,.resource-card{padding:1.45rem 1.65rem;margin-bottom:1.1rem}.module-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1rem}.module-title{font-size:1.2rem;font-weight:700}.score-chip{padding:.32rem .7rem;border-radius:999px;background:var(--green-50);color:var(--green-700);font-size:.84rem;font-weight:600;white-space:nowrap;border:1px solid var(--green-200)}.activity-question,.quiz-question{padding:1rem 1.15rem;background:var(--slate-50);border-radius:18px;border:1px solid var(--slate-200);overflow-wrap:anywhere}.activity-question+.activity-question,.quiz-question+.quiz-question{margin-top:.9rem}.activity-options{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:.85rem}.activity-option{padding:.65rem .9rem;border-radius:999px;background:#fff;border:1px solid var(--green-200);color:var(--green-800);font-weight:500;transition:.2s;text-align:left;white-space:normal;line-height:1.45;justify-content:flex-start}.activity-option:hover,.resource-link:hover,.reset-btn:hover,.quiz-btn:hover{transform:translateY(-1px)}.activity-option:hover{background:var(--green-50)}.activity-option.correct{background:var(--green-100);border-color:var(--green-500)}.activity-option.incorrect{background:var(--red-100);border-color:var(--red-500);color:var(--red-700)}.feedback{margin-top:.8rem;padding:.8rem .95rem;border-radius:var(--radius-md);font-size:.95rem;display:none}.feedback.show{display:block}.feedback.correct{background:var(--green-100);color:var(--green-800)}.feedback.incorrect{background:var(--red-100);color:var(--red-700)}
+        .reset-btn,.quiz-btn,.resource-link{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.7rem 1rem;border-radius:999px;font-weight:600}.reset-btn,.quiz-btn{background:var(--green-600);color:#fff}.reset-btn.secondary{background:var(--slate-500)}.resource-link{background:none;color:#1e3a8a;width:fit-content;text-decoration:underline;padding:0}.quiz-options{display:grid;gap:.8rem;margin-top:.8rem}.quiz-option{display:flex;align-items:flex-start;gap:.75rem;padding:.95rem 1rem;border-radius:18px;background:#f8fafc;border:1px solid #dbe7ee}.quiz-option input{margin-top:.25rem}.quiz-summary{padding:1rem 1.15rem;border-radius:var(--radius-md);border-left:4px solid var(--green-500)}.quiz-summary.success{background:var(--green-100);color:var(--green-800)}.quiz-summary.warning{background:var(--yellow-100);color:var(--yellow-700);border-left-color:var(--yellow-500)}.quiz-summary.error{background:var(--red-100);color:var(--red-700);border-left-color:var(--red-500)}
+        .bibliography-list{list-style:none;display:grid;gap:1rem}.bibliography-item{padding:1.35rem 1.5rem}.placeholder-card{padding:1rem 1.1rem;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--slate-50),#fff);border:1px dashed var(--slate-200);color:var(--slate-600)}.actions-row{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1rem}.resource-split{display:flex;align-items:center;justify-content:space-between;gap:1.25rem}.resource-qr{width:120px;height:120px;border:1px dashed var(--green-500);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--green-700);font-size:.9rem;text-align:center;background:var(--green-50);flex-shrink:0;overflow:hidden}.resource-qr img{width:100%;height:100%;object-fit:contain;display:block}
+        .simulator-card{margin-top:1rem;padding:1.2rem;border-radius:var(--radius-lg);background:#fff;border:1px solid #dfe8ee}
+        .simulator-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:1rem;margin-top:1rem}
+        .simulator-panel{padding:1rem 1.1rem;border-radius:18px;background:#f8fafc;border:1px solid #dbe7ee}
+        .simulator-panel h4{color:var(--green-800);margin-bottom:.65rem}
+        .simulator-panel p+p{margin-top:.6rem}
+        .simulator-controls{display:grid;gap:.85rem}
+        .simulator-controls label{display:grid;gap:.35rem;font-weight:600;color:var(--green-800)}
+        .simulator-controls select,.simulator-controls input{padding:.8rem .9rem;border-radius:14px;border:1px solid var(--slate-200);background:#fff;color:var(--slate-700)}
+        .simulator-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.2rem}
+        .simulator-output{margin-top:.9rem;padding:1rem 1.05rem;border-radius:16px;border-left:4px solid var(--slate-500);background:#fff}
+        .simulator-output.success{border-left-color:var(--green-500);background:var(--green-100);color:var(--green-800)}
+        .simulator-output.warning{border-left-color:var(--yellow-500);background:var(--yellow-100);color:var(--yellow-700)}
+        .simulator-output.error{border-left-color:var(--red-500);background:var(--red-100);color:var(--red-700)}
+        .simulator-output code{font-family:"Courier New",Courier,monospace}
+        .chart-card{padding:1.1rem;border-radius:18px;background:#fff;border:1px solid #dfe8ee}
+        .chart-visual{display:grid;gap:.85rem}
+        .chart-row{display:grid;grid-template-columns:120px 1fr;gap:.8rem;align-items:center}
+        .chart-label{font-weight:600;color:var(--green-800)}
+        .chart-track{position:relative;height:28px;border-radius:999px;background:linear-gradient(90deg,#e8f7ed,#f8fbfd);border:1px solid #d8ebe0}
+        .chart-point{position:absolute;top:5px;height:16px;border-radius:999px;background:#1d9442}
+        .chart-point::before,.chart-point::after{content:"";position:absolute;top:-4px;width:2px;height:24px;background:#166534}
+        .chart-point::before{left:0}
+        .chart-point::after{right:0}
+        .chart-caption{margin-top:.75rem;font-size:.9rem;color:var(--slate-600)}
+        .image-modal{position:fixed;inset:0;background:rgba(15,23,42,.85);display:none;align-items:center;justify-content:center;padding:1.25rem;z-index:1000}.image-modal.active{display:flex}.image-modal-inner{position:relative;max-width:min(1100px,94vw);max-height:90vh}.image-modal img{max-width:100%;max-height:90vh;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);background:#fff}.image-modal button{position:absolute;top:-.85rem;right:-.85rem;width:2.7rem;height:2.7rem;border-radius:999px;background:#fff;color:var(--slate-800);box-shadow:var(--shadow-md);font-size:1.15rem}
+        @media (max-width:1200px){.flip-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
+        @media (max-width:1024px){.two-col,.figure-grid,.simulator-grid{grid-template-columns:1fr}.main{padding:2rem 1.5rem 2.5rem}}
+        @media (max-width:900px){.speech-controls{align-items:stretch;padding:.95rem 1rem}.speech-main{flex-direction:column;align-items:flex-start;width:100%}.speech-btn{width:100%}.speech-speed{width:100%;justify-content:space-between}.speech-speed input{flex:1;margin-left:.5rem;min-width:0}.speech-voice{text-align:left;width:100%}}
+        @media (max-width:767px){.sidebar{display:none}.main{margin-left:0;padding:12rem .9rem 1.3rem}.mobile-header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;flex-direction:column;align-items:center;gap:.7rem;padding:1rem .9rem;background:var(--slate-50);box-shadow:0 3px 10px rgba(15,23,42,.08)}.mobile-logo{width:92px;height:92px;padding:.65rem;border-radius:999px;background:#fff;border:2px solid var(--green-500);box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center}.mobile-nav{width:100%;padding:.78rem .85rem;border-radius:var(--radius-md);border:1px solid var(--slate-200);background:#fff;box-shadow:var(--shadow-sm)}.text-block,.activity-card,.quiz-card,.resource-card,.bibliography-item,.objective-item{padding:1.1rem}.speech-controls{align-items:stretch;padding:.95rem 1rem}.speech-main{flex-direction:column;align-items:flex-start;width:100%}.speech-btn{width:100%}.speech-speed{width:100%;justify-content:space-between}.speech-speed input{flex:1;margin-left:.5rem;min-width:0}.speech-voice{text-align:left}.hero-meta,.activity-options,.actions-row,.resource-split,.module-header{flex-direction:column;align-items:stretch}.activity-option,.reset-btn,.quiz-btn{width:100%}.score-chip{width:fit-content;max-width:100%;white-space:normal}.resource-link{width:auto}.accordion-toggle{padding:1rem 1rem .25rem;font-size:1.05rem}.accordion-panel{padding:0 1rem 1rem}.flip-grid,.two-col,.figure-grid{grid-template-columns:1fr}.flip-card,.flip-inner{min-height:190px}.table-shell{margin-top:.8rem;border-radius:16px;padding:.85rem}.ova-table{min-width:480px}.table-note{font-size:.8rem}.quiz-option{padding:.85rem}.resource-qr{width:100%;height:90px}}
+        @media (max-width:480px){.main{padding:11.5rem .7rem 1rem}.hero-card h1,.hero-card .section-heading{font-size:2rem}.text-block,.activity-card,.quiz-card,.resource-card,.bibliography-item,.objective-item{padding:1rem}table{min-width:420px}th,td{padding:.75rem .8rem}}
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar" aria-label="Navegación principal">
+            <div class="sidebar-logo"><div class="sidebar-logo-frame"><img src="cintia-logo.webp" alt="Logo institucional"></div></div>
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-target="introduccion"><span class="sidebar-icon">&#128640;</span><span>Introducción</span></a>
+                <a href="#" class="sidebar-link" data-target="objetivos"><span class="sidebar-icon">&#127919;</span><span>Objetivos</span></a>
+                <a href="#" class="sidebar-link" data-target="contenido"><span class="sidebar-icon">&#128218;</span><span>Contenido</span></a>
+                <a href="#" class="sidebar-link" data-target="actividades"><span class="sidebar-icon">&#9997;&#65039;</span><span>Actividades</span></a>
+                <a href="#" class="sidebar-link" data-target="evaluacion"><span class="sidebar-icon">&#10004;&#65039;</span><span>Evaluación</span></a>
+                <a href="#" class="sidebar-link" data-target="recursos"><span class="sidebar-icon">&#128214;</span><span>Recursos</span></a>
+                <a href="#" class="sidebar-link" data-target="bibliografia"><span class="sidebar-icon">&#128240;</span><span>Bibliografía</span></a>
+            </nav>
+        </aside>
+        <main class="main">
+            <div class="mobile-header">
+                <div class="mobile-logo"><img src="cintia-logo.webp" alt="Logo institucional"></div>
+                <select id="mobile-nav" class="mobile-nav" aria-label="Cambiar sección">
+                    <option value="introduccion">&#128640; Introducción</option>
+                    <option value="objetivos">&#127919; Objetivos</option>
+                    <option value="contenido">&#128218; Contenido</option>
+                    <option value="actividades">&#9997;&#65039; Actividades</option>
+                    <option value="evaluacion">&#10004;&#65039; Evaluación</option>
+                    <option value="recursos">&#128214; Recursos</option>
+                    <option value="bibliografia">&#128240; Bibliografía</option>
+                </select>
+            </div>
+            <section id="introduccion" class="content-pane active">
+                <div class="hero-card" data-speech-content>
+                    <h1>Aplicación de correlación y regresión lineal simple en el análisis de datos web mediante herramientas digitales.</h1>
+                    <p>En el análisis de datos suele ser necesario estudiar cómo se relacionan dos variables. Por ejemplo, en una tienda virtual puede interesar saber si al aumentar el número de visitas también aumentan los formularios completados, si el tiempo de permanencia en una página se relaciona con la cantidad de clics o si el número de campañas publicitarias guarda alguna relación con las conversiones.</p>
+                </div>
+                <div class="speech-controls" data-section-id="introduccion">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-introduccion">Velocidad:</label><input id="speed-introduccion" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="video-card" data-speech-content>
+                    <div class="video-embed">
+                        <iframe src="https://www.youtube.com/embed/rcU5Q9PS0CY" title="Video introductorio sobre correlación y regresión lineal simple" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="text-block" data-speech-content>
+                    <p>La correlación y la regresión lineal simple son herramientas que ayudan a describir e interpretar estas relaciones. La correlación muestra la dirección y la fuerza de la asociación lineal entre dos variables, mientras que la regresión permite construir una ecuación para estimar o predecir un valor a partir de otro.</p>
+                    <p>En esta guía se abordarán estos conceptos de manera clara y aplicada. Se trabajarán ejemplos vinculados con datos web, gráficos de dispersión, interpretación del coeficiente de correlación y uso básico de la recta de regresión como apoyo para la toma de decisiones en contextos tecnológicos.</p>
+                </div>
+            </section>
+            <section id="objetivos" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Objetivos</h2></div>
+                <div class="speech-controls" data-section-id="objetivos">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-objetivos">Velocidad:</label><input id="speed-objetivos" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <ul class="objective-list" data-speech-content>
+                    <li class="objective-item"><div class="objective-check">&#10003;</div><p>Comprender qué es la correlación e identificar si la relación entre dos variables es positiva, negativa o nula en situaciones sencillas del análisis web.</p></li>
+                    <li class="objective-item"><div class="objective-check">&#10003;</div><p>Interpretar el coeficiente de correlación y reconocer cuándo una relación lineal es fuerte, moderada o débil a partir de tablas, gráficos y datos del entorno digital.</p></li>
+                    <li class="objective-item"><div class="objective-check">&#10003;</div><p>Aplicar la regresión lineal simple para estimar valores y apoyar decisiones básicas sobre visitas, clics, formularios o conversiones mediante herramientas digitales.</p></li>
+                </ul>
+            </section>
+            <section id="contenido" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Desarrollo del contenido</h2></div>
+                <div class="speech-controls" data-section-id="contenido">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-contenido">Velocidad:</label><input id="speed-contenido" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="accordion-list" data-speech-content>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>1. ¿Qué relación puede existir entre dos variables?</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>Cuando se observan dos variables al mismo tiempo, puede ocurrir que ambas cambien de manera relacionada. Si una aumenta y la otra también tiende a aumentar, existe una relación positiva. Si una aumenta y la otra disminuye, la relación es negativa. También puede ocurrir que no se observe una tendencia clara entre ellas.</p><p>En analítica web esto sucede con frecuencia. Por ejemplo, se puede analizar la relación entre el tiempo de permanencia y las páginas vistas, entre las visitas y los registros completados, o entre la inversión en anuncios y los clics recibidos. Para iniciar este análisis suele usarse un gráfico de dispersión, porque permite ver visualmente el comportamiento conjunto de los datos.</p></div>
+                            <div class="formula-card"><span class="formula-inline">Idea clave: la correlación describe cómo cambian juntas dos variables; la regresión, además, permite estimar una variable a partir de la otra.</span></div>
+                            <div class="flip-grid">
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Relación</div><h3>Positiva</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Relación</div><h3>Positiva</h3></div><p>Si una variable aumenta y la otra también tiende a aumentar, la relación es positiva.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Relación</div><h3>Negativa</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Relación</div><h3>Negativa</h3></div><p>Si una variable aumenta y la otra disminuye, la relación es negativa.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Relación</div><h3>Nula o débil</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Relación</div><h3>Nula o débil</h3></div><p>Cuando no hay tendencia lineal clara, la relación es nula o muy débil.</p></div></div></button></article>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>2. Tipos de correlación</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>La correlación positiva indica que, en general, al aumentar una variable también aumenta la otra. La correlación negativa muestra que al crecer una variable, la otra tiende a disminuir. Cuando no se aprecia una tendencia lineal clara se habla de correlación nula o muy débil.</p><p>Estas relaciones se observan mejor en un diagrama de dispersión. Cada punto representa un par de datos. La forma en que los puntos se agrupan ayuda a reconocer si existe o no una tendencia.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="correlacion_media/image1.png" alt="Tipos básicos de correlación en un diagrama de dispersión" class="zoomable-image"></div><h4>Gráfico 1. Tipos básicos de correlación en un diagrama de dispersión.</h4></article></div>
+                            <div class="example-card"><h4>Ejemplo 1. Relación entre campañas cortas y visitas a una landing page</h4><p>Supóngase que durante seis días se registra el número de horas dedicadas a una campaña corta en redes sociales y la cantidad de visitas recibidas por una landing page.</p><div class="table-shell"><table class="ova-table"><thead><tr><th>Horas de campaña (X)</th><th>Visitas a la landing page (Y)</th></tr></thead><tbody><tr><td>1</td><td>120</td></tr><tr><td>2</td><td>145</td></tr><tr><td>3</td><td>170</td></tr><tr><td>4</td><td>210</td></tr><tr><td>5</td><td>230</td></tr><tr><td>6</td><td>260</td></tr></tbody></table></div><p>En este caso se observa una tendencia positiva: a medida que aumentan las horas de campaña, también aumentan las visitas. Esto no significa todavía que una variable cause a la otra de forma definitiva, pero sí muestra que existe una asociación lineal útil para el análisis.</p></div>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>3. Coeficiente de correlación (r)</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>El coeficiente de correlación de Pearson, representado con la letra r, resume numéricamente la fuerza y la dirección de la relación lineal entre dos variables. Su valor siempre está entre -1 y 1.</p><p>Cuando r está cerca de 1, la relación lineal es positiva y fuerte. Cuando r está cerca de -1, la relación lineal es negativa y fuerte. Cuando r está cerca de 0, la relación lineal es débil o inexistente. Es importante recordar que r describe asociación lineal, no causalidad.</p></div>
+                            <div class="table-shell"><table class="ova-table"><thead><tr><th>Valor aproximado de r</th><th>Interpretación</th></tr></thead><tbody><tr><td>Cerca de +1</td><td>Relación positiva fuerte</td></tr><tr><td>Entre +0,3 y +0,7</td><td>Relación positiva moderada</td></tr><tr><td>Cerca de 0</td><td>Relación lineal débil o nula</td></tr><tr><td>Cerca de -1</td><td>Relación negativa fuerte</td></tr></tbody></table></div>
+                            <div class="example-card"><h4>Ejemplo de interpretación</h4><p>Si al analizar datos de una página se obtiene r = 0,92 entre las visitas y los formularios enviados, la relación lineal es positiva y fuerte. Esto significa que ambas variables tienden a crecer juntas.</p><p>Si en otro análisis se obtiene r = -0,81 entre el tiempo de carga y la satisfacción reportada por el usuario, la relación es negativa y fuerte: cuando el tiempo de carga aumenta, la satisfacción tiende a bajar.</p></div>
+                            <div class="flip-grid">
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Coeficiente r</div><h3>Cerca de +1</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Coeficiente r</div><h3>Positiva fuerte</h3></div><p>Cuando r está cerca de +1, ambas variables tienden a crecer juntas con una relación lineal marcada.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Coeficiente r</div><h3>Cerca de 0</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Coeficiente r</div><h3>Débil o nula</h3></div><p>Cuando r se aproxima a 0, no se observa una tendencia lineal clara entre las variables.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Coeficiente r</div><h3>Cerca de -1</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Coeficiente r</div><h3>Negativa fuerte</h3></div><p>Cuando r está cerca de -1, una variable tiende a bajar mientras la otra sube de forma consistente.</p></div></div></button></article>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>4. Correlación no implica causalidad</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>Aunque dos variables estén relacionadas, eso no prueba por sí solo que una sea la causa de la otra. Puede haber otros factores involucrados. Por ejemplo, si aumentan las visitas y también aumentan los registros, la mejora podría deberse a una campaña, a un rediseño del formulario o a la época del año. Por eso el análisis debe hacerse con cuidado y contexto.</p><p>La correlación es muy útil para descubrir patrones, pero la interpretación correcta exige mirar el entorno, las decisiones tomadas y otras posibles variables que estén influyendo en el comportamiento observado.</p></div>
+                            <div class="flip-grid">
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Cuidado</div><h3>Asociación</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Cuidado</div><h3>Asociación</h3></div><p>La correlación muestra que dos variables se mueven juntas, pero no demuestra por sí sola una relación de causa y efecto.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Cuidado</div><h3>Contexto</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Cuidado</div><h3>Contexto</h3></div><p>Siempre conviene revisar si hubo campañas, cambios de diseño, temporadas o factores externos que puedan explicar la relación.</p></div></div></button></article>
+                                <article class="flip-card"><button class="flip-trigger" type="button"><div class="flip-inner"><div class="flip-face flip-front"><div><div class="flip-label">Cuidado</div><h3>Decisión analítica</h3></div><p>Toca para ampliar.</p></div><div class="flip-face flip-back"><div><div class="flip-label">Cuidado</div><h3>Decisión analítica</h3></div><p>El análisis responsable combina correlación, interpretación del contexto y evidencia complementaria.</p></div></div></button></article>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>5. Regresión lineal simple</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><p>La regresión lineal simple utiliza una variable independiente X para estimar el comportamiento de una variable dependiente Y. Su representación más conocida es la ecuación de la recta:</p></div>
+                            <div class="formula-card"><span class="formula-inline">ŷ = a + bx</span><br><span class="formula-inline">ŷ: valor estimado de Y | a: intercepto | b: pendiente</span></div>
+                            <div class="mini-card"><p>La pendiente b indica cuánto cambia Y cuando X aumenta una unidad. El intercepto a es el valor estimado de Y cuando X es igual a cero. Aunque no siempre tenga un significado práctico directo, forma parte de la ecuación y ayuda a construir la recta.</p></div>
+                            <div class="example-card"><h4>Ejemplo 2. Estimación de formularios completados a partir de visitas</h4><p>Supóngase que en varios días se registran los siguientes datos de una página de contacto:</p><div class="table-shell"><table class="ova-table"><thead><tr><th>Visitas a la página (X)</th><th>Formularios completados (Y)</th></tr></thead><tbody><tr><td>50</td><td>9</td></tr><tr><td>100</td><td>16</td></tr><tr><td>150</td><td>20</td></tr><tr><td>200</td><td>24</td></tr><tr><td>250</td><td>31</td></tr></tbody></table></div><p>Al ajustar una recta de regresión a estos datos se obtiene aproximadamente la ecuación ŷ = 4.4 + 0.104x. Esto quiere decir que, por cada visita adicional, el número esperado de formularios aumenta en cerca de 0.104.</p><p>Si se quisiera estimar cuántos formularios podrían completarse con 180 visitas, se reemplaza x por 180: ŷ ≈ 4.4 + 0.104(180) ≈ 23.1. En términos prácticos, se esperaría alrededor de 23 formularios.</p></div>
+                            <div class="figure-grid"><article class="figure-card"><div class="figure-image"><img src="correlacion_media/image2.png" alt="Diagrama de dispersión con recta de regresión lineal simple" class="zoomable-image"></div><h4>Gráfico 2. Diagrama de dispersión con recta de regresión lineal simple.</h4></article></div>
+                            <div class="mini-card"><h4>¿Cómo se interpreta la pendiente?</h4><p>La pendiente resume el cambio promedio esperado en la variable dependiente. Si b = 0,108, significa que por cada visita extra se espera un aumento de 0,108 formularios. También puede decirse que por cada 100 visitas adicionales se esperan aproximadamente 10,8 formularios más, si la tendencia se mantiene.</p><p>Esta interpretación es útil porque convierte una nube de puntos en una regla sencilla de lectura. Sin embargo, debe recordarse que la regresión ofrece una estimación, no una garantía exacta.</p></div>
+                            <article class="simulator-card"><h4>Simulador de predicción con regresión</h4><p>Explora cómo cambia el valor estimado de formularios a partir de una ecuación lineal simple.</p><div class="simulator-grid"><div class="simulator-panel"><h4>Simulador</h4><div class="simulator-controls" data-regression-simulator><label>Intercepto a<input type="number" step="0.1" value="4.4" data-intercept></label><label>Pendiente b<input type="number" step="0.001" value="0.104" data-slope></label><label>Visitas x<input type="number" step="1" value="180" data-xvalue></label><div class="simulator-actions"><button type="button" class="quiz-btn" data-regression-run>Estimar valor</button><button type="button" class="reset-btn secondary" data-regression-reset>Reiniciar</button></div><div class="simulator-output" data-regression-output>Ingresa la ecuación y el número de visitas para estimar el valor de ŷ.</div></div></div><div class="simulator-panel"><h4>Guía rápida</h4><p><strong>a</strong> representa el intercepto de la recta.</p><p><strong>b</strong> indica cuánto cambia Y cuando X aumenta una unidad.</p><p><strong>ŷ</strong> es un valor estimado, no una garantía exacta.</p></div></div></article>
+                        </div>
+                    </article>
+                    <article class="accordion open">
+                        <button class="accordion-toggle" type="button"><span>6. Uso de herramientas digitales e importancia del tema</span><span>+</span></button>
+                        <div class="accordion-panel">
+                            <div class="mini-card"><h4>Uso de herramientas digitales</h4><p>En entornos educativos y profesionales, la correlación y la regresión suelen calcularse con herramientas digitales. Excel y Google Sheets permiten insertar gráficos de dispersión, agregar líneas de tendencia y mostrar ecuaciones. Jamovi, por su parte, facilita el cálculo del coeficiente de correlación y genera salidas estadísticas más completas.</p></div>
+                            <div class="table-shell"><table class="ova-table"><thead><tr><th>Herramienta</th><th>¿Qué permite hacer?</th><th>Aplicación sencilla</th></tr></thead><tbody><tr><td>Excel</td><td>Crear tablas, diagramas de dispersión y línea de tendencia</td><td>Relacionar visitas con clics o conversiones</td></tr><tr><td>Google Sheets</td><td>Analizar datos compartidos y graficarlos en línea</td><td>Seguir métricas básicas de formularios o campañas</td></tr><tr><td>Jamovi</td><td>Calcular correlación y regresión con salidas automáticas</td><td>Interpretar r, pendiente y ajuste del modelo</td></tr></tbody></table></div>
+                            <div class="mini-card"><h4>¿Por qué este tema es importante en programación web?</h4><p>El análisis de correlación y regresión ayuda a comprender patrones de comportamiento de los usuarios y a respaldar decisiones con evidencia. Permite explorar si ciertas variables del sitio se mueven juntas y construir estimaciones sencillas sobre registros, clics, visitas o permanencia.</p><p>Para un estudiante de programación web, estos conceptos fortalecen la lectura de reportes, el trabajo con métricas y la capacidad de interpretar datos generados por formularios, campañas, paneles analíticos o bases de datos del sistema.</p></div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+            <section id="actividades" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Cuestionarios o actividades complementarias</h2></div>
+                <div class="speech-controls" data-section-id="actividades">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-actividades">Velocidad:</label><input id="speed-actividades" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="activity-card activity-module" data-module>
+                    <div class="module-header"><div><div class="module-title">Actividad 1. Identificando el tipo de relación</div><p>Lee cada situación y selecciona si la relación esperada es positiva, negativa o nula.</p><p>a) A medida que aumenta el tiempo de carga de una página, disminuye la satisfacción del usuario.</p><p>b) A medida que aumenta el número de campañas de correo enviadas, aumentan las visitas al sitio.</p><p>c) Se comparan el color favorito de los usuarios y la cantidad de clics en un botón.</p></div><div class="score-chip">Aciertos: <span data-score>0</span>/3</div></div>
+                    <div class="activity-question" data-question><p>¿Qué tipo de relación se espera entre tiempo de carga y satisfacción del usuario?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="Si una sube y la otra también, sería positiva, pero aquí sucede lo contrario.">Positiva</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: si aumenta el tiempo de carga y disminuye la satisfacción, la relación es negativa.">Negativa</button><button class="activity-option" type="button" data-feedback="Sí hay una tendencia clara entre ambas variables.">Nula</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>¿Qué tipo de relación se espera entre campañas de correo enviadas y visitas al sitio?</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: si ambas variables tienden a aumentar juntas, la relación es positiva.">Positiva</button><button class="activity-option" type="button" data-feedback="Negativa implicaría que una aumenta mientras la otra disminuye.">Negativa</button><button class="activity-option" type="button" data-feedback="Aquí sí se describe una tendencia conjunta.">Nula</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>¿Qué tipo de relación se esperaría entre color favorito y cantidad de clics en un botón?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="No se describe una tendencia lineal esperable entre esas variables.">Positiva</button><button class="activity-option" type="button" data-feedback="No hay indicio de que una suba mientras la otra baje.">Negativa</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: no se espera una relación lineal clara, por lo que sería nula o muy débil.">Nula</button></div><div class="feedback"></div></div>
+                    <div class="actions-row"><button type="button" class="reset-btn secondary" data-reset-module>Reiniciar actividad</button></div>
+                </div>
+                <div class="activity-card activity-module" data-module>
+                    <div class="module-header"><div><div class="module-title">Actividad 2. Interpretación del coeficiente de correlación</div><p>Analiza los siguientes valores de r y selecciona la interpretación más adecuada.</p><p>a) r = 0,88</p><p>b) r = -0,76</p><p>c) r = 0,09</p></div><div class="score-chip">Aciertos: <span data-score>0</span>/3</div></div>
+                    <div class="activity-question" data-question><p>Si r = 0,88, la relación lineal es:</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: un valor cercano a +1 indica una relación positiva fuerte.">Positiva fuerte</button><button class="activity-option" type="button" data-feedback="El signo positivo descarta una relación negativa.">Negativa fuerte</button><button class="activity-option" type="button" data-feedback="0,88 muestra una tendencia mucho más marcada que una relación débil.">Débil o nula</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>Si r = -0,76, la relación lineal es:</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="El signo negativo descarta una relación positiva.">Positiva fuerte</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: un valor cercano a -1 indica una relación negativa fuerte.">Negativa fuerte</button><button class="activity-option" type="button" data-feedback="La magnitud de 0,76 sugiere una relación clara, no nula.">Nula</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>Si r = 0,09, la relación lineal es:</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="0,09 está muy cerca de 0, por lo que no indica una relación fuerte.">Positiva fuerte</button><button class="activity-option" type="button" data-feedback="No hay signo negativo ni magnitud alta.">Negativa moderada</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: un valor cercano a 0 indica una relación lineal débil o nula.">Débil o nula</button></div><div class="feedback"></div></div>
+                    <div class="actions-row"><button type="button" class="reset-btn secondary" data-reset-module>Reiniciar actividad</button></div>
+                </div>
+                <div class="activity-card activity-module" data-module>
+                    <div class="module-header"><div><div class="module-title">Actividad 3. Predicción con regresión lineal simple</div><p>En un sitio web se obtuvo la ecuación de regresión ŷ = 4 + 0,10x, donde x es el número de visitas y ŷ es el número estimado de formularios completados.</p></div><div class="score-chip">Aciertos: <span data-score>0</span>/3</div></div>
+                    <div class="activity-question" data-question><p>¿Cuántos formularios se estiman para 120 visitas?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="Revisa la sustitución de x = 120 en ŷ = 4 + 0,10x.">12</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: ŷ = 4 + 0,10(120) = 16.">16</button><button class="activity-option" type="button" data-feedback="Ese valor no corresponde al cálculo con 120 visitas.">22</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>¿Cuántos formularios se estiman para 180 visitas?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="Ese valor corresponde a un cálculo menor.">18</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: ŷ = 4 + 0,10(180) = 22.">22</button><button class="activity-option" type="button" data-feedback="Ese resultado no sigue la ecuación dada.">28</button></div><div class="feedback"></div></div>
+                    <div class="activity-question" data-question><p>La pendiente 0,10 en este contexto significa que:</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: por cada visita adicional, el número esperado de formularios aumenta en 0,10.">Por cada visita extra, se esperan 0,10 formularios más</button><button class="activity-option" type="button" data-feedback="La pendiente no representa el total fijo de formularios.">Siempre habrá exactamente 10 formularios</button><button class="activity-option" type="button" data-feedback="La ecuación ofrece una estimación, no un valor exacto garantizado.">Cada visita asegura un formulario completo</button></div><div class="feedback"></div></div>
+                    <div class="actions-row"><button type="button" class="reset-btn secondary" data-reset-module>Reiniciar actividad</button></div>
+                </div>
+            </section>
+            <section id="evaluacion" class="content-pane">
+                <div class="quiz-card" id="quiz-evaluacion" data-correct='[0,1,1,1,0]' data-feedback-correct='["Correcto: la correlación se usa para medir la relación entre dos variables.","Correcto: un valor de r cercano a +1 indica una relación positiva fuerte.","Correcto: correlación no implica causalidad.","Correcto: en ŷ = a + bx, b representa la pendiente de la recta.","Correcto: una utilidad práctica es predecir una métrica a partir de otra."]' data-feedback-incorrect='["La correlación no ordena datos ni calcula solo porcentajes; busca asociaciones entre variables.","Piensa en el signo y la cercanía de r al valor 1.","Dos variables pueden moverse juntas sin que una cause necesariamente a la otra.","La letra b resume el cambio esperado en Y cuando X aumenta una unidad.","La regresión ayuda a estimar o predecir valores en contextos reales de analítica web."]'>
+                    <div class="module-header"><div><h2 class="section-heading" style="font-size:2rem;margin-bottom:.55rem">Evaluación</h2><p>Quiz tema 3. Aplicación de correlación y regresión lineal simple en el análisis de datos web mediante herramientas digitales.</p></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>1.</strong> La correlación se utiliza para:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q1" value="0"> Medir la relación entre dos variables</label><label class="quiz-option"><input type="radio" name="q1" value="1"> Ordenar datos alfabéticamente</label><label class="quiz-option"><input type="radio" name="q1" value="2"> Calcular únicamente porcentajes</label><label class="quiz-option"><input type="radio" name="q1" value="3"> Eliminar valores atípicos</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>2.</strong> Un valor de r cercano a +1 indica:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q2" value="0"> Relación negativa fuerte</label><label class="quiz-option"><input type="radio" name="q2" value="1"> Relación positiva fuerte</label><label class="quiz-option"><input type="radio" name="q2" value="2"> Ausencia total de relación</label><label class="quiz-option"><input type="radio" name="q2" value="3"> Error en los datos</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>3.</strong> La expresión “correlación no implica causalidad” significa que:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q3" value="0"> Toda relación lineal prueba una causa</label><label class="quiz-option"><input type="radio" name="q3" value="1"> Dos variables pueden estar asociadas sin que una sea la causa de la otra</label><label class="quiz-option"><input type="radio" name="q3" value="2"> La regresión siempre reemplaza el análisis</label><label class="quiz-option"><input type="radio" name="q3" value="3"> r nunca debe calcularse</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>4.</strong> En la ecuación de regresión ŷ = a + bx, la letra b representa:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q4" value="0"> El número total de datos</label><label class="quiz-option"><input type="radio" name="q4" value="1"> La pendiente de la recta</label><label class="quiz-option"><input type="radio" name="q4" value="2"> El error de la muestra</label><label class="quiz-option"><input type="radio" name="q4" value="3"> El coeficiente de variación</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="quiz-question" data-quiz-question><p><strong>5.</strong> Una utilidad práctica de la regresión lineal simple en un sitio web es:</p><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q5" value="0"> Predecir una métrica a partir de otra</label><label class="quiz-option"><input type="radio" name="q5" value="1"> Cambiar el código HTML automáticamente</label><label class="quiz-option"><input type="radio" name="q5" value="2"> Sustituir las bases de datos</label><label class="quiz-option"><input type="radio" name="q5" value="3"> Ordenar usuarios por nombre</label></div><div class="feedback" data-feedback-slot></div></div>
+                    <div class="actions-row"><button type="button" class="quiz-btn" id="check-quiz">Comprobar evaluación</button><button type="button" class="reset-btn secondary" id="reset-quiz">Reiniciar quiz</button></div>
+                    <div class="quiz-result" id="quiz-result"></div>
+                </div>
+            </section>
+            <section id="recursos" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Recursos</h2></div>
+                <div class="speech-controls" data-section-id="recursos">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-recursos">Velocidad:</label><input id="speed-recursos" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="resource-card" data-speech-content><div class="resource-split"><div><div class="module-title">Video explicativo</div><p>Recurso audiovisual de apoyo para el tema 3. Puedes acceder escaneando el código QR incluido en la guía.</p><div class="actions-row"><a class="resource-link" href="https://www.youtube.com/watch?v=rcU5Q9PS0CY" target="_blank" rel="noopener">Ir al recurso</a></div></div><div class="resource-qr"><img src="Videos tema 3.png" alt="QR del video del tema 3"></div></div></div>
+                <div class="resource-card" data-speech-content><div class="resource-split"><div><div class="module-title">Infografía del tema 3</div><p>Material gráfico de apoyo para repasar los conceptos centrales de correlación y regresión lineal simple.</p><div class="actions-row"><a class="resource-link" href="https://drive.google.com/file/d/1RaYhtIm2qi3-9vNMxz2URGWOAUf0N8Uv/view?usp=sharing" target="_blank" rel="noopener">Ir al recurso</a></div></div><div class="resource-qr"><img src="Infografía Tema 3.png" alt="QR de la infografía del tema 3"></div></div></div>
+            </section>
+            <section id="bibliografia" class="content-pane">
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Bibliografía</h2></div>
+                <div class="speech-controls" data-section-id="bibliografia">
+                    <div class="speech-main">
+                        <button class="speech-btn play" data-action="play">Leer</button>
+                        <button class="speech-btn pause" data-action="pause" disabled>Pausar</button>
+                        <button class="speech-btn stop" data-action="stop" disabled>Detener</button>
+                        <div class="speech-speed"><label for="speed-bibliografia">Velocidad:</label><input id="speed-bibliografia" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+                    </div>
+                    <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
+                </div>
+                <div class="bibliography-list" data-speech-content>
+                    <article class="bibliography-item">Anderson, D. R., Sweeney, D. J., Williams, T. A., Camm, J. D., y Cochran, J. J. (2019). <em>Estadística para negocios y economía</em> (13.ª ed.). Cengage Learning. https://books.google.com/books/about/Estad%C3%ADstica_Para_Negocios_Y_Econom%C3%ADa_1.html?id=N_o2zAEACAAJ</article>
+                    <article class="bibliography-item">Lind, D. A., Marchal, W. G., y Wathen, S. A. (2018). <em>Estadística aplicada a los negocios y la economía</em> (17.ª ed.). McGraw-Hill Interamericana. https://books.google.com/books/about/Estad%C3%ADstica_aplicada_a_los_negocios_y_l.html?id=hGwqyQEACAAJ</article>
+                    <article class="bibliography-item">Triola, M. F. (2018). <em>Estadística</em> (12.ª ed.). Pearson. https://www.pearsoneducacion.net/Colombia/Inicio/estadistica12ed-pearson-ed-ebook</article>
+                    <article class="bibliography-item">Walpole, R. E., Myers, R. H., Myers, S. L., y Ye, K. (2012). <em>Probabilidad y estadística para ingeniería y ciencias</em> (9.ª ed.). Pearson. https://www.pearsonenespanol.com/mexico/educacion-superior/walpole_index/probabilidad-y-estadistica-para-ingenieria-y-ciencias-9e-contenido</article>
+                    <article class="bibliography-item">Ministerio de Educación Nacional de Colombia. (2016). <em>Derechos básicos de aprendizaje DBA V.2: Matemáticas</em>. MEN. https://www.colombiaaprende.edu.co/sites/default/files/files_public/2022-06/DBA_Matematicas-min.pdf</article>
+                </div>
+            </section>
+        </main>
+    </div>
+    <div class="image-modal" id="image-modal" aria-hidden="true"><div class="image-modal-inner"><button type="button" id="close-image-modal" aria-label="Cerrar imagen ampliada">&#10005;</button><img src="" alt="" id="image-modal-target"></div></div>
+    <script>
+        (function(){
+            const sidebarLinks=document.querySelectorAll('.sidebar-link');
+            const panes=document.querySelectorAll('.content-pane');
+            const mobileNav=document.getElementById('mobile-nav');
+            const quickLinks=document.querySelectorAll('[data-target-link]');
+            const accordions=document.querySelectorAll('.accordion');
+            const flipCards=document.querySelectorAll('.flip-card');
+            const moduleResetButtons=document.querySelectorAll('[data-reset-module]');
+            const imageModal=document.getElementById('image-modal');
+            const imageModalTarget=document.getElementById('image-modal-target');
+            const closeImageModalBtn=document.getElementById('close-image-modal');
+            const zoomableImages=document.querySelectorAll('.zoomable-image');
+            const regressionSimulator=document.querySelector('[data-regression-simulator]');
+            const synth=window.speechSynthesis;
+            let currentUtterance=null,currentSpeechSection=null,selectedVoice=null;
+            function setActivePane(targetId){stopSpeech();panes.forEach((pane)=>pane.classList.toggle('active',pane.id===targetId));sidebarLinks.forEach((link)=>link.classList.toggle('active',link.dataset.target===targetId));if(mobileNav){mobileNav.value=targetId}window.scrollTo({top:0,behavior:'smooth'})}
+            sidebarLinks.forEach((link)=>link.addEventListener('click',(event)=>{event.preventDefault();setActivePane(link.dataset.target)}));
+            if(mobileNav){mobileNav.addEventListener('change',(event)=>setActivePane(event.target.value))}
+            quickLinks.forEach((link)=>link.addEventListener('click',()=>setActivePane(link.dataset.targetLink)));
+            function syncAccordionIcon(accordion){const icon=accordion.querySelector('.accordion-toggle span:last-child');if(icon){icon.textContent=accordion.classList.contains('open')?'−':'+'}}
+            accordions.forEach((accordion)=>{syncAccordionIcon(accordion);const toggle=accordion.querySelector('.accordion-toggle');toggle.addEventListener('click',()=>{accordion.classList.toggle('open');syncAccordionIcon(accordion)})});
+            flipCards.forEach((card)=>{const trigger=card.querySelector('.flip-trigger');trigger.addEventListener('click',()=>card.classList.toggle('flipped'))});
+            function updateModuleScore(module){const questions=module.querySelectorAll('[data-question]');let correct=0;questions.forEach((question)=>{if(question.dataset.answered==='true'&&question.dataset.correct==='true'){correct+=1}});const slot=module.querySelector('[data-score]');if(slot){slot.textContent=String(correct)}}
+            document.querySelectorAll('.activity-option').forEach((button)=>{
+                button.addEventListener('click',()=>{
+                    const question=button.closest('[data-question]');
+                    const module=button.closest('[data-module]');
+                    const feedback=question.querySelector('.feedback');
+                    if(question.dataset.answered==='true'){return}
+                    const isCorrect=button.dataset.correct==='true';
+                    question.dataset.answered='true';
+                    question.dataset.correct=String(isCorrect);
+                    question.querySelectorAll('.activity-option').forEach((option)=>{option.disabled=true;if(option===button){option.classList.add(isCorrect?'correct':'incorrect')}else if(option.dataset.correct==='true'){option.classList.add('correct')}});
+                    feedback.textContent=button.dataset.feedback||'';
+                    feedback.className='feedback show '+(isCorrect?'correct':'incorrect');
+                    updateModuleScore(module);
+                });
+            });
+            moduleResetButtons.forEach((button)=>button.addEventListener('click',()=>{const module=button.closest('[data-module]');module.querySelectorAll('[data-question]').forEach((question)=>{delete question.dataset.answered;delete question.dataset.correct;const feedback=question.querySelector('.feedback');feedback.className='feedback';feedback.textContent='';question.querySelectorAll('.activity-option').forEach((option)=>{option.disabled=false;option.classList.remove('correct','incorrect')})});updateModuleScore(module)}));
+            if(regressionSimulator){
+                const interceptInput=regressionSimulator.querySelector('[data-intercept]');
+                const slopeInput=regressionSimulator.querySelector('[data-slope]');
+                const xInput=regressionSimulator.querySelector('[data-xvalue]');
+                const output=regressionSimulator.querySelector('[data-regression-output]');
+                const runButton=regressionSimulator.querySelector('[data-regression-run]');
+                const resetButton=regressionSimulator.querySelector('[data-regression-reset]');
+                function renderRegressionResult(){
+                    const intercept=Number(interceptInput.value);
+                    const slope=Number(slopeInput.value);
+                    const xValue=Number(xInput.value);
+                    if(Number.isNaN(intercept)||Number.isNaN(slope)||Number.isNaN(xValue)){
+                        output.className='simulator-output warning';
+                        output.textContent='Ingresa valores numéricos válidos para a, b y x.';
+                        return;
+                    }
+                    const prediction=intercept+(slope*xValue);
+                    output.className='simulator-output success';
+                    output.innerHTML=`<strong>Predicción</strong><p>Con la ecuación <code>ŷ = ${intercept.toFixed(1)} + ${slope.toFixed(3)}x</code> y <code>x = ${xValue.toFixed(0)}</code>, el valor estimado es <code>ŷ = ${prediction.toFixed(1)}</code>.</p><p>Esto significa que, si la tendencia se mantiene, se esperarían aproximadamente <code>${prediction.toFixed(1)}</code> formularios completados.</p>`;
+                }
+                runButton.addEventListener('click',renderRegressionResult);
+                resetButton.addEventListener('click',()=>{
+                    interceptInput.value='4.4';
+                    slopeInput.value='0.104';
+                    xInput.value='180';
+                    output.className='simulator-output';
+                    output.textContent='Ingresa la ecuación y el número de visitas para estimar el valor de ŷ.';
+                });
+            }
+            const quiz=document.getElementById('quiz-evaluacion');
+            const quizResult=document.getElementById('quiz-result');
+            const checkQuizButton=document.getElementById('check-quiz');
+            const resetQuizButton=document.getElementById('reset-quiz');
+            function renderQuizResult(correctCount,total){const percentage=Math.round(correctCount/total*100);let cssClass='success',title='¡Excelente!';if(percentage<80&&percentage>=60){cssClass='warning';title='Buen trabajo'}else if(percentage<60){cssClass='error';title='Sigue practicando'}quizResult.innerHTML=`<div class="quiz-summary ${cssClass}"><strong>${title}</strong><p>Respuestas correctas: ${correctCount} de ${total} (${percentage} %).</p></div>`}
+            if(checkQuizButton){checkQuizButton.addEventListener('click',()=>{const correctAnswers=JSON.parse(quiz.dataset.correct);const feedbackCorrect=JSON.parse(quiz.dataset.feedbackCorrect);const feedbackIncorrect=JSON.parse(quiz.dataset.feedbackIncorrect);const questions=quiz.querySelectorAll('[data-quiz-question]');let correctCount=0;questions.forEach((question,index)=>{const selected=question.querySelector("input[type='radio']:checked");const feedback=question.querySelector('[data-feedback-slot]');if(!selected){feedback.textContent='Selecciona una respuesta antes de comprobar.';feedback.className='feedback show incorrect';return}const isCorrect=Number(selected.value)===correctAnswers[index];if(isCorrect){correctCount+=1}feedback.textContent=isCorrect?feedbackCorrect[index]:feedbackIncorrect[index];feedback.className='feedback show '+(isCorrect?'correct':'incorrect')});renderQuizResult(correctCount,questions.length)})}
+            if(resetQuizButton){resetQuizButton.addEventListener('click',()=>{quiz.querySelectorAll("input[type='radio']").forEach((input)=>input.checked=false);quiz.querySelectorAll('[data-feedback-slot]').forEach((feedback)=>{feedback.textContent='';feedback.className='feedback'});quizResult.innerHTML=''})}
+            function openImageModal(src,alt){imageModalTarget.src=src;imageModalTarget.alt=alt||'Imagen ampliada';imageModal.classList.add('active');imageModal.setAttribute('aria-hidden','false')}
+            function closeImageModal(){imageModal.classList.remove('active');imageModal.setAttribute('aria-hidden','true');imageModalTarget.src='';imageModalTarget.alt=''}
+            zoomableImages.forEach((image)=>image.addEventListener('click',()=>openImageModal(image.getAttribute('src'),image.getAttribute('alt'))));
+            closeImageModalBtn.addEventListener('click',closeImageModal);
+            imageModal.addEventListener('click',(event)=>{if(event.target===imageModal){closeImageModal()}});
+            document.addEventListener('keydown',(event)=>{if(event.key==='Escape'){closeImageModal()}});
+            function updateVoiceLabels(){document.querySelectorAll('[data-voice-label]').forEach((label)=>{label.textContent='Voz: '+(selectedVoice?`${selectedVoice.name} (${selectedVoice.lang})`:'Español del navegador')})}
+            function loadVoices(){const voices=synth?synth.getVoices():[];if(!voices.length){updateVoiceLabels();return}const latinMatch=voices.find((voice)=>/es-(CO|MX|US|419)/i.test(voice.lang)||/paulina|helena|sabin|sofia|maria/i.test(voice.name));const spanishFallback=voices.find((voice)=>voice.lang.toLowerCase().startsWith('es'));selectedVoice=latinMatch||spanishFallback||null;updateVoiceLabels()}
+            function getSectionText(sectionId){const section=document.getElementById(sectionId);if(!section){return ''}const blocks=section.querySelectorAll('[data-speech-content]');const parts=[];blocks.forEach((block)=>{const clone=block.cloneNode(true);clone.querySelectorAll('button').forEach((element)=>element.remove());const text=clone.innerText.replace(/\s+/g,' ').trim();if(text){parts.push(text)}});return parts.join('. ')}
+            function resetSpeechButtons(){document.querySelectorAll('.speech-controls').forEach((controls)=>{const play=controls.querySelector("[data-action='play']");const pause=controls.querySelector("[data-action='pause']");const stop=controls.querySelector("[data-action='stop']");play.disabled=false;play.textContent='Leer';pause.disabled=true;stop.disabled=true})}
+            function stopSpeech(){if(synth&&synth.speaking){synth.cancel()}currentUtterance=null;currentSpeechSection=null;resetSpeechButtons()}
+            if(synth){loadVoices();if(typeof synth.onvoiceschanged!=='undefined'){synth.onvoiceschanged=loadVoices}}
+            document.querySelectorAll('.speech-controls').forEach((controls)=>{
+                const sectionId=controls.dataset.sectionId;
+                const play=controls.querySelector("[data-action='play']");
+                const pause=controls.querySelector("[data-action='pause']");
+                const stop=controls.querySelector("[data-action='stop']");
+                const speed=controls.querySelector("input[type='range']");
+                play.addEventListener('click',()=>{
+                    if(!synth){return}
+                    if(currentSpeechSection===sectionId&&synth.paused){synth.resume();play.textContent='Leer';play.disabled=true;pause.disabled=false;stop.disabled=false;return}
+                    stopSpeech();
+                    const text=getSectionText(sectionId);
+                    if(!text){return}
+                    const utterance=new SpeechSynthesisUtterance(text);
+                    utterance.lang=selectedVoice?selectedVoice.lang:'es-ES';
+                    utterance.rate=Number(speed.value);
+                    if(selectedVoice){utterance.voice=selectedVoice}
+                    utterance.onend=()=>stopSpeech();
+                    utterance.onerror=()=>stopSpeech();
+                    currentUtterance=utterance;
+                    currentSpeechSection=sectionId;
+                    synth.speak(utterance);
+                    play.disabled=true;pause.disabled=false;stop.disabled=false;
+                });
+                pause.addEventListener('click',()=>{if(!synth||!synth.speaking){return}synth.pause();play.disabled=false;play.textContent='Continuar';pause.disabled=true});
+                stop.addEventListener('click',()=>stopSpeech());
+                speed.addEventListener('change',()=>{if(currentSpeechSection===sectionId&&currentUtterance){stopSpeech()}});
+            });
+        })();
+    </script>
+</body>
+</html>
+
+
+
+
+
