@@ -348,7 +348,7 @@
                 });
             });
             moduleResetButtons.forEach((button)=>button.addEventListener('click',()=>{const module=button.closest('[data-module]');module.querySelectorAll('[data-question]').forEach((question)=>{delete question.dataset.answered;delete question.dataset.correct;const feedback=question.querySelector('.feedback');feedback.className='feedback';feedback.textContent='';question.querySelectorAll('.activity-option').forEach((option)=>{option.disabled=false;option.classList.remove('correct','incorrect')})});updateModuleScore(module)}));
-            if(simulator){
+            if(false&&typeof simulator!=='undefined'&&simulator){
                 const endpointSelect=simulator.querySelector('[data-sim-endpoint]');
                 const tokenSelect=simulator.querySelector('[data-sim-token]');
                 const output=simulator.querySelector('[data-sim-output]');
