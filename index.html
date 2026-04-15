@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Índice de OVA - Unidad 3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --green-50:#f0fdf4;--green-100:#dcfce7;--green-200:#bbf7d0;--green-500:#22c55e;--green-600:#16a34a;--green-800:#166534;
+            --slate-50:#f8fafc;--slate-200:#e2e8f0;--slate-600:#475569;--slate-700:#334155;--slate-800:#1e293b;
+            --shadow-sm:0 6px 18px rgba(15,23,42,.08);--shadow-lg:0 20px 45px rgba(15,23,42,.12);
+        }
+        body{
+            font-family:"Poppins","Segoe UI",Tahoma,sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(34,197,94,.14), transparent 26%),
+                radial-gradient(circle at bottom right, rgba(22,163,74,.12), transparent 24%),
+                linear-gradient(180deg,#f8fafc,#eefbf2);
+            color:var(--slate-700);
+            min-height:100vh;
+        }
+        .page{
+            width:min(1120px,calc(100% - 2rem));
+            margin:0 auto;
+            padding:2.2rem 0 3rem;
+        }
+        .hero{
+            background:#fff;
+            border:1px solid #d7f4e0;
+            border-radius:28px;
+            box-shadow:var(--shadow-lg);
+            padding:2rem 2rem 1.7rem;
+            display:grid;
+            gap:1rem;
+            margin-bottom:1.5rem;
+        }
+        .brand{
+            display:flex;
+            align-items:center;
+            gap:1rem;
+        }
+        .brand-badge{
+            width:92px;
+            height:92px;
+            border-radius:999px;
+            border:2px solid var(--green-500);
+            background:#fff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow:var(--shadow-sm);
+            overflow:hidden;
+            flex-shrink:0;
+        }
+        .brand-badge img{max-width:100%;max-height:100%;display:block}
+        h1{
+            color:var(--green-800);
+            font-size:clamp(2rem,3.4vw,3rem);
+            line-height:1.12;
+        }
+        .hero p{
+            color:var(--slate-600);
+            font-size:1rem;
+            max-width:72ch;
+        }
+        .grid{
+            display:grid;
+            grid-template-columns:repeat(3,minmax(0,1fr));
+            gap:1.1rem;
+        }
+        .card{
+            background:#fff;
+            border:1px solid #d7f4e0;
+            border-left:6px solid var(--green-500);
+            border-radius:24px;
+            box-shadow:var(--shadow-sm);
+            padding:1.35rem 1.35rem 1.2rem;
+            display:grid;
+            gap:.9rem;
+        }
+        .chip{
+            width:fit-content;
+            padding:.35rem .7rem;
+            border-radius:999px;
+            background:var(--green-50);
+            color:var(--green-800);
+            border:1px solid var(--green-200);
+            font-size:.82rem;
+            font-weight:600;
+        }
+        .card h2{
+            color:var(--green-800);
+            font-size:1.2rem;
+            line-height:1.25;
+        }
+        .card p{
+            color:var(--slate-600);
+            font-size:.96rem;
+            line-height:1.6;
+        }
+        .actions{
+            display:flex;
+            flex-wrap:wrap;
+            gap:.75rem;
+            margin-top:.2rem;
+        }
+        .btn{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            padding:.82rem 1rem;
+            border-radius:999px;
+            text-decoration:none;
+            font-weight:700;
+            transition:.2s ease;
+        }
+        .btn-primary{
+            background:var(--green-600);
+            color:#fff;
+        }
+        .btn-secondary{
+            background:var(--green-50);
+            color:var(--green-800);
+            border:1px solid var(--green-200);
+        }
+        .btn:hover{transform:translateY(-1px)}
+        .footer-note{
+            margin-top:1.25rem;
+            padding:1rem 1.15rem;
+            border-radius:18px;
+            background:#fff;
+            border:1px solid #d7f4e0;
+            color:var(--slate-600);
+            box-shadow:var(--shadow-sm);
+        }
+        @media (max-width:900px){
+            .grid{grid-template-columns:1fr}
+            .page{width:min(100%,calc(100% - 1rem));padding:1rem 0 2rem}
+            .hero{padding:1.35rem}
+            .brand{align-items:flex-start}
+            .brand-badge{width:78px;height:78px}
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="hero">
+            <div class="brand">
+                <div class="brand-badge">
+                    <img src="cintia-logo.webp" alt="Logo institucional">
+                </div>
+                <div>
+                    <h1>Índice de OVA - Unidad 3</h1>
+                    <p>Accede desde aquí a los objetos virtuales de aprendizaje de inferencia estadística y aplicaciones tecnológicas. Cada tarjeta abre el OVA correspondiente en esta misma carpeta.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid">
+            <article class="card">
+                <span class="chip">Tema 1</span>
+                <h2>Estimación puntual e intervalos de confianza</h2>
+                <p>Contenido sobre estimación puntual, intervalos de confianza para una y dos muestras, ejemplos aplicados y actividades interactivas.</p>
+                <div class="actions">
+                    <a class="btn btn-primary" href="Unidad3_Tema1_Estimacion_Intervalos_Confianza.html">Abrir OVA</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <span class="chip">Tema 2</span>
+                <h2>Pruebas de hipótesis estadísticas</h2>
+                <p>Incluye formulación de hipótesis, nivel de significancia, p-valor, toma de decisiones y recursos del tema con apoyo visual.</p>
+                <div class="actions">
+                    <a class="btn btn-primary" href="Unidad3_Tema2_Pruebas_Hipotesis.html">Abrir OVA</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <span class="chip">Tema 3</span>
+                <h2>Correlación y regresión lineal simple</h2>
+                <p>Presenta análisis de relaciones entre variables, coeficiente de correlación, recta de regresión, predicción y actividades del tema.</p>
+                <div class="actions">
+                    <a class="btn btn-primary" href="Unidad3_Tema3_Correlacion_Regresion.html">Abrir OVA</a>
+                </div>
+            </article>
+        </section>
+
+        <div class="footer-note">
+            Unidad 3: Inferencia estadística y aplicaciones tecnológicas.
+        </div>
+    </main>
+</body>
+</html>
