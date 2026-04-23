@@ -137,6 +137,41 @@
             color:var(--slate-600);
             box-shadow:var(--shadow-sm);
         }
+        .bibliography-credit{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            gap:.15rem;
+            width:100%;
+            margin-top:1.4rem;
+            padding-top:1.4rem;
+            border-top:2px solid var(--slate-200);
+            text-align:center;
+            font-family:"Poppins","Segoe UI",Tahoma,sans-serif;
+        }
+        .bibliography-credit-label{
+            display:block;
+            font-weight:600;
+            color:var(--slate-700);
+            font-size:.92rem;
+        }
+        .bibliography-credit-name{
+            display:block;
+            max-width:900px;
+            margin-top:.2rem;
+            color:var(--green-800);
+            font-size:clamp(1.1rem,2vw,1.45rem);
+            font-weight:700;
+            line-height:1.2;
+            text-wrap:balance;
+        }
+        .bibliography-credit-org{
+            display:block;
+            margin-top:.1rem;
+            color:#64748b;
+            font-size:clamp(.9rem,1.6vw,1rem);
+        }
         @media (max-width:900px){
             .grid{grid-template-columns:1fr}
             .page{width:min(100%,calc(100% - 1rem));padding:1rem 0 2rem}
@@ -191,6 +226,11 @@
 
         <div class="footer-note">
             Unidad 3: Inferencia estadística y aplicaciones tecnológicas.
+        </div>
+        <div class="bibliography-credit">
+            <div class="bibliography-credit-label">Creado por:</div>
+            <div class="bibliography-credit-name">Centro de Innovación en TIC para el apoyo de la Docencia CINTIA</div>
+            <div class="bibliography-credit-org">Universidad de Córdoba</div>
         </div>
     </main>
 </body>
