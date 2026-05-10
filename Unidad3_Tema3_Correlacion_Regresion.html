@@ -136,9 +136,9 @@
                     <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
                 </div>
                 <ul class="objective-list" data-speech-content>
-                    <li class="objective-item"><div class="objective-check">🔗</div><p>Comprender qué es la correlación e identificar si la relación entre dos variables es positiva, negativa o nula en situaciones sencillas del análisis web.</p></li>
-                    <li class="objective-item"><div class="objective-check">📉</div><p>Interpretar el coeficiente de correlación y reconocer cuándo una relación lineal es fuerte, moderada o débil a partir de tablas, gráficos y datos del entorno digital.</p></li>
-                    <li class="objective-item"><div class="objective-check">📈</div><p>Aplicar la regresión lineal simple para estimar valores y apoyar decisiones básicas sobre visitas, clics, formularios o conversiones mediante herramientas digitales.</p></li>
+                    <li class="objective-item"><div class="objective-check">✓</div><p>Comprender qué es la correlación e identificar si la relación entre dos variables es positiva, negativa o nula en situaciones sencillas del análisis web.</p></li>
+                    <li class="objective-item"><div class="objective-check">✓</div><p>Interpretar el coeficiente de correlación y reconocer cuándo una relación lineal es fuerte, moderada o débil a partir de tablas, gráficos y datos del entorno digital.</p></li>
+                    <li class="objective-item"><div class="objective-check">✓</div><p>Aplicar la regresión lineal simple para estimar valores y apoyar decisiones básicas sobre visitas, clics, formularios o conversiones mediante herramientas digitales.</p></li>
                 </ul>
             </section>
             <section id="contenido" class="content-pane">
@@ -220,7 +220,7 @@
                 </div>
             </section>
             <section id="actividades" class="content-pane">
-                <div class="hero-card" data-speech-content><h2 class="section-heading">Cuestionarios o actividades complementarias</h2></div>
+                <div class="hero-card" data-speech-content><h2 class="section-heading">Actividades de aprendizaje</h2></div>
                 <div class="speech-controls" data-section-id="actividades">
                     <div class="speech-main">
                         <button class="speech-btn play" data-action="play">Leer</button>
@@ -230,26 +230,97 @@
                     </div>
                     <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
                 </div>
-                <div class="activity-card activity-module" data-module>
-                    <div class="module-header"><div><div class="module-title">Actividad 1. Identificando el tipo de relación</div><p>Lee cada situación y selecciona si la relación esperada es positiva, negativa o nula.</p><p>a) A medida que aumenta el tiempo de carga de una página, disminuye la satisfacción del usuario.</p><p>b) A medida que aumenta el número de campañas de correo enviadas, aumentan las visitas al sitio.</p><p>c) Se comparan el color favorito de los usuarios y la cantidad de clics en un botón.</p></div><div class="score-chip">Aciertos: <span data-score>0</span>/3</div></div>
-                    <div class="activity-question" data-question><p>¿Qué tipo de relación se espera entre tiempo de carga y satisfacción del usuario?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="Si una sube y la otra también, sería positiva, pero aquí sucede lo contrario.">Positiva</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: si aumenta el tiempo de carga y disminuye la satisfacción, la relación es negativa.">Negativa</button><button class="activity-option" type="button" data-feedback="Sí hay una tendencia clara entre ambas variables.">Nula</button></div><div class="feedback"></div></div>
-                    <div class="activity-question" data-question><p>¿Qué tipo de relación se espera entre campañas de correo enviadas y visitas al sitio?</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: si ambas variables tienden a aumentar juntas, la relación es positiva.">Positiva</button><button class="activity-option" type="button" data-feedback="Negativa implicaría que una aumenta mientras la otra disminuye.">Negativa</button><button class="activity-option" type="button" data-feedback="Aquí sí se describe una tendencia conjunta.">Nula</button></div><div class="feedback"></div></div>
-                    <div class="activity-question" data-question><p>¿Qué tipo de relación se esperaría entre color favorito y cantidad de clics en un botón?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="No se describe una tendencia lineal esperable entre esas variables.">Positiva</button><button class="activity-option" type="button" data-feedback="No hay indicio de que una suba mientras la otra baje.">Negativa</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: no se espera una relación lineal clara, por lo que sería nula o muy débil.">Nula</button></div><div class="feedback"></div></div>
-                    <div class="actions-row"><button type="button" class="reset-btn secondary" data-reset-module>Reiniciar actividad</button></div>
+                <div class="activity-card">
+                    <div class="module-header"><div><div class="module-title">Actividad 1. Simulador del tipo de relación</div><p>Analiza cada caso y define si la relación esperada entre las variables es positiva, negativa o nula.</p></div></div>
+                    <div class="simulator-controls" data-activity="correlacion-relacion">
+                        <label>Si aumenta el tiempo de carga de una página y disminuye la satisfacción del usuario, la relación es:
+                            <select data-field="tiempo_satisfaccion">
+                                <option value="">Selecciona una opción</option>
+                                <option value="positiva">Positiva</option>
+                                <option value="negativa">Negativa</option>
+                                <option value="nula">Nula</option>
+                            </select>
+                        </label>
+                        <label>Si al enviar más campañas de correo también aumentan las visitas al sitio, la relación es:
+                            <select data-field="campanas_visitas">
+                                <option value="">Selecciona una opción</option>
+                                <option value="positiva">Positiva</option>
+                                <option value="negativa">Negativa</option>
+                                <option value="nula">Nula</option>
+                            </select>
+                        </label>
+                        <label>Si se compara el color favorito de los usuarios con la cantidad de clics en un botón, la relación esperada es:
+                            <select data-field="color_clics">
+                                <option value="">Selecciona una opción</option>
+                                <option value="positiva">Positiva</option>
+                                <option value="negativa">Negativa</option>
+                                <option value="nula">Nula</option>
+                            </select>
+                        </label>
+                        <div class="simulator-actions">
+                            <button type="button" class="quiz-btn" data-check="correlacion-relacion">Evaluar actividad</button>
+                            <button type="button" class="reset-btn secondary" data-reset="correlacion-relacion">Reiniciar</button>
+                        </div>
+                        <div class="simulator-output" data-result="correlacion-relacion">Relaciona cada situación con el tipo de asociación que mejor la describe.</div>
+                    </div>
                 </div>
-                <div class="activity-card activity-module" data-module>
-                    <div class="module-header"><div><div class="module-title">Actividad 2. Interpretación del coeficiente de correlación</div><p>Analiza los siguientes valores de r y selecciona la interpretación más adecuada.</p><p>a) r = 0,88</p><p>b) r = -0,76</p><p>c) r = 0,09</p></div><div class="score-chip">Aciertos: <span data-score>0</span>/3</div></div>
-                    <div class="activity-question" data-question><p>Si r = 0,88, la relación lineal es:</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: un valor cercano a +1 indica una relación positiva fuerte.">Positiva fuerte</button><button class="activity-option" type="button" data-feedback="El signo positivo descarta una relación negativa.">Negativa fuerte</button><button class="activity-option" type="button" data-feedback="0,88 muestra una tendencia mucho más marcada que una relación débil.">Débil o nula</button></div><div class="feedback"></div></div>
-                    <div class="activity-question" data-question><p>Si r = -0,76, la relación lineal es:</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="El signo negativo descarta una relación positiva.">Positiva fuerte</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: un valor cercano a -1 indica una relación negativa fuerte.">Negativa fuerte</button><button class="activity-option" type="button" data-feedback="La magnitud de 0,76 sugiere una relación clara, no nula.">Nula</button></div><div class="feedback"></div></div>
-                    <div class="activity-question" data-question><p>Si r = 0,09, la relación lineal es:</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="0,09 está muy cerca de 0, por lo que no indica una relación fuerte.">Positiva fuerte</button><button class="activity-option" type="button" data-feedback="No hay signo negativo ni magnitud alta.">Negativa moderada</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: un valor cercano a 0 indica una relación lineal débil o nula.">Débil o nula</button></div><div class="feedback"></div></div>
-                    <div class="actions-row"><button type="button" class="reset-btn secondary" data-reset-module>Reiniciar actividad</button></div>
+                <div class="activity-card">
+                    <div class="module-header"><div><div class="module-title">Actividad 2. Simulador de interpretación de r</div><p>Interpreta el signo y la magnitud del coeficiente de correlación para cada valor.</p></div></div>
+                    <div class="simulator-controls" data-activity="correlacion-r">
+                        <label>Si r = 0,88, la interpretación correcta es:
+                            <select data-field="r_088">
+                                <option value="">Selecciona una opción</option>
+                                <option value="positiva_fuerte">Relación positiva fuerte</option>
+                                <option value="negativa_fuerte">Relación negativa fuerte</option>
+                                <option value="debil_nula">Relación débil o nula</option>
+                            </select>
+                        </label>
+                        <label>Si r = -0,76, la interpretación correcta es:
+                            <select data-field="r_m076">
+                                <option value="">Selecciona una opción</option>
+                                <option value="positiva_fuerte">Relación positiva fuerte</option>
+                                <option value="negativa_fuerte">Relación negativa fuerte</option>
+                                <option value="debil_nula">Relación débil o nula</option>
+                            </select>
+                        </label>
+                        <label>Si r = 0,09, la interpretación correcta es:
+                            <select data-field="r_009">
+                                <option value="">Selecciona una opción</option>
+                                <option value="positiva_fuerte">Relación positiva fuerte</option>
+                                <option value="negativa_moderada">Relación negativa moderada</option>
+                                <option value="debil_nula">Relación débil o nula</option>
+                            </select>
+                        </label>
+                        <div class="simulator-actions">
+                            <button type="button" class="quiz-btn" data-check="correlacion-r">Evaluar actividad</button>
+                            <button type="button" class="reset-btn secondary" data-reset="correlacion-r">Reiniciar</button>
+                        </div>
+                        <div class="simulator-output" data-result="correlacion-r">Observa si el valor de r está cerca de +1, -1 o 0 para elegir la interpretación adecuada.</div>
+                    </div>
                 </div>
-                <div class="activity-card activity-module" data-module>
-                    <div class="module-header"><div><div class="module-title">Actividad 3. Predicción con regresión lineal simple</div><p>En un sitio web se obtuvo la ecuación de regresión ŷ = 4 + 0,10x, donde x es el número de visitas y ŷ es el número estimado de formularios completados.</p></div><div class="score-chip">Aciertos: <span data-score>0</span>/3</div></div>
-                    <div class="activity-question" data-question><p>¿Cuántos formularios se estiman para 120 visitas?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="Revisa la sustitución de x = 120 en ŷ = 4 + 0,10x.">12</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: ŷ = 4 + 0,10(120) = 16.">16</button><button class="activity-option" type="button" data-feedback="Ese valor no corresponde al cálculo con 120 visitas.">22</button></div><div class="feedback"></div></div>
-                    <div class="activity-question" data-question><p>¿Cuántos formularios se estiman para 180 visitas?</p><div class="activity-options"><button class="activity-option" type="button" data-feedback="Ese valor corresponde a un cálculo menor.">18</button><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: ŷ = 4 + 0,10(180) = 22.">22</button><button class="activity-option" type="button" data-feedback="Ese resultado no sigue la ecuación dada.">28</button></div><div class="feedback"></div></div>
-                    <div class="activity-question" data-question><p>La pendiente 0,10 en este contexto significa que:</p><div class="activity-options"><button class="activity-option" type="button" data-correct="true" data-feedback="Correcto: por cada visita adicional, el número esperado de formularios aumenta en 0,10.">Por cada visita extra, se esperan 0,10 formularios más</button><button class="activity-option" type="button" data-feedback="La pendiente no representa el total fijo de formularios.">Siempre habrá exactamente 10 formularios</button><button class="activity-option" type="button" data-feedback="La ecuación ofrece una estimación, no un valor exacto garantizado.">Cada visita asegura un formulario completo</button></div><div class="feedback"></div></div>
-                    <div class="actions-row"><button type="button" class="reset-btn secondary" data-reset-module>Reiniciar actividad</button></div>
+                <div class="activity-card">
+                    <div class="module-header"><div><div class="module-title">Actividad 3. Simulador de predicción con regresión</div><p>Usa la ecuación de regresión <code>ŷ = 4 + 0,10x</code>, donde <code>x</code> es el número de visitas y <code>ŷ</code> el número estimado de formularios completados.</p></div></div>
+                    <div class="simulator-controls" data-activity="regresion-prediccion">
+                        <label>Predicción para 120 visitas:
+                            <input type="number" step="1" data-field="pred_120" placeholder="Escribe el valor estimado">
+                        </label>
+                        <label>Predicción para 180 visitas:
+                            <input type="number" step="1" data-field="pred_180" placeholder="Escribe el valor estimado">
+                        </label>
+                        <label>La pendiente 0,10 en este contexto significa que:
+                            <select data-field="pendiente">
+                                <option value="">Selecciona una opción</option>
+                                <option value="por_visita">Por cada visita extra, se esperan 0,10 formularios más</option>
+                                <option value="fijo">Siempre habrá exactamente 10 formularios</option>
+                                <option value="seguro">Cada visita asegura un formulario completo</option>
+                            </select>
+                        </label>
+                        <div class="simulator-actions">
+                            <button type="button" class="quiz-btn" data-check="regresion-prediccion">Evaluar actividad</button>
+                            <button type="button" class="reset-btn secondary" data-reset="regresion-prediccion">Reiniciar</button>
+                        </div>
+                        <div class="simulator-output" data-result="regresion-prediccion">Sustituye los valores de <code>x</code> en la ecuación e interpreta correctamente la pendiente.</div>
+                    </div>
                 </div>
             </section>
             <section id="evaluacion" class="content-pane">
@@ -275,8 +346,8 @@
                     </div>
                     <span class="speech-voice" data-voice-label>Voz: Español del navegador</span>
                 </div>
-                <div class="resource-card" data-speech-content><div class="resource-split"><div><div class="module-title">Video explicativo</div><p>Recurso audiovisual de apoyo para el tema 3. Puedes acceder escaneando el código QR incluido en la guía.</p><div class="actions-row"><a class="resource-link" href="https://www.youtube.com/watch?v=rcU5Q9PS0CY" target="_blank" rel="noopener">Ir al recurso</a></div></div><div class="resource-qr"><img src="Videos tema 3.png" alt="QR del video del tema 3"></div></div></div>
-                <div class="resource-card" data-speech-content><div class="resource-split"><div><div class="module-title">Infografía del tema 3</div><p>Material gráfico de apoyo para repasar los conceptos centrales de correlación y regresión lineal simple.</p><div class="actions-row"><a class="resource-link" href="https://drive.google.com/file/d/1RaYhtIm2qi3-9vNMxz2URGWOAUf0N8Uv/view?usp=sharing" target="_blank" rel="noopener">Ir al recurso</a></div></div><div class="resource-qr"><img src="Infografía Tema 3.png" alt="QR de la infografía del tema 3"></div></div></div>
+                <div class="resource-card" data-speech-content><div class="resource-split"><div><div class="module-title">Video explicativo</div><div class="actions-row"><a class="resource-link" href="https://www.youtube.com/watch?v=rcU5Q9PS0CY" target="_blank" rel="noopener">Ir al recurso</a></div></div><div class="resource-qr"><img src="Videos tema 3.png" alt="QR del video del tema 3"></div></div></div>
+                <div class="resource-card" data-speech-content><div class="resource-split"><div><div class="module-title">Infografía del tema 3</div><div class="actions-row"><a class="resource-link" href="https://drive.google.com/file/d/1RaYhtIm2qi3-9vNMxz2URGWOAUf0N8Uv/view?usp=sharing" target="_blank" rel="noopener">Ir al recurso</a></div></div><div class="resource-qr"><img src="Infografía Tema 3.png" alt="QR de la infografía del tema 3"></div></div></div>
             </section>
             <section id="bibliografia" class="content-pane">
                 <div class="hero-card" data-speech-content><h2 class="section-heading">Bibliografía</h2></div>
@@ -297,14 +368,16 @@
                     <article class="bibliography-item">Walpole, R. E., Myers, R. H., Myers, S. L., y Ye, K. (2012). <em>Probabilidad y estadística para ingeniería y ciencias</em> (9.ª ed.). Pearson. <a href="https://www.pearsonenespanol.com/mexico/educacion-superior/walpole_index/probabilidad-y-estadistica-para-ingenieria-y-ciencias-9e-contenido" target="_blank" rel="noopener noreferrer">Consultar fuente</a>.</article>
                     <article class="bibliography-item">Ministerio de Educación Nacional de Colombia. (2016). <em>Derechos básicos de aprendizaje DBA V.2: Matemáticas</em>. MEN. <a href="https://www.colombiaaprende.edu.co/sites/default/files/files_public/2022-06/DBA_Matematicas-min.pdf" target="_blank" rel="noopener noreferrer">Consultar fuente</a>.</article>
                 </div>
-                <div class="bibliography-credit">
-                    <div class="bibliography-credit-label">Creado por:</div>
-                    <div class="bibliography-credit-name">Centro de Innovaci&oacute;n en TIC para el apoyo de la Docencia CINTIA</div>
-                    <div class="bibliography-credit-org">Universidad de C&oacute;rdoba</div>
-                </div>
             </section>
         </main>
     </div>
+    <footer class="page-footer">
+        <div class="bibliography-credit">
+            <div class="bibliography-credit-label">Creado por:</div>
+            <div class="bibliography-credit-name">Centro de Innovaci&oacute;n en TIC para el apoyo de la Docencia CINTIA</div>
+            <div class="bibliography-credit-org">Universidad de C&oacute;rdoba</div>
+        </div>
+    </footer>
     <div class="image-modal" id="image-modal" aria-hidden="true"><div class="image-modal-inner"><button type="button" id="close-image-modal" aria-label="Cerrar imagen ampliada">&#10005;</button><img src="" alt="" id="image-modal-target"></div></div>
     <script>
         (function(){
@@ -375,6 +448,83 @@
                     output.textContent='Ingresa la ecuación y el número de visitas para estimar el valor de ŷ.';
                 });
             }
+            function showActivityResult(activityId,message,isSuccess){
+                const resultBox=document.querySelector(`[data-result="${activityId}"]`);
+                if(!resultBox){return}
+                resultBox.className='simulator-output '+(isSuccess?'success':'warning');
+                resultBox.innerHTML=message;
+            }
+            function resetActivityResult(activityId,message){
+                const activity=document.querySelector(`[data-activity="${activityId}"]`);
+                const resultBox=document.querySelector(`[data-result="${activityId}"]`);
+                if(activity){
+                    activity.querySelectorAll('select').forEach((field)=>{field.selectedIndex=0});
+                    activity.querySelectorAll('input').forEach((field)=>{field.value=''});
+                }
+                if(resultBox){
+                    resultBox.className='simulator-output';
+                    resultBox.innerHTML=message;
+                }
+            }
+            const correlationActivities={
+                'correlacion-relacion':{
+                    answers:{tiempo_satisfaccion:'negativa',campanas_visitas:'positiva',color_clics:'nula'},
+                    empty:'Relaciona cada situación con el tipo de asociación que mejor la describe.',
+                    success:'<strong>Resultado</strong><p>Clasificaste correctamente las relaciones: negativa cuando una variable sube y la otra baja, positiva cuando aumentan juntas y nula cuando no hay asociación lineal clara.</p>',
+                    error:'<strong>Resultado</strong><p>Hay respuestas por ajustar. Revisa si ambas variables cambian en el mismo sentido, en sentido contrario o si realmente no tienen una relación lineal esperable.</p>'
+                },
+                'correlacion-r':{
+                    answers:{r_088:'positiva_fuerte',r_m076:'negativa_fuerte',r_009:'debil_nula'},
+                    empty:'Observa si el valor de r está cerca de +1, -1 o 0 para elegir la interpretación adecuada.',
+                    success:'<strong>Resultado</strong><p>Interpretaste correctamente el coeficiente de correlación: el signo indica la dirección y la cercanía a 1 o a 0 muestra la fuerza de la relación.</p>',
+                    error:'<strong>Resultado</strong><p>Alguna interpretación no coincide. Recuerda: valores cercanos a +1 o -1 reflejan relaciones fuertes, mientras que valores cercanos a 0 indican relación débil o nula.</p>'
+                },
+                'regresion-prediccion':{
+                    answers:{pendiente:'por_visita'},
+                    empty:'Sustituye los valores de <code>x</code> en la ecuación e interpreta correctamente la pendiente.',
+                    success:'<strong>Resultado</strong><p>Calculaste bien las predicciones y comprendiste el significado de la pendiente dentro de la ecuación de regresión.</p>',
+                    error:'<strong>Resultado</strong><p>Revisa la sustitución en la ecuación <code>ŷ = 4 + 0,10x</code>. Luego confirma que la pendiente representa el aumento esperado de formularios por cada visita adicional.</p>'
+                }
+            };
+            Object.entries(correlationActivities).forEach(([activityId,config])=>{
+                const checkButton=document.querySelector(`[data-check="${activityId}"]`);
+                const resetButton=document.querySelector(`[data-reset="${activityId}"]`);
+                if(checkButton){
+                    checkButton.addEventListener('click',()=>{
+                        const activity=document.querySelector(`[data-activity="${activityId}"]`);
+                        if(!activity){return}
+                        if(activityId==='regresion-prediccion'){
+                            const pred120=Number(activity.querySelector('[data-field="pred_120"]').value);
+                            const pred180=Number(activity.querySelector('[data-field="pred_180"]').value);
+                            const pendiente=activity.querySelector('[data-field="pendiente"]').value;
+                            if(Number.isNaN(pred120)||Number.isNaN(pred180)||!pendiente){
+                                showActivityResult(activityId,`<strong>Faltan respuestas</strong><p>${config.empty}</p>`,false);
+                                return;
+                            }
+                            const isSuccess=pred120===16&&pred180===22&&pendiente===config.answers.pendiente;
+                            showActivityResult(activityId,isSuccess?config.success:config.error,isSuccess);
+                            return;
+                        }
+                        const values={};
+                        let complete=true;
+                        Object.keys(config.answers).forEach((fieldName)=>{
+                            const field=activity.querySelector(`[data-field="${fieldName}"]`);
+                            const value=field?field.value:'';
+                            values[fieldName]=value;
+                            if(!value){complete=false}
+                        });
+                        if(!complete){
+                            showActivityResult(activityId,`<strong>Faltan respuestas</strong><p>${config.empty}</p>`,false);
+                            return;
+                        }
+                        const isSuccess=Object.entries(config.answers).every(([fieldName,expected])=>values[fieldName]===expected);
+                        showActivityResult(activityId,isSuccess?config.success:config.error,isSuccess);
+                    });
+                }
+                if(resetButton){
+                    resetButton.addEventListener('click',()=>resetActivityResult(activityId,config.empty));
+                }
+            });
             const quiz=document.getElementById('quiz-evaluacion');
             const quizResult=document.getElementById('quiz-result');
             const checkQuizButton=document.getElementById('check-quiz');
